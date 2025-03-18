@@ -1,0 +1,8 @@
+@use 'mixins' as mixins;
+
+.dx-loadpanel-content {
+  @include mixins.container-shadow;
+
+  font-size: 12px;
+  line-height: 1.5em;
+}

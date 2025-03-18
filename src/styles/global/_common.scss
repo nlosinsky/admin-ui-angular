@@ -1,0 +1,47 @@
+@use 'variables' as *;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+}
+
+.container {
+  display: flex;
+  padding: 30px;
+  flex-direction: column;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mb-20 {
+  margin-bottom: 20px !important;
+}
+
+.ml-15 {
+  margin-left: 15px !important;
+}
+
+.error-message {
+  color: $error;
+}
+
+.content-section {
+  &:not(:last-of-type) {
+    margin-bottom: 30px;
+  }
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+}
+
+.text-center {
+  text-align: center;
+}

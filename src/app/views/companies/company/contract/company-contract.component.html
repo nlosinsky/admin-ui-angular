@@ -1,0 +1,176 @@
+<ng-template #actionsTpl>
+  <ng-container *ngIf="isEditMode">
+    <dx-button stylingMode="outlined" text="Cancel" class="grayed" (onClick)="onCancelEdit()"></dx-button>
+    <dx-button
+      stylingMode="contained"
+      type="default"
+      text="Save changes"
+      [ngClass]="{ loading: isSubmitting }"
+      (onClick)="onSaveChanges()"
+    ></dx-button>
+  </ng-container>
+
+  <dx-drop-down-button
+    icon="/assets/images/icons/overflow.svg"
+    [showArrowIcon]="false"
+    class="actions-dropdown-btn"
+    [dropDownOptions]="{ container: '.actions-dropdown-btn', width: 150 }"
+    [disabled]="isEditMode"
+  >
+    <dxi-item [onClick]="onEdit">Edit information</dxi-item>
+  </dx-drop-down-button>
+</ng-template>
+
+<app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
+
+<form *ngIf="isDataLoaded && company" [formGroup]="form" novalidate>
+  <div class="content-section" formGroupName="contract">
+    <h5 class="section-title">Contract Details</h5>
+
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Contract Type</div>
+        <div class="table-list-content">
+          <dx-select-box
+            [dataSource]="companyContractList"
+            [dropDownOptions]="{ container: 'dx-select-box' }"
+            [readOnly]="isDisabled"
+            (valueChange)="onChangeType()"
+            formControlName="type"
+            itemTemplate="item"
+            fieldTemplate="field"
+          >
+            <div *dxTemplate="let item of 'item'">
+              {{ item | contractType }}
+            </div>
+
+            <div *dxTemplate="let elem of 'field'">
+              <dx-text-box [value]="elem | contractType" [readOnly]="true"></dx-text-box>
+            </div>
+          </dx-select-box>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Transaction Fee</div>
+        <div class="table-list-content">
+          <dx-number-box
+            [readOnly]="isReadonlyTransactionFee"
+            [min]="minTransactionFeeValue"
+            formControlName="basisPoints"
+            format="#0 BP"
+          ></dx-number-box>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section" formGroupName="features">
+    <h5 class="section-title">Module Access</h5>
+
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Module</div>
+        <div class="table-list-content">Accounting</div>
+      </div>
+
+      <div class="table-list-col">
+        <div class="table-list-label">Status</div>
+        <div class="table-list-content">
+          <dx-switch *ngIf="isEditMode" [readOnly]="isSubmitting" formControlName="accounting"></dx-switch>
+
+          <ng-container
+            *ngIf="!isEditMode"
+            [ngTemplateOutlet]="featureReadonlyText"
+            [ngTemplateOutletContext]="{ value: form.get('features.accounting')?.value }"
+          ></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Module</div>
+        <div class="table-list-content">Online Transactions</div>
+      </div>
+
+      <div class="table-list-col">
+        <div class="table-list-label">Status</div>
+        <div class="table-list-content">
+          <dx-switch *ngIf="isEditMode" [readOnly]="isSubmitting" formControlName="onlineTransactions"></dx-switch>
+
+          <ng-container
+            *ngIf="!isEditMode"
+            [ngTemplateOutlet]="featureReadonlyText"
+            [ngTemplateOutletContext]="{ value: form.get('features.onlineTransactions')?.value }"
+          ></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Module</div>
+        <div class="table-list-content">Reporting</div>
+      </div>
+
+      <div class="table-list-col">
+        <div class="table-list-label">Status</div>
+        <div class="table-list-content">
+          <dx-switch *ngIf="isEditMode" [readOnly]="isSubmitting" formControlName="advancedReporting"></dx-switch>
+
+          <ng-container
+            *ngIf="!isEditMode"
+            [ngTemplateOutlet]="featureReadonlyText"
+            [ngTemplateOutletContext]="{ value: form.get('features.advancedReporting')?.value }"
+          ></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Module</div>
+        <div class="table-list-content">Market Data</div>
+      </div>
+
+      <div class="table-list-col">
+        <div class="table-list-label">Status</div>
+        <div class="table-list-content">
+          <dx-switch *ngIf="isEditMode" [readOnly]="isSubmitting" formControlName="marketData"></dx-switch>
+
+          <ng-container
+            *ngIf="!isEditMode"
+            [ngTemplateOutlet]="featureReadonlyText"
+            [ngTemplateOutletContext]="{ value: form.get('features.marketData')?.value }"
+          ></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Module</div>
+        <div class="table-list-content">Contract Inventory</div>
+      </div>
+
+      <div class="table-list-col">
+        <div class="table-list-label">Status</div>
+        <div class="table-list-content">
+          <dx-switch *ngIf="isEditMode" [readOnly]="isSubmitting" formControlName="contractInventory"></dx-switch>
+
+          <ng-container
+            *ngIf="!isEditMode"
+            [ngTemplateOutlet]="featureReadonlyText"
+            [ngTemplateOutletContext]="{ value: form.get('features.contractInventory')?.value }"
+          ></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #featureReadonlyText let-value="value">
+    {{ value === true ? 'Enabled' : 'Disabled' }}
+  </ng-template>
+</form>

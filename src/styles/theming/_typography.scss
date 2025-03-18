@@ -1,0 +1,28 @@
+@use 'variables' as *;
+
+.dx-theme-generic-typography {
+  color: $black;
+
+  h3,
+  h5 {
+    font-weight: 500;
+    margin-top: 0;
+  }
+
+  a {
+    color: $default;
+  }
+
+  .section-title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.5em;
+    margin-bottom: 24px;
+  }
+}
+
+.dx-theme-generic-typography,
+.dx-widget,
+.dx-overlay-wrapper {
+  font-family: Roboto, sans-serif;
+}

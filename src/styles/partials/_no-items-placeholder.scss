@@ -1,0 +1,11 @@
+@use 'variables' as *;
+
+.no-items-placeholder {
+  font-size: 12px;
+  height: 64px;
+  border-radius: 4px;
+  border: 1px solid $light-gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

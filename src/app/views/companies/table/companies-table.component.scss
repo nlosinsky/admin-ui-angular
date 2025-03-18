@@ -1,0 +1,17 @@
+@use 'variables' as *;
+
+$toolbarHeight: '85px';
+$containerTopPadding: '30px';
+$containerBottomPadding: '30px';
+$showBottomSectionByHeight: '125px';
+$availablePageHeight: calc(100vh - #{$toolbarHeight} - #{$containerTopPadding} - #{$containerBottomPadding});
+
+.data-grid {
+  height: auto;
+  max-height: calc(#{$availablePageHeight} - #{$showBottomSectionByHeight});
+  min-height: max(250px, calc(#{$availablePageHeight} / 2));
+}
+
+.pending-approvals-section {
+  margin-top: 30px;
+}

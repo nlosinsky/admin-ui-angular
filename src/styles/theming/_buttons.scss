@@ -1,0 +1,93 @@
+@use 'variables' as *;
+@use 'mixins' as mixins;
+
+.dx-button-mode-outlined {
+  &.dx-button-normal {
+    @include mixins.outlined-button-states($light-gray);
+
+    &.grayed {
+      @include mixins.outlined-button-states($light-gray-2, $light-gray, $gray);
+    }
+  }
+}
+
+.dx-button-mode-contained {
+  &.dx-button-default {
+    @include mixins.container-button-states($default);
+  }
+
+  &.dx-button-success {
+    @include mixins.container-button-states($green);
+  }
+}
+
+.dx-button {
+  border-radius: 2px;
+  font-size: 12px;
+  line-height: 1.5em;
+
+  &.button-small {
+    .dx-button-content {
+      padding: 3px 16px;
+    }
+  }
+}
+
+.dx-dropdownbutton-popup-wrapper {
+  &.dx-popup-wrapper {
+    .dx-overlay-content {
+      @include mixins.container-shadow;
+
+      padding: 10px 5px;
+
+      .dx-widget {
+        font-size: 12px;
+        line-height: 1.5em;
+      }
+
+      .dx-item {
+        &.dx-state-hover,
+        &.dx-state-focused {
+          color: $black;
+          background-color: $light-gray;
+        }
+
+        &.dx-state-active {
+          color: $black;
+          background-color: darken($light-gray, 9%);
+        }
+      }
+    }
+  }
+}
+
+.dx-dropdownbutton {
+  &.actions-dropdown-btn {
+    .dx-button {
+      border-color: rgba($default, 1);
+      border-radius: 2px;
+      width: 32px;
+      height: 32px;
+
+      &.dx-state-disabled {
+        border-color: rgba($default, 0.36);
+      }
+    }
+
+    .dx-icon {
+      height: 12px;
+    }
+  }
+
+  &.h-34 {
+    .dx-button-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dx-icon-menu {
+      height: auto;
+    }
+  }
+}

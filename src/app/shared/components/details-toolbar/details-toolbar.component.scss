@@ -1,0 +1,43 @@
+@use 'variables' as *;
+
+:host {
+  height: 96px;
+  border-bottom: 1px solid $light-gray;
+  display: flex;
+  align-items: center;
+}
+
+.back-btn {
+  border: none;
+  width: 46px;
+  height: 100%;
+  border-radius: 0;
+  border-right: 1px solid $light-gray;
+}
+
+.details-toolbar-content {
+  padding: 0 32px 0 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.details-toolbar-info {
+  display: flex;
+}
+
+.details-toolbar-logo {
+  margin-right: 14px;
+  width: 48px;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.details-toolbar-title {
+  font-size: 17px;
+  line-height: 1.5em;
+  margin-top: 0;
+}

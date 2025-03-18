@@ -1,0 +1,57 @@
+@use 'variables' as *;
+
+.dx-tabs {
+  border: none;
+  border-bottom: 1px solid $light-gray;
+  line-height: 1.5em;
+  padding: 0 16px;
+
+  .dx-tabs-wrapper {
+    display: flex;
+  }
+
+  .dx-tab {
+    background: none;
+    padding: 0;
+    border: none;
+
+    &.dx-tab-selected {
+      &::after {
+        display: none;
+      }
+    }
+
+    .dx-tab-content {
+      outline: none;
+
+      &:hover {
+        color: $default;
+      }
+
+      &.active {
+        color: $default;
+        border-bottom: 1px solid $default;
+        margin-bottom: -1px;
+
+        &::after {
+          content: '';
+          pointer-events: none;
+          position: absolute;
+          z-index: 1;
+          top: auto;
+          bottom: 0;
+          right: 0;
+          left: 0;
+          border: none;
+          // todo: think about applying it the the table spinner
+          background: linear-gradient(180deg, rgba(105, 187, 232, 0%) 0%, rgba(105, 187, 232, 12%) 100%);
+          height: 12px;
+        }
+      }
+
+      .dx-tab-text {
+        padding: 16px;
+      }
+    }
+  }
+}

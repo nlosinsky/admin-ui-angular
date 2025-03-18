@@ -1,0 +1,59 @@
+<div class="auth-container">
+  <div class="logo">
+    <img src="/assets/images/logo.svg" alt="Logo" />
+  </div>
+
+  <h1 class="login-text">Login</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onFormSubmit($event)" novalidate>
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Username</div>
+        <div class="table-list-content">
+          <dx-text-box formControlName="username" validationMessageMode="always" mode="email">
+            <dx-validator>
+              <dxi-validation-rule
+                type="custom"
+                [validationCallback]="onValidateRule('username')"
+                [message]="form.get('username')?.errors | errorMessage"
+              >
+              </dxi-validation-rule>
+            </dx-validator>
+          </dx-text-box>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-list-row">
+      <div class="table-list-col">
+        <div class="table-list-label">Password</div>
+        <div class="table-list-content">
+          <dx-text-box formControlName="password" validationMessageMode="always" mode="password">
+            <dx-validator>
+              <dxi-validation-rule
+                type="custom"
+                [validationCallback]="onValidateRule('password')"
+                [message]="form.get('password')?.errors | errorMessage"
+              >
+              </dxi-validation-rule>
+            </dx-validator>
+          </dx-text-box>
+        </div>
+      </div>
+    </div>
+
+    <p *ngIf="errorMessage" class="error-message mb-0">{{ errorMessage }}</p>
+
+    <div class="text-center">
+      <dx-button
+        type="default"
+        stylingMode="contained"
+        text="Login"
+        class="submit-btn"
+        routerLink="/companies"
+        [ngClass]="{ loading: isSubmitting }"
+        [useSubmitBehavior]="true"
+      ></dx-button>
+    </div>
+  </form>
+</div>

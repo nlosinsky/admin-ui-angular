@@ -1,0 +1,22 @@
+<ng-template #spinnerTpl>
+  <app-bg-spinner></app-bg-spinner>
+</ng-template>
+
+<!-- TODO: connect with API-->
+<section *ngIf="currentCompany$ | async as company; else spinnerTpl" class="content-section">
+  <h5 class="section-title">[Markup] Default Billing Contact / Location</h5>
+
+  <div class="table-list-row">
+    <div class="table-list-col">
+      <div class="table-list-label">Contact</div>
+      <div class="table-list-content">
+        <app-avatar-box text="Arlene McCoy" avatar="/assets/images/unknown-face.png"></app-avatar-box>
+      </div>
+    </div>
+
+    <div class="table-list-col">
+      <div class="table-list-label">Location</div>
+      <div class="table-list-content">Washington</div>
+    </div>
+  </div>
+</section>

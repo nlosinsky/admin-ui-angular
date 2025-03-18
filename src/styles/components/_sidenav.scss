@@ -1,0 +1,18 @@
+@use 'variables' as *;
+
+.sidenav-user-btn {
+  .dx-button {
+    text-align: left;
+  }
+
+  .dx-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+  }
+
+  .dx-button-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

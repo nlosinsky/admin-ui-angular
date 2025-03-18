@@ -1,0 +1,55 @@
+@use 'variables' as *;
+
+.dx-texteditor {
+  &.dx-editor-outlined {
+    border-color: $light-gray;
+
+    .dx-placeholder {
+      color: $gray;
+    }
+  }
+
+  &.dx-invalid {
+    border-color: $error;
+  }
+
+  .dx-invalid-message {
+    .dx-invalid-message-content {
+      padding: 0;
+      background: none;
+      color: $error;
+    }
+  }
+}
+
+.dx-textbox,
+.dx-numberbox,
+.dx-checkbox {
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.dx-selectbox {
+  &.dx-skip-gesture-event {
+    .dx-invalid-message {
+      display: none;
+    }
+  }
+
+  .dx-dropdowneditor-input-wrapper {
+    .status-item {
+      min-height: 50px;
+      padding: 7px 0 8px;
+    }
+  }
+
+  &.dx-editor-outlined {
+    .dx-texteditor-label {
+      .dx-label-before,
+      .dx-label,
+      .dx-label-after {
+        border-color: $light-gray;
+      }
+    }
+  }
+}

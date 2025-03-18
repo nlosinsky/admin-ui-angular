@@ -1,0 +1,109 @@
+@use 'variables' as *;
+@use 'mixins' as mixins;
+
+.table-list {
+  overflow-y: auto;
+}
+
+.table-list-row {
+  display: flex;
+  font-size: 12px;
+  min-height: 50px;
+  border-bottom: 1px solid $light-gray;
+}
+
+.section-title {
+  & + .table-list-row,
+  & + .table-list {
+    margin-top: -16px;
+  }
+}
+
+.table-list-col {
+  flex-basis: 0;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+
+  &.width-50 {
+    flex-basis: 50%;
+    flex-grow: 0;
+  }
+}
+
+.table-list-label {
+  color: $gray;
+  flex-basis: 140px;
+}
+
+.table-list-content {
+  flex-grow: 1;
+  display: inline-flex;
+  height: 100%;
+  align-items: center;
+
+  .dx-texteditor {
+    max-width: 320px;
+    height: 100%;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid $light-blue;
+    margin-bottom: -2px;
+
+    &.dx-invalid {
+      border-bottom: 1px solid $error;
+    }
+
+    &.dx-editor-outlined {
+      border-radius: 0;
+    }
+
+    &.dx-state-focused,
+    &.dx-state-active {
+      border-color: $light-blue;
+    }
+
+    &.dx-state-readonly {
+      border-color: $light-gray;
+    }
+
+    .dx-texteditor-input {
+      padding-left: 0;
+      min-height: 50px;
+    }
+
+    .dx-popup-normal {
+      @include mixins.container-shadow;
+
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
+      .dx-list-item {
+        &.dx-state-active {
+          background-color: $default;
+        }
+      }
+    }
+
+    .dx-dropdowneditor-icon {
+      background-color: transparent;
+
+      &::before {
+        left: auto;
+        right: 0;
+      }
+    }
+
+    &.dx-state-hover {
+      .dx-dropdowneditor-icon {
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+.table-list-actions {
+  .dx-button {
+    margin-left: 8px;
+  }
+}

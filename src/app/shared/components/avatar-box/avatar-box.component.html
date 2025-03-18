@@ -1,0 +1,5 @@
+<span class="avatar">
+  <img [src]="avatar" alt="" />
+</span>
+<span *ngIf="!link">{{ text }}</span>
+<a href="#" *ngIf="link" (click)="onClick($event)">{{ text }}</a>

@@ -1,0 +1,30 @@
+.member-avatar {
+  border-radius: 50%;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.table-list-checkboxes-column {
+  flex-direction: column;
+  align-items: start;
+  padding: 15px 0;
+
+  .dx-checkbox {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+.phone-number-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+
+  .table-list-row:first-child {
+    margin-right: 15px;
+  }
+}

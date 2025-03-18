@@ -1,0 +1,17 @@
+<section *ngIf="currentCompany$ | async as company" class="heading-section">
+  <app-details-toolbar [title]="company.name" [logo]="company.logoUrl" (back)="onReturnBack()">
+    <div toolbar-controls class="toolbar-controls">
+      <ng-container [ngTemplateOutlet]="actionsTemplate"></ng-container>
+    </div>
+  </app-details-toolbar>
+
+  <dx-tabs [dataSource]="tabs" itemTemplate="tabTemplate">
+    <div *dxTemplate="let item of 'tabTemplate'" [routerLink]="item.route" routerLinkActive="active">
+      <span class="dx-tab-text" (click)="onSelectTab($event, item)">{{ item.text }}</span>
+    </div>
+  </dx-tabs>
+</section>
+
+<div class="container">
+  <router-outlet (activate)="onActivateRoute($event)"></router-outlet>
+</div>

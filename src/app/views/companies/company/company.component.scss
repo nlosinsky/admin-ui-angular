@@ -1,0 +1,14 @@
+$toolbarHeight: '155px';
+$containerTopPadding: '30px';
+
+.heading-section {
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  left: 0;
+  right: 0;
+}
+
+.container {
+  padding-top: calc(#{$toolbarHeight} + #{$containerTopPadding});
+}

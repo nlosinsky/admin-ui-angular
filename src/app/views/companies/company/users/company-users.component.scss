@@ -1,0 +1,20 @@
+$toolbarHeight: '155px';
+$containerTopPadding: '30px';
+$containerBottomPadding: '30px';
+$availablePageHeight: calc(100vh - #{$toolbarHeight} - #{$containerTopPadding} - #{$containerBottomPadding});
+$tableListHeight: max(calc(#{$availablePageHeight} * 0.25), 150px);
+$dataGridHeight: max(calc(#{$availablePageHeight} - #{$tableListHeight} - 150px), 250px);
+
+.add-member-btn {
+  margin-top: 24px;
+}
+
+.table-list {
+  max-height: $tableListHeight;
+  min-height: 150px;
+}
+
+.data-grid {
+  max-height: $dataGridHeight;
+  min-height: 250px;
+}

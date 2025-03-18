@@ -1,0 +1,45 @@
+.dx-button {
+  &.loading {
+    position: relative;
+
+    .dx-button-content {
+      display: flex;
+      justify-content: center;
+      padding-left: 36px;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        background: url('/assets/images/spinner-white.svg') no-repeat center / 100%;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        left: 8px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+
+    &-blue {
+      @extend .loading;
+
+      .dx-button-content {
+        &::before {
+          background-image: url('/assets/images/spinner-blue.svg');
+        }
+      }
+    }
+
+    &.button-small {
+      .dx-button-content {
+        &::before {
+          width: 14px;
+          height: 14px;
+          margin-bottom: 0;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,115 @@
+<div class="container">
+  <app-general-toolbar title="Transactions" subtitle="Find your transaction counts"></app-general-toolbar>
+
+  <section class="content-section">
+    <form [formGroup]="form" class="form-row">
+      <div class="form-item">
+        <span class="text-bold">Start Date</span>
+        <dx-date-box formControlName="startDate" type="date" validationMessageMode="always" [max]="maxStartDate">
+          <dx-validator>
+            <dxi-validation-rule
+              type="custom"
+              [validationCallback]="onValidateRule('startDate')"
+              [message]="form.get('startDate')?.errors | errorMessage"
+            >
+            </dxi-validation-rule>
+          </dx-validator>
+        </dx-date-box>
+      </div>
+
+      <div class="form-item">
+        <span class="text-bold">End Date</span>
+        <dx-date-box formControlName="endDate" type="date" validationMessageMode="always" [max]="maxDate">
+          <dx-validator>
+            <dxi-validation-rule
+              type="custom"
+              [validationCallback]="onValidateRule('endDate')"
+              [message]="form.get('endDate')?.errors | errorMessage"
+            >
+            </dxi-validation-rule>
+          </dx-validator>
+        </dx-date-box>
+      </div>
+
+      <div class="form-item">
+        <span class="text-bold">Company</span>
+        <dx-select-box
+          [dataSource]="companies"
+          [dropDownOptions]="{ container: 'dx-select-box' }"
+          formControlName="companyId"
+          displayExpr="name"
+          valueExpr="id"
+        ></dx-select-box>
+      </div>
+
+      <div class="form-item">
+        <span class="text-bold">User</span>
+        <dx-select-box
+          [dataSource]="companyMembers"
+          [dropDownOptions]="{ container: 'dx-select-box' }"
+          [readOnly]="!companies?.length || !companyMembers?.length"
+          formControlName="userId"
+          displayExpr="fullName"
+          valueExpr="id"
+        ></dx-select-box>
+      </div>
+
+      <div class="form-button">
+        <dx-button
+          text="Search Transactions"
+          type="success"
+          [ngClass]="{ loading: isSubmitting }"
+          (onClick)="onSearch()"
+        ></dx-button>
+      </div>
+    </form>
+
+    <div class="chart-container" id="custom_markup_container">
+      <div class="chart-options-container">
+        <div class="option">
+          <dx-select-box
+            label="Series"
+            [dataSource]="series"
+            [dropDownOptions]="{ container: 'dx-select-box' }"
+            [value]="selectedSeriesValue"
+            (valueChange)="onChangeSeries($event)"
+            valueExpr="value"
+            displayExpr="key"
+          ></dx-select-box>
+        </div>
+
+        <div class="option">
+          <dx-drop-down-button
+            icon="menu"
+            class="h-34"
+            [showArrowIcon]="false"
+            [width]="34"
+            [height]="34"
+            [dropDownOptions]="{ width: 100 }"
+          >
+            <dxi-item [onClick]="onChartExport('PNG')">PNG file</dxi-item>
+            <dxi-item [onClick]="onChartExport('JPEG')">JPEG file</dxi-item>
+            <dxi-item [onClick]="onChartExport('PDF')">PDF file</dxi-item>
+            <dxi-item [onClick]="onChartExport('SVG')">SVG file</dxi-item>
+          </dx-drop-down-button>
+        </div>
+      </div>
+
+      <dx-chart id="chart" [dataSource]="dataSource" [animation]="false">
+        <dxi-series argumentField="date" valueField="count" type="bar" color="#69bbe8">
+          <dxo-aggregation [enabled]="true"></dxo-aggregation>
+        </dxi-series>
+        <dxo-legend [visible]="false"></dxo-legend>
+        <dxo-tooltip [enabled]="true" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+        <dxi-value-axis position="left" [allowDecimals]="false" valueType="numeric">
+          <dxo-title text="Transactions Count"></dxo-title>
+        </dxi-value-axis>
+        <dxo-argument-axis
+          argumentType="datetime"
+          [tickInterval]="tickInterval"
+          [aggregationInterval]="aggregationInterval"
+        ></dxo-argument-axis>
+      </dx-chart>
+    </div>
+  </section>
+</div>

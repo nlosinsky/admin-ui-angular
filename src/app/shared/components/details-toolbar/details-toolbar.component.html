@@ -1,0 +1,18 @@
+<dx-button
+  [focusStateEnabled]="false"
+  (onClick)="onBack()"
+  icon="/assets/images/icons/back-arrow.svg"
+  stylingMode="text"
+  class="back-btn"
+></dx-button>
+
+<div class="details-toolbar-content">
+  <div class="details-toolbar-info">
+    <div *ngIf="logo" class="details-toolbar-logo">
+      <img [src]="logo" alt="" />
+    </div>
+    <h4 class="details-toolbar-title">{{ title }}</h4>
+  </div>
+
+  <ng-content select="[toolbar-controls]"></ng-content>
+</div>

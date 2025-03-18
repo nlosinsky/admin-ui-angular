@@ -1,0 +1,85 @@
+@use 'variables' as *;
+
+$handle-off-bg: rgba(111, 113, 129, 10%);
+
+.dx-switch {
+  width: 42px;
+
+  .dx-switch-container {
+    background-color: $light-gray-3;
+    border-radius: 24px;
+    border-color: $light-gray-2;
+  }
+
+  .dx-switch-off,
+  .dx-switch-on {
+    visibility: hidden;
+  }
+
+  .dx-switch-handle {
+    width: 18px;
+    height: 18px;
+    flex-basis: 18px;
+
+    &::before {
+      border-radius: 50%;
+      background: $handle-off-bg;
+    }
+  }
+
+  &.dx-state-hover,
+  &.dx-state-focused {
+    .dx-switch-container {
+      background-color: $light-gray-3;
+      border-color: darken($light-gray-2, 9%);
+    }
+
+    .dx-switch-handle {
+      &::before {
+        background: $handle-off-bg;
+      }
+    }
+  }
+
+  &.dx-switch-on-value {
+    .dx-switch-container {
+      border-color: $green;
+      background-color: $green;
+    }
+
+    .dx-switch-handle {
+      &::before {
+        background-color: #fff;
+      }
+    }
+
+    &.dx-state-hover,
+    &.dx-state-focused {
+      .dx-switch-container {
+        border-color: darken($green, 9%);
+      }
+
+      .dx-switch-handle {
+        &::before {
+          background-color: #fff;
+        }
+      }
+    }
+  }
+
+  &.dx-state-focused.dx-state-active {
+    .dx-switch-handle {
+      &::before {
+        background: $handle-off-bg;
+      }
+    }
+
+    &.dx-switch-on-value {
+      .dx-switch-handle {
+        &::before {
+          background: #fff;
+        }
+      }
+    }
+  }
+}

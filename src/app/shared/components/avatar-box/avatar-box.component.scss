@@ -1,0 +1,21 @@
+@use 'variables' as *;
+
+:host {
+  display: inline-block;
+  align-items: center;
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  display: inline-block;
+
+  img {
+    width: auto;
+    height: 100%;
+    border-radius: 50%;
+  }
+}

@@ -1,0 +1,18 @@
+@use 'mixins' as mixins;
+@use 'variables' as *;
+
+.dx-popup-title {
+  border: none;
+}
+
+.dx-popup-wrapper {
+  & > .dx-overlay-content {
+    @include mixins.container-shadow;
+
+    border: none;
+
+    &.dx-state-focused {
+      border: none;
+    }
+  }
+}

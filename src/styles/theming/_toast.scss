@@ -1,0 +1,26 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.dx-toast-content {
+  @include container-shadow;
+
+  padding: 12px;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+
+  &.dx-toast-success {
+    background-color: $green;
+  }
+
+  &.dx-toast-error {
+    background-color: $red;
+  }
+
+  .dx-toast-icon {
+    display: none;
+  }
+
+  .dx-toast-message {
+    padding-left: 0;
+  }
+}
