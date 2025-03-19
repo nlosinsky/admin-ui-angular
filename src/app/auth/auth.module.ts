@@ -21,6 +21,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
     DxValidatorModule,
     QuicklinkModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }]
+  // todo
+  // providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }]
 })
 export class AuthModule {}

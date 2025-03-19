@@ -6,7 +6,6 @@ import {
   CompanyFeatures,
   CompanyMember,
   CompanyPendingMember,
-  CompanySummary,
   CompanyUpdateDTO,
   TemporaryCompany,
   User
@@ -24,9 +23,9 @@ export class CompaniesApiService {
 
   constructor(private http: HttpClient) {}
 
-  getCompanies(limit = 100, offset = 0): Observable<CompanySummary[]> {
+  getCompanies(limit = 100, offset = 0): Observable<Company[]> {
     return this.http
-      .get<CompanySummary[]>(`${this.basePath}/companies`, {
+      .get<Company[]>(`${this.basePath}/companies`, {
         params: {
           limit: limit.toString(),
           offset: offset.toString()
@@ -34,7 +33,7 @@ export class CompaniesApiService {
       })
       .pipe(
         map(resp => {
-          return resp.map(item => new CompanySummary(item)).sort((a, b) => a.name.localeCompare(b.name));
+          return resp.map(item => new Company(item)).sort((a, b) => a.name.localeCompare(b.name));
         })
       );
   }

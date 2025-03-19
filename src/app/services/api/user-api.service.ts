@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpError } from '@app/shared/models';
 import { PendingUser, User } from '@app/shared/models/user';
 import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,13 @@ export class UserApiService {
   constructor(private http: HttpClient) {}
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.basePath}/users/current`).pipe(map(user => new User(user)));
+    return this.http.get<User>(`${this.basePath}/users/current`).pipe(
+      map(user => new User(user)),
+    //   todo remove this
+      catchError((error: HttpError) => {
+        return EMPTY;
+      })
+    );
   }
 
   getPendingUsers(params: { offset: number; limit: number }): Observable<PendingUser[]> {

@@ -3,7 +3,7 @@ const imagemin = require('gulp-imagemin');
 const imageminPngQuant = require('imagemin-pngquant');
 const gzip = require('gulp-gzip');
 
-const path = 'dist/admin-ui';
+const path = 'dist/admin-ui-angular';
 const assets = `${path}/assets`;
 
 gulp.task('images', () => {

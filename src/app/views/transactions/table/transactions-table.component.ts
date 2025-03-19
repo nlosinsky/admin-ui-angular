@@ -9,7 +9,7 @@ import {
   ViewChildren
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CompanyMember, CompanySummary } from '@app/shared/models';
+import { CompanyMember, Company } from '@app/shared/models';
 import {
   AggregationIntervalType,
   TickIntervalType,
@@ -43,7 +43,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
 
   selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
   dataSource: TransactionsCount[] = [];
-  companies: CompanySummary[] = [];
+  companies: Company[] = [];
   companyMembers: CompanyMember[] = [{ fullName: 'All', id: '' } as CompanyMember];
   isSubmitting = false;
   form!: FormGroup;

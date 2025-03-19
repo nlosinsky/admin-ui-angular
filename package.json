@@ -1,9 +1,11 @@
 {
-  "name": "admin-ui",
+  "name": "admin-ui-angular",
   "version": "0.8.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port=4300",
+    "start:front": "ng serve --port=4300",
+    "start:server": "npx json-server db.json --port 3001",
+    "start": "npx concurrently \"npm run start:front\" \"npm run start:server\"",
     "build": "ng build",
     "build:dev": "npm run build -- -c development",
     "build:demo": "npm run build -- -c demo",

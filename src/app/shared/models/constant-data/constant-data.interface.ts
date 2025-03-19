@@ -5,10 +5,6 @@ export interface ProductsOfInterest {
   isSelected?: boolean;
 }
 
-export interface ConstantData {
-  ProductsOfInterest: ProductsOfInterest[];
-}
-
 export interface Country {
   name: string;
   countryCallingCodes: string[];

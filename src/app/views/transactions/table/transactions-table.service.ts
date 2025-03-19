@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { CompanyMember, CompanySummary, HttpError } from '@app/shared/models';
+import { CompanyMember, Company, HttpError } from '@app/shared/models';
 import {
   AggregationIntervalType,
   TickIntervalType,
@@ -43,7 +43,7 @@ export class TransactionsTableService {
   getCompanies() {
     return this.companiesService.getCompanies().pipe(
       map(data => {
-        return [{ name: 'All', id: '' } as CompanySummary].concat(data);
+        return [{ name: 'All', id: '' } as Company].concat(data);
       })
     );
   }

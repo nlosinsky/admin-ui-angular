@@ -9,7 +9,8 @@ const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
-    canActivate: [AuthGuard],
+    // todo
+    // canActivate: [AuthGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'companies' },
       {

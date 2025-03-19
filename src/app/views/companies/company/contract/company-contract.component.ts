@@ -89,7 +89,7 @@ export class CompanyContractComponent
       return;
     }
 
-    const obsArr = [];
+    const obsArr: any[] = [];
 
     if (this.isFeaturesChanged) {
       obsArr.push(this.companyStateService.updateCompanyFeatures(this.company.id, this.features));

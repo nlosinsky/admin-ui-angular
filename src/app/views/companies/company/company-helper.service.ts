@@ -22,10 +22,10 @@ export class CompanyHelperService {
       {
         text: 'Accounts',
         route: 'accounts'
-        // }, {
-        //   text: 'Finance',
-        //   route: 'finance',
-        //   allowEdit: false
+      },
+      {
+          text: 'Finance',
+          route: 'finance'
       }
     ];
   }

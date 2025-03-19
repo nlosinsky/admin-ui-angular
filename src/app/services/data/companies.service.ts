@@ -5,7 +5,6 @@ import {
   CompanyFeatures,
   CompanyMember,
   CompanyPendingMember,
-  CompanySummary,
   CompanyUpdateDTO,
   TemporaryCompany,
   User
@@ -20,7 +19,7 @@ import { Observable } from 'rxjs';
 export class CompaniesService {
   constructor(private companiesApiService: CompaniesApiService) {}
 
-  getCompanies(): Observable<CompanySummary[]> {
+  getCompanies(): Observable<Company[]> {
     return this.companiesApiService.getCompanies();
   }
 

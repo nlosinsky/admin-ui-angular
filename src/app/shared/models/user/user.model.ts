@@ -11,10 +11,6 @@ export class User {
   callingCode!: string;
   workPhone!: string;
   accountState!: CompanyMemberAccountStateType;
-  group!: string;
-  preferences!: {
-    ui: unknown;
-  };
   privacySettings!: {
     allowListing: boolean;
   };

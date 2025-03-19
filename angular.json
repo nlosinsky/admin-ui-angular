@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "admin-ui": {
+    "admin-ui-angular": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -31,7 +31,7 @@
               "exceljs",
               "raf"
             ],
-            "outputPath": "dist/admin-ui",
+            "outputPath": "dist/admin-ui-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -133,17 +133,17 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "admin-ui:build"
+            "browserTarget": "admin-ui-angular:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "admin-ui:build:production"
+              "browserTarget": "admin-ui-angular:build:production"
             },
             "demo": {
-              "browserTarget": "admin-ui:build:demo"
+              "browserTarget": "admin-ui-angular:build:demo"
             },
             "development": {
-              "browserTarget": "admin-ui:build:development"
+              "browserTarget": "admin-ui-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -151,7 +151,7 @@
         "extract-i18n": {
           "builder": "@angular-builders/custom-webpack:extract-i18n",
           "options": {
-            "browserTarget": "admin-ui:build"
+            "browserTarget": "admin-ui-angular:build"
           }
         },
         "test": {

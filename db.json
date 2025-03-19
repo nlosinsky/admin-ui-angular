@@ -1,0 +1,530 @@
+{
+  "companies": [
+    {
+      "id": "1",
+      "name": "Company A",
+      "website": "https://companya.com",
+      "streetAddress": "123 Main St",
+      "city": "Metropolis",
+      "state": "NY",
+      "country": "USA",
+      "zipCode": "12345",
+      "logoUrl": "https://companya.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 100
+      },
+      "totals": {
+        "crmAccounts": 10,
+        "users": 12
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2023-01-01T00:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Company B",
+      "website": "https://companyb.com",
+      "streetAddress": "456 Elm St",
+      "city": "Gotham",
+      "state": "CA",
+      "country": "USA",
+      "zipCode": "67890",
+      "logoUrl": "https://companyb.com/logo.png",
+      "companyState": "ARCHIVED",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 0
+      },
+      "totals": {
+        "crmAccounts": 4,
+        "users": 6
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": true,
+        "contractInventory": false,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2023-02-01T00:00:00Z"
+    },
+    {
+      "id": "3",
+      "name": "Company C",
+      "website": "https://companyc.com",
+      "streetAddress": "789 Oak St",
+      "city": "Star City",
+      "state": "TX",
+      "country": "USA",
+      "zipCode": "54321",
+      "logoUrl": "https://companyc.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 150
+      },
+      "totals": {
+        "crmAccounts": 5,
+        "users": 8
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": true,
+        "contractInventory": true,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2023-03-01T00:00:00Z"
+    },
+    {
+      "id": "4",
+      "name": "Company D",
+      "website": "https://companyd.com",
+      "streetAddress": "101 Pine St",
+      "city": "Central City",
+      "state": "FL",
+      "country": "USA",
+      "zipCode": "98765",
+      "logoUrl": "https://companyd.com/logo.png",
+      "companyState": "ARCHIVED",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 0
+      },
+      "totals": {
+        "crmAccounts": 7,
+        "users": 10
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2023-04-01T00:00:00Z"
+    },
+    {
+      "id": "5",
+      "name": "Company E",
+      "website": "https://companye.com",
+      "streetAddress": "202 Birch St",
+      "city": "Coast City",
+      "state": "WA",
+      "country": "USA",
+      "zipCode": "11223",
+      "logoUrl": "https://companye.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 200
+      },
+      "totals": {
+        "crmAccounts": 8,
+        "users": 14
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": true,
+        "contractInventory": false,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2023-05-01T00:00:00Z"
+    },
+    {
+      "id": "6",
+      "name": "Company F",
+      "website": "https://companyf.com",
+      "streetAddress": "303 Cedar St",
+      "city": "Emerald City",
+      "state": "OR",
+      "country": "USA",
+      "zipCode": "33445",
+      "logoUrl": "https://companyf.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 250
+      },
+      "totals": {
+        "crmAccounts": 6,
+        "users": 9
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2023-06-01T00:00:00Z"
+    },
+    {
+      "id": "7",
+      "name": "Company G",
+      "website": "https://companyg.com",
+      "streetAddress": "404 Maple St",
+      "city": "Opal City",
+      "state": "NV",
+      "country": "USA",
+      "zipCode": "55667",
+      "logoUrl": "https://companyg.com/logo.png",
+      "companyState": "ARCHIVED",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 0
+      },
+      "totals": {
+        "crmAccounts": 3,
+        "users": 5
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": true,
+        "contractInventory": false,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2023-07-01T00:00:00Z"
+    },
+    {
+      "id": "8",
+      "name": "Company H",
+      "website": "https://companyh.com",
+      "streetAddress": "505 Walnut St",
+      "city": "Ivory City",
+      "state": "AZ",
+      "country": "USA",
+      "zipCode": "77889",
+      "logoUrl": "https://companyh.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 300
+      },
+      "totals": {
+        "crmAccounts": 9,
+        "users": 13
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": true,
+        "contractInventory": true,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2023-08-01T00:00:00Z"
+    },
+    {
+      "id": "9",
+      "name": "Company I",
+      "website": "https://companyi.com",
+      "streetAddress": "606 Chestnut St",
+      "city": "Ruby City",
+      "state": "NM",
+      "country": "USA",
+      "zipCode": "99000",
+      "logoUrl": "https://companyi.com/logo.png",
+      "companyState": "ARCHIVED",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 0
+      },
+      "totals": {
+        "crmAccounts": 2,
+        "users": 4
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2023-09-01T00:00:00Z"
+    },
+    {
+      "id": "10",
+      "name": "Company J",
+      "website": "https://companyj.com",
+      "streetAddress": "707 Spruce St",
+      "city": "Sapphire City",
+      "state": "UT",
+      "country": "USA",
+      "zipCode": "11122",
+      "logoUrl": "https://companyj.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 350
+      },
+      "totals": {
+        "crmAccounts": 11,
+        "users": 16
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": true,
+        "contractInventory": false,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2023-10-01T00:00:00Z"
+    }
+  ],
+  "company-members": [
+    {
+      "id": "1",
+      "username": "jdoe",
+      "firstName": "John",
+      "lastName": "Doe",
+      "profilePictureUrl": "https://example.com/jdoe.png",
+      "fullName": "John Doe",
+      "accountState": "APPROVED"
+    },
+    {
+      "id": "2",
+      "username": "asmith",
+      "firstName": "Alice",
+      "lastName": "Smith",
+      "profilePictureUrl": "https://example.com/asmith.png",
+      "fullName": "Alice Smith",
+      "accountState": "WAIT_APPROVAL"
+    },
+    {
+      "id": "3",
+      "username": "bwayne",
+      "firstName": "Bruce",
+      "lastName": "Wayne",
+      "profilePictureUrl": "https://example.com/bwayne.png",
+      "fullName": "Bruce Wayne",
+      "accountState": "NOT_ACTIVE"
+    },
+    {
+      "id": "4",
+      "username": "ckent",
+      "firstName": "Clark",
+      "lastName": "Kent",
+      "profilePictureUrl": "https://example.com/ckent.png",
+      "fullName": "Clark Kent",
+      "accountState": "HOLD"
+    },
+    {
+      "id": "5",
+      "username": "dprince",
+      "firstName": "Diana",
+      "lastName": "Prince",
+      "profilePictureUrl": "https://example.com/dprince.png",
+      "fullName": "Diana Prince",
+      "accountState": "UPDATE_REQUIRED"
+    },
+    {
+      "id": "6",
+      "username": "pparker",
+      "firstName": "Peter",
+      "lastName": "Parker",
+      "profilePictureUrl": "https://example.com/pparker.png",
+      "fullName": "Peter Parker",
+      "accountState": "APPROVED"
+    },
+    {
+      "id": "7",
+      "username": "tstark",
+      "firstName": "Tony",
+      "lastName": "Stark",
+      "profilePictureUrl": "https://example.com/tstark.png",
+      "fullName": "Tony Stark",
+      "accountState": "WAIT_APPROVAL"
+    },
+    {
+      "id": "8",
+      "username": "srogers",
+      "firstName": "Steve",
+      "lastName": "Rogers",
+      "profilePictureUrl": "https://example.com/srogers.png",
+      "fullName": "Steve Rogers",
+      "accountState": "NOT_ACTIVE"
+    },
+    {
+      "id": "9",
+      "username": "nromanoff",
+      "firstName": "Natasha",
+      "lastName": "Romanoff",
+      "profilePictureUrl": "https://example.com/nromanoff.png",
+      "fullName": "Natasha Romanoff",
+      "accountState": "HOLD"
+    },
+    {
+      "id": "10",
+      "username": "bbruce",
+      "firstName": "Bruce",
+      "lastName": "Banner",
+      "profilePictureUrl": "https://example.com/bbruce.png",
+      "fullName": "Bruce Banner",
+      "accountState": "UPDATE_REQUIRED"
+    }
+  ],
+  "company-pending-members": [
+    {
+      "id": "1",
+      "username": "jdoe",
+      "firstName": "John",
+      "lastName": "Doe",
+      "profilePictureUrl": "https://example.com/jdoe.png",
+      "fullName": "John Doe",
+      "title": "Manager",
+      "callingCode": "+1",
+      "workPhone": "123-456-7890"
+    },
+    {
+      "id": "2",
+      "username": "asmith",
+      "firstName": "Alice",
+      "lastName": "Smith",
+      "profilePictureUrl": "https://example.com/asmith.png",
+      "fullName": "Alice Smith",
+      "title": "Director",
+      "callingCode": "+1",
+      "workPhone": "234-567-8901"
+    },
+    {
+      "id": "3",
+      "username": "bwayne",
+      "firstName": "Bruce",
+      "lastName": "Wayne",
+      "profilePictureUrl": "https://example.com/bwayne.png",
+      "fullName": "Bruce Wayne",
+      "title": "CEO",
+      "callingCode": "+1",
+      "workPhone": "345-678-9012"
+    },
+    {
+      "id": "4",
+      "username": "ckent",
+      "firstName": "Clark",
+      "lastName": "Kent",
+      "profilePictureUrl": "https://example.com/ckent.png",
+      "fullName": "Clark Kent",
+      "title": "Reporter",
+      "callingCode": "+1",
+      "workPhone": "456-789-0123"
+    },
+    {
+      "id": "5",
+      "username": "dprince",
+      "firstName": "Diana",
+      "lastName": "Prince",
+      "profilePictureUrl": "https://example.com/dprince.png",
+      "fullName": "Diana Prince",
+      "title": "Ambassador",
+      "callingCode": "+1",
+      "workPhone": "567-890-1234"
+    },
+    {
+      "id": "6",
+      "username": "pparker",
+      "firstName": "Peter",
+      "lastName": "Parker",
+      "profilePictureUrl": "https://example.com/pparker.png",
+      "fullName": "Peter Parker",
+      "title": "Photographer",
+      "callingCode": "+1",
+      "workPhone": "678-901-2345"
+    },
+    {
+      "id": "7",
+      "username": "tstark",
+      "firstName": "Tony",
+      "lastName": "Stark",
+      "profilePictureUrl": "https://example.com/tstark.png",
+      "fullName": "Tony Stark",
+      "title": "Engineer",
+      "callingCode": "+1",
+      "workPhone": "789-012-3456"
+    },
+    {
+      "id": "8",
+      "username": "srogers",
+      "firstName": "Steve",
+      "lastName": "Rogers",
+      "profilePictureUrl": "https://example.com/srogers.png",
+      "fullName": "Steve Rogers",
+      "title": "Soldier",
+      "callingCode": "+1",
+      "workPhone": "890-123-4567"
+    },
+    {
+      "id": "9",
+      "username": "nromanoff",
+      "firstName": "Natasha",
+      "lastName": "Romanoff",
+      "profilePictureUrl": "https://example.com/nromanoff.png",
+      "fullName": "Natasha Romanoff",
+      "title": "Spy",
+      "callingCode": "+1",
+      "workPhone": "901-234-5678"
+    },
+    {
+      "id": "10",
+      "username": "bbruce",
+      "firstName": "Bruce",
+      "lastName": "Banner",
+      "profilePictureUrl": "https://example.com/bbruce.png",
+      "fullName": "Bruce Banner",
+      "title": "Scientist",
+      "callingCode": "+1",
+      "workPhone": "012-345-6789"
+    }
+  ],
+  "temporary-companies": [
+    {
+      "id": "1",
+      "name": "Temporary Company A"
+    },
+    {
+      "id": "2",
+      "name": "Temporary Company B"
+    },
+    {
+      "id": "3",
+      "name": "Temporary Company C"
+    },
+    {
+      "id": "4",
+      "name": "Temporary Company D"
+    },
+    {
+      "id": "5",
+      "name": "Temporary Company E"
+    },
+    {
+      "id": "6",
+      "name": "Temporary Company F"
+    },
+    {
+      "id": "7",
+      "name": "Temporary Company G"
+    },
+    {
+      "id": "8",
+      "name": "Temporary Company H"
+    },
+    {
+      "id": "9",
+      "name": "Temporary Company I"
+    },
+    {
+      "id": "10",
+      "name": "Temporary Company J"
+    }
+  ]
+}

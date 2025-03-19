@@ -23,11 +23,11 @@ const routes: Routes = [
       {
         path: 'accounts',
         loadChildren: () => import('./accounts/company-accounts.module').then(m => m.CompanyAccountsModule)
-      }
-      // {
-      //   path: 'finance',
-      //   loadChildren: () => import('./finance/company-finance.module').then(m => m.CompanyFinanceModule)
-      // },
+      },
+      {
+        path: 'finance',
+        loadChildren: () => import('./finance/company-finance.module').then(m => m.CompanyFinanceModule)
+      },
     ]
   }
 ];

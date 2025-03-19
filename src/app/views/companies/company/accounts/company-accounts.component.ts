@@ -92,7 +92,6 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
         takeUntil(this.ngUnsub)
       )
       .subscribe(accounts => {
-        // todo: implement pagination
         this.accounts = accounts;
       });
   }

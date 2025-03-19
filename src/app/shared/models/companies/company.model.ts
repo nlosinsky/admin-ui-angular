@@ -1,15 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import { CompanyContract, CompanyFeatures } from '@app/shared/models';
-import {
-  AutoInvoicingMethodType,
-  CompanyContractType,
-  CompanyMemberAccountStateType,
-  CompanyStateType,
-  FiscalYearStartType,
-  InventoryMgmtSystemType,
-  RevenueRecognitionMethodType,
-  SelectionCriteriaType
-} from '@app/shared/models/companies/company.enum';
+import { CompanyMemberAccountStateType, CompanyStateType } from '@app/shared/models/companies/company.enum';
 
 abstract class Member {
   id!: string;
@@ -64,24 +55,6 @@ export class CompanyMember extends Member {
   }
 }
 
-export class CompanySummary {
-  id!: string;
-  name!: string;
-  contract!: {
-    type: CompanyContractType;
-    basisPoints: number;
-  };
-  totals!: {
-    crmAccounts: number;
-    users: number;
-  };
-  createdAt!: string;
-
-  constructor(input: Partial<CompanySummary>) {
-    Object.assign(this, input);
-  }
-}
-
 export class TemporaryCompany {
   id!: string;
   name!: string;
@@ -102,42 +75,13 @@ export class Company {
   zipCode!: string;
   logoUrl!: string;
   companyState!: CompanyStateType;
-  accountingPractices!: {
-    inventoryMgmtSystem: InventoryMgmtSystemType;
-    fiscalYearStart: FiscalYearStartType;
-    revenueRecognitionMethod: RevenueRecognitionMethodType;
-    autoInvoicingMethod: AutoInvoicingMethodType;
-    defaultBillToContact: string;
-    defaultBillToLocation: string;
-    defaultAccounts: {
-      accountsPayable: number;
-      accountsReceivable: number;
-      cogsFees: number;
-      cogsOther: number;
-      cogsShipping: number;
-      expense: number;
-      inventoryInTransit: number;
-      inventoryOnConsignment: number;
-      inventoryOnHand: number;
-      inventoryOnOrder: number;
-      inventoryRawMaterials: number;
-      retainedEarnings: number;
-      revenue: number;
-      taxExpense: number;
-    };
-  };
-  privacySettings!: {
-    allowListing: boolean;
-    linkedCompanies: string[];
-  };
-  salesPractices!: {
-    selectionCriteria: SelectionCriteriaType;
-  };
   contract!: CompanyContract;
   features!: CompanyFeatures;
-  credentials: unknown;
   createdAt!: string;
-  updatedAt!: string;
+  totals!: {
+    crmAccounts: number;
+    users: number;
+  };
 
   constructor(input: Partial<Company>) {
     Object.assign(this, input);
