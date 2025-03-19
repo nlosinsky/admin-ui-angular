@@ -6,12 +6,11 @@ const routes: Routes = [
   {
     path: '',
     component: CompaniesTableComponent
+  },
+  {
+    path: ':companyId',
+    loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
   }
-  // todo
-  // {
-  //   path: ':companyId',
-  //   loadChildren: () => import('./company/company.module').then(m => m.CompanyModule)
-  // }
 ];
 
 @NgModule({

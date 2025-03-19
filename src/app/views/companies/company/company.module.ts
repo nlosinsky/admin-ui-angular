@@ -11,7 +11,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
   declarations: [CompanyComponent],
   imports: [
     CommonModule,
-    // CompanyRoutingModule,
+    CompanyRoutingModule,
     DetailsToolbarModule,
     DxDropDownButtonModule,
     DxTabsModule,

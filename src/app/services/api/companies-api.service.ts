@@ -55,7 +55,6 @@ export class CompaniesApiService {
     );
   }
 
-  //  todo
   getCompany(id: string): Observable<Company> {
     return this.http.get<Company>(`${this.basePath}/companies/${id}`).pipe(map(resp => new Company(resp)));
   }
@@ -117,7 +116,6 @@ export class CompaniesApiService {
     return this.http.patch<CompanyContract>(`${this.basePath}/companies/${id}/contract`, contract);
   }
 
-  //  todo
   updateCompany(id: string, data: CompanyUpdateDTO): Observable<Company> {
     return this.http.patch<Company>(`${this.basePath}/companies/${id}`, data).pipe(map(resp => new Company(resp)));
   }

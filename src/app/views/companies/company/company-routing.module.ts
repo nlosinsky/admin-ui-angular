@@ -12,22 +12,22 @@ const routes: Routes = [
         path: 'information',
         loadChildren: () => import('./information/company-information.module').then(m => m.CompanyInformationModule)
       },
-      {
-        path: 'users',
-        loadChildren: () => import('./users/company-users.module').then(m => m.CompanyUsersModule)
-      },
-      {
-        path: 'contract',
-        loadChildren: () => import('./contract/company-contract.module').then(m => m.CompanyContractModule)
-      },
-      {
-        path: 'accounts',
-        loadChildren: () => import('./accounts/company-accounts.module').then(m => m.CompanyAccountsModule)
-      },
-      {
-        path: 'finance',
-        loadChildren: () => import('./finance/company-finance.module').then(m => m.CompanyFinanceModule)
-      },
+      // {
+      //   path: 'users',
+      //   loadChildren: () => import('./users/company-users.module').then(m => m.CompanyUsersModule)
+      // },
+      // {
+      //   path: 'contract',
+      //   loadChildren: () => import('./contract/company-contract.module').then(m => m.CompanyContractModule)
+      // },
+      // {
+      //   path: 'accounts',
+      //   loadChildren: () => import('./accounts/company-accounts.module').then(m => m.CompanyAccountsModule)
+      // },
+      // {
+      //   path: 'finance',
+      //   loadChildren: () => import('./finance/company-finance.module').then(m => m.CompanyFinanceModule)
+      // },
     ]
   }
 ];

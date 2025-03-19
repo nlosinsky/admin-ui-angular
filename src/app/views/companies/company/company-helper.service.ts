@@ -11,22 +11,22 @@ export class CompanyHelperService {
         text: 'Information',
         route: 'information'
       },
-      {
-        text: 'Users',
-        route: 'users'
-      },
-      {
-        text: 'Contract',
-        route: 'contract'
-      },
-      {
-        text: 'Accounts',
-        route: 'accounts'
-      },
-      {
-          text: 'Finance',
-          route: 'finance'
-      }
+      // {
+      //   text: 'Users',
+      //   route: 'users'
+      // },
+      // {
+      //   text: 'Contract',
+      //   route: 'contract'
+      // },
+      // {
+      //   text: 'Accounts',
+      //   route: 'accounts'
+      // },
+      // {
+      //     text: 'Finance',
+      //     route: 'finance'
+      // }
     ];
   }
 
