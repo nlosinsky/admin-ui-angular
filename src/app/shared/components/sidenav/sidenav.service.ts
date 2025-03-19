@@ -32,10 +32,10 @@ export class SidenavService {
         route: 'companies',
         label: 'Customer Management'
       },
-      // {
-      //   route: 'usage',
-      //   label: 'Usage Data'
-      // },
+      {
+        route: 'usage',
+        label: 'Usage Data'
+      },
       // {
       //   route: 'transactions',
       //   label: 'Transactions'

@@ -16,12 +16,12 @@ const routes: Routes = [
       {
         path: 'companies',
         loadChildren: () => import('./views/companies/companies.module').then(m => m.CompaniesModule)
-      }
+      },
+      {
+        path: 'usage',
+        loadChildren: () => import('./views/usage/usage.module').then(m => m.UsageModule)
+      },
       // todo
-      // {
-      //   path: 'usage',
-      //   loadChildren: () => import('./views/usage/usage.module').then(m => m.UsageModule)
-      // },
       // {
       //   path: 'transactions',
       //   loadChildren: () => import('./views/transactions/transactions.module').then(m => m.TransactionsModule)
