@@ -66,11 +66,11 @@ export class CompaniesService {
     return this.companiesApiService.updateCompanyMemberAccountState(companyId, memberId, accountState);
   }
 
-  updateCompanyFeatures(id: string, features: CompanyFeatures): Observable<CompanyFeatures> {
+  updateCompanyFeatures(id: string, features: CompanyFeatures): Observable<Company> {
     return this.companiesApiService.updateCompanyFeatures(id, features);
   }
 
-  updateCompanyContract(id: string, contract: CompanyContract): Observable<CompanyContract> {
+  updateCompanyContract(id: string, contract: CompanyContract): Observable<Company> {
     return this.companiesApiService.updateCompanyContract(id, contract);
   }
 

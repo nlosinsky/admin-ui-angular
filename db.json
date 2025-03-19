@@ -3,13 +3,13 @@
     {
       "id": "COMP-1000",
       "name": "Boise Cascade",
-      "website": "https://www.boisecascade.com",
+      "website": "https://bc.com",
       "streetAddress": "4885 Main St",
       "city": "Hoyt",
       "state": "New Brunswick",
       "country": "Canada",
       "zipCode": "00000",
-      "logoUrl": "https://www.boisecascade.com/logo.png",
+      "logoUrl": "https://www.bc.com/wp-content/themes/boise-cascade-2020/assets/images/logos/bc-logo-362-r.png",
       "companyState": "ACTIVE",
       "contract": {
         "type": "BP_ONLY",
@@ -37,7 +37,7 @@
       "state": "Delaware",
       "country": "United States",
       "zipCode": "19975",
-      "logoUrl": "https://www.weyerhaeuser.com/logo.png",
+      "logoUrl": "https://www.weyerhaeuser.com/application/files/5415/7005/5744/WY_Logo-Horizontal-Color.png",
       "companyState": "ACTIVE",
       "contract": {
         "type": "FREE",
@@ -65,7 +65,7 @@
       "state": "Washington",
       "country": "United States",
       "zipCode": "98036",
-      "logoUrl": "https://www.canfor.com/logo.png",
+      "logoUrl": "https://www.canfor.com/img/logo.png",
       "companyState": "PENDING",
       "contract": {
         "type": "FREE",
@@ -93,7 +93,7 @@
       "state": "Ontario",
       "country": "Canada",
       "zipCode": "00000",
-      "logoUrl": "https://www.interfor.com/logo.png",
+      "logoUrl": "",
       "companyState": "ACTIVE",
       "contract": {
         "type": "FREE",
@@ -113,43 +113,15 @@
       }
     },
     {
-      "id": "COMP-1004",
-      "name": "Resolute Forest Products",
-      "website": "https://www.resoluteforestproducts.com",
-      "streetAddress": "8293 Main St",
-      "city": "Obedjiwan",
-      "state": "Quebec",
-      "country": "Canada",
-      "zipCode": "00000",
-      "logoUrl": "https://www.resoluteforestproducts.com/logo.png",
-      "companyState": "ACTIVE",
-      "contract": {
-        "type": "FREE",
-        "basisPoints": 106
-      },
-      "features": {
-        "accounting": true,
-        "advancedReporting": true,
-        "contractInventory": false,
-        "marketData": false,
-        "onlineTransactions": true
-      },
-      "createdAt": "2025-03-19T18:18:09.023483",
-      "totals": {
-        "crmAccounts": 32,
-        "users": 353
-      }
-    },
-    {
       "id": "COMP-1005",
       "name": "Georgia-Pacific",
-      "website": "https://www.georgia-pacific.com",
+      "website": "https://www.gp.com/",
       "streetAddress": "4369 Main St",
       "city": "Elk Mountain",
       "state": "Wyoming",
       "country": "United States",
       "zipCode": "82324",
-      "logoUrl": "https://www.georgia-pacific.com/logo.png",
+      "logoUrl": "https://www.gp.com/_next/static/media/gp-logo.460f4bf9.svg",
       "companyState": "ACTIVE",
       "contract": {
         "type": "BP_ONLY",
@@ -171,13 +143,13 @@
     {
       "id": "COMP-1006",
       "name": "West Fraser Timber",
-      "website": "https://www.westfrasertimber.com",
+      "website": "https://www.westfraser.com/",
       "streetAddress": "5773 Main St",
       "city": "Glace Bay",
       "state": "Nova Scotia",
       "country": "Canada",
       "zipCode": "00000",
-      "logoUrl": "https://www.westfrasertimber.com/logo.png",
+      "logoUrl": "\nhttps://www.westfraser.com/sites/all/themes/westfraser/images/west-fraser-timber-logo.png",
       "companyState": "PENDING",
       "contract": {
         "type": "FREE",
@@ -199,13 +171,13 @@
     {
       "id": "COMP-1007",
       "name": "Rayonier Advanced Materials",
-      "website": "https://www.rayonieradvancedmaterials.com",
+      "website": "https://ryam.com/",
       "streetAddress": "3188 Main St",
       "city": "Hillsborough",
       "state": "New Hampshire",
       "country": "United States",
       "zipCode": "03244",
-      "logoUrl": "https://www.rayonieradvancedmaterials.com/logo.png",
+      "logoUrl": "https://s36001.pcdn.co/wp-content/uploads/2024/02/logo-color.png",
       "companyState": "ACTIVE",
       "contract": {
         "type": "FREE",
@@ -233,7 +205,7 @@
       "state": "District of Columbia",
       "country": "United States",
       "zipCode": "20001",
-      "logoUrl": "https://www.potlatchdeltic.com/logo.png",
+      "logoUrl": "https://pchassets.blob.core.windows.net/icons/PotlatchDeltic-Logo.png",
       "companyState": "PENDING",
       "contract": {
         "type": "BP_ONLY",
@@ -255,13 +227,13 @@
     {
       "id": "COMP-1009",
       "name": "Deltic Timber",
-      "website": "https://www.deltictimber.com",
+      "website": "https://www.potlatchdeltic.com/",
       "streetAddress": "5956 Main St",
       "city": "Bowden",
       "state": "Alberta",
       "country": "Canada",
       "zipCode": "00000",
-      "logoUrl": "https://www.deltictimber.com/logo.png",
+      "logoUrl": "https://pchassets.blob.core.windows.net/icons/PotlatchDeltic-Logo.png",
       "companyState": "PENDING",
       "contract": {
         "type": "BP_ONLY",
@@ -283,13 +255,13 @@
     {
       "id": "COMP-1010",
       "name": "Sierra Pacific Industries",
-      "website": "https://www.sierrapacificindustries.com",
+      "website": "https://www.spi-ind.com/",
       "streetAddress": "1609 Main St",
       "city": "Altamahaw",
       "state": "North Carolina",
       "country": "United States",
       "zipCode": "27202",
-      "logoUrl": "https://www.sierrapacificindustries.com/logo.png",
+      "logoUrl": "https://www.spi-ind.com/images/spi.png",
       "companyState": "ACTIVE",
       "contract": {
         "type": "FREE",
@@ -311,13 +283,13 @@
     {
       "id": "COMP-1011",
       "name": "Hampton Lumber",
-      "website": "https://www.hamptonlumber.com",
+      "website": "https://www.hamptonlumber.com/",
       "streetAddress": "3931 Main St",
       "city": "Richmond",
       "state": "Prince Edward Island",
       "country": "Canada",
       "zipCode": "00000",
-      "logoUrl": "https://www.hamptonlumber.com/logo.png",
+      "logoUrl": "https://www.hamptonlumber.com/wp-content/uploads/2024/08/HML-Primary-Horiz.svg",
       "companyState": "PENDING",
       "contract": {
         "type": "FREE",
@@ -339,13 +311,13 @@
     {
       "id": "COMP-1012",
       "name": "Tolko Industries",
-      "website": "https://www.tolkoindustries.com",
+      "website": "https://tolko.com/",
       "streetAddress": "4077 Main St",
       "city": "South Slocan",
       "state": "British Columbia",
       "country": "Canada",
       "zipCode": "00000",
-      "logoUrl": "https://www.tolkoindustries.com/logo.png",
+      "logoUrl": "https://tolko.com/wp-content/uploads/2018/10/header-logo.png",
       "companyState": "ACTIVE",
       "contract": {
         "type": "FREE",
@@ -367,13 +339,13 @@
     {
       "id": "COMP-1013",
       "name": "Mercer International",
-      "website": "https://www.mercerinternational.com",
+      "website": "https://mercerint.com/",
       "streetAddress": "4996 Main St",
       "city": "Lisieux",
       "state": "Saskatchewan",
       "country": "Canada",
       "zipCode": "00000",
-      "logoUrl": "https://www.mercerinternational.com/logo.png",
+      "logoUrl": "https://mercerint.com/wp-content/themes/mercer/img/logos/mercer-logo.svg",
       "companyState": "PENDING",
       "contract": {
         "type": "BP_ONLY",
@@ -393,43 +365,15 @@
       }
     },
     {
-      "id": "COMP-1014",
-      "name": "Pope Resources",
-      "website": "https://www.poperesources.com",
-      "streetAddress": "8036 Main St",
-      "city": "Scottsburg",
-      "state": "Indiana",
-      "country": "United States",
-      "zipCode": "47170",
-      "logoUrl": "https://www.poperesources.com/logo.png",
-      "companyState": "PENDING",
-      "contract": {
-        "type": "BP_ONLY",
-        "basisPoints": 178
-      },
-      "features": {
-        "accounting": false,
-        "advancedReporting": false,
-        "contractInventory": true,
-        "marketData": false,
-        "onlineTransactions": true
-      },
-      "createdAt": "2025-03-19T18:18:09.023623",
-      "totals": {
-        "crmAccounts": 40,
-        "users": 209
-      }
-    },
-    {
       "id": "COMP-1015",
       "name": "Green Diamond Resource Company",
-      "website": "https://www.greendiamondresourcecompany.com",
+      "website": "https://www.greendiamond.com/",
       "streetAddress": "2269 Main St",
       "city": "Lacombe",
       "state": "Alberta",
       "country": "Canada",
       "zipCode": "00000",
-      "logoUrl": "https://www.greendiamondresourcecompany.com/logo.png",
+      "logoUrl": "https://www.greendiamond.com/_images/global/logo.png",
       "companyState": "PENDING",
       "contract": {
         "type": "BP_ONLY",
@@ -451,13 +395,13 @@
     {
       "id": "COMP-1016",
       "name": "Domtar Corporation",
-      "website": "https://www.domtarcorporation.com",
+      "website": "https://www.domtar.com/",
       "streetAddress": "2602 Main St",
       "city": "Willisville",
       "state": "Arkansas",
       "country": "United States",
       "zipCode": "71864",
-      "logoUrl": "https://www.domtarcorporation.com/logo.png",
+      "logoUrl": "https://www.domtar.com/wp-content/uploads/2024/11/domtar_logo_rgb_green.png",
       "companyState": "ACTIVE",
       "contract": {
         "type": "BP_ONLY",
@@ -477,43 +421,15 @@
       }
     },
     {
-      "id": "COMP-1017",
-      "name": "J.D. Irving Limited",
-      "website": "https://www.j.d.irvinglimited.com",
-      "streetAddress": "7471 Main St",
-      "city": "Innisfail",
-      "state": "Alberta",
-      "country": "Canada",
-      "zipCode": "00000",
-      "logoUrl": "https://www.j.d.irvinglimited.com/logo.png",
-      "companyState": "ACTIVE",
-      "contract": {
-        "type": "FREE",
-        "basisPoints": 78
-      },
-      "features": {
-        "accounting": false,
-        "advancedReporting": false,
-        "contractInventory": false,
-        "marketData": true,
-        "onlineTransactions": false
-      },
-      "createdAt": "2025-03-19T18:18:09.023662",
-      "totals": {
-        "crmAccounts": 33,
-        "users": 287
-      }
-    },
-    {
       "id": "COMP-1018",
       "name": "Stimson Lumber Company",
-      "website": "https://www.stimsonlumbercompany.com",
+      "website": "https://stimsonlumber.com/",
       "streetAddress": "3429 Main St",
       "city": "Adams",
       "state": "North Dakota",
       "country": "United States",
       "zipCode": "58210",
-      "logoUrl": "https://www.stimsonlumbercompany.com/logo.png",
+      "logoUrl": "https://stimsonlumber.com/wp-content/uploads/2024/05/logo-stimson-lumber.svg",
       "companyState": "PENDING",
       "contract": {
         "type": "FREE",
@@ -535,13 +451,13 @@
     {
       "id": "COMP-1019",
       "name": "Biewer Lumber",
-      "website": "https://www.biewerlumber.com",
+      "website": "https://www.biewerlumber.com/",
       "streetAddress": "1010 Main St",
       "city": "Tarboro",
       "state": "North Carolina",
       "country": "United States",
       "zipCode": "27886",
-      "logoUrl": "https://www.biewerlumber.com/logo.png",
+      "logoUrl": "https://www.biewerlumber.com/wp-content/uploads/2021/07/BiewerLumberLogo.png",
       "companyState": "PENDING",
       "contract": {
         "type": "BP_ONLY",

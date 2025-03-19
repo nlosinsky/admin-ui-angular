@@ -15,10 +15,10 @@ export class CompanyHelperService {
       //   text: 'Users',
       //   route: 'users'
       // },
-      // {
-      //   text: 'Contract',
-      //   route: 'contract'
-      // },
+      {
+        text: 'Contract',
+        route: 'contract'
+      },
       // {
       //   text: 'Accounts',
       //   route: 'accounts'

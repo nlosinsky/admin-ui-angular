@@ -11,7 +11,7 @@ import {
 } from '@app/shared/models';
 import { CompanyMemberAccountStateType, CompanyState } from '@app/shared/models/companies/company.enum';
 import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -106,14 +106,13 @@ export class CompaniesApiService {
     );
   }
 
-  //  todo
-  updateCompanyFeatures(id: string, features: CompanyFeatures): Observable<CompanyFeatures> {
-    return this.http.patch<CompanyFeatures>(`${this.basePath}/companies/${id}/features`, features);
+  updateCompanyFeatures(id: string, features: CompanyFeatures): Observable<Company> {
+    return this.http.patch<Company>(`${this.basePath}/companies/${id}`, {features});
   }
 
-  //  todo
-  updateCompanyContract(id: string, contract: CompanyContract): Observable<CompanyContract> {
-    return this.http.patch<CompanyContract>(`${this.basePath}/companies/${id}/contract`, contract);
+  updateCompanyContract(id: string, contract: CompanyContract): Observable<Company> {
+    console.log(contract);
+    return this.http.patch<Company>(`${this.basePath}/companies/${id}`, {contract});
   }
 
   updateCompany(id: string, data: CompanyUpdateDTO): Observable<Company> {

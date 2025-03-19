@@ -16,10 +16,10 @@ const routes: Routes = [
       //   path: 'users',
       //   loadChildren: () => import('./users/company-users.module').then(m => m.CompanyUsersModule)
       // },
-      // {
-      //   path: 'contract',
-      //   loadChildren: () => import('./contract/company-contract.module').then(m => m.CompanyContractModule)
-      // },
+      {
+        path: 'contract',
+        loadChildren: () => import('./contract/company-contract.module').then(m => m.CompanyContractModule)
+      },
       // {
       //   path: 'accounts',
       //   loadChildren: () => import('./accounts/company-accounts.module').then(m => m.CompanyAccountsModule)

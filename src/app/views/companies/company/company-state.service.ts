@@ -59,19 +59,19 @@ export class CompanyStateService {
     return this.companiesService.updateCompany(id, data).pipe(tap(resp => this.setCurrentCompany(resp)));
   }
 
-  updateCompanyFeatures(id: string, featuresPayload: CompanyFeatures): Observable<CompanyFeatures> {
+  updateCompanyFeatures(id: string, featuresPayload: CompanyFeatures): Observable<Company> {
     return this.companiesService.updateCompanyFeatures(id, featuresPayload).pipe(
-      tap(features => {
-        const data = Object.assign({}, this.currentCompany, { features });
+      tap(() => {
+        const data = Object.assign({}, this.currentCompany, { features: featuresPayload });
         this.setCurrentCompany(new Company(data));
       })
     );
   }
 
-  updateCompanyContract(id: string, contractPayload: CompanyContract): Observable<CompanyContract> {
+  updateCompanyContract(id: string, contractPayload: CompanyContract): Observable<Company> {
     return this.companiesService.updateCompanyContract(id, contractPayload).pipe(
-      tap(contract => {
-        const data = Object.assign({}, this.currentCompany, { contract });
+      tap(() => {
+        const data = Object.assign({}, this.currentCompany, { contract: contractPayload });
         this.setCurrentCompany(new Company(data));
       })
     );
