@@ -7,10 +7,11 @@ export type CompanyContractType = 'BP_ONLY' | 'FREE';
 
 export enum CompanyState {
   ACTIVE = 'ACTIVE',
-  ARCHIVED = 'ARCHIVED'
+  ARCHIVED = 'ARCHIVED',
+  PENDING = 'PENDING'
 }
 
-export type CompanyStateType = 'ACTIVE' | 'ARCHIVED';
+export type CompanyStateType = 'ACTIVE' | 'ARCHIVED' | 'PENDING';
 
 export enum CompanyMemberAccountState {
   NOT_ACTIVE = 'NOT_ACTIVE',

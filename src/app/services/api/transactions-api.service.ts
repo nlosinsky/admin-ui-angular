@@ -11,6 +11,7 @@ export class TransactionsApiService {
 
   constructor(private http: HttpClient) {}
 
+  //  todo
   getTransactionsCount(data: TransactionsCountDTO) {
     const params = JSON.parse(JSON.stringify(data)) as { [key: string]: string };
     return this.http.get<TransactionsCount[]>(`${this.basePath}/transactions/count`, { params });

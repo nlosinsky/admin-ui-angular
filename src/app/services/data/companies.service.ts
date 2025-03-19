@@ -6,7 +6,6 @@ import {
   CompanyMember,
   CompanyPendingMember,
   CompanyUpdateDTO,
-  TemporaryCompany,
   User
 } from '@app/shared/models';
 import { CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
@@ -23,7 +22,7 @@ export class CompaniesService {
     return this.companiesApiService.getCompanies();
   }
 
-  getTemporaryCompanies(): Observable<TemporaryCompany[]> {
+  getTemporaryCompanies(): Observable<Company[]> {
     return this.companiesApiService.getTemporaryCompanies();
   }
 

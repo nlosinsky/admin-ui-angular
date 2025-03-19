@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpError } from '@app/shared/models';
 import { PendingUser, User } from '@app/shared/models/user';
 import { environment } from '@env/environment';
 import { EMPTY, Observable } from 'rxjs';
@@ -14,24 +13,32 @@ export class UserApiService {
 
   constructor(private http: HttpClient) {}
 
+  //  todo
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.basePath}/users/current`).pipe(
       map(user => new User(user)),
     //   todo remove this
-      catchError((error: HttpError) => {
+      catchError(() => {
         return EMPTY;
       })
     );
   }
 
-  getPendingUsers(params: { offset: number; limit: number }): Observable<PendingUser[]> {
-    return this.http.get<PendingUser[]>(`${this.basePath}/users/pending`, { params }).pipe(
+  //  todo
+  getPendingUsers(limit = 1000, offset = 0): Observable<PendingUser[]> {
+    return this.http.get<PendingUser[]>(`${this.basePath}/users/pending`, {
+      params: {
+        _limit: limit.toString(),
+        _start: offset.toString()
+      }
+    }).pipe(
       map(users => {
         return users.map(user => new PendingUser(user)).sort((a, b) => a.username.localeCompare(b.username));
       })
     );
   }
 
+  //  todo
   resendUserActivation(userId: string) {
     return this.http.post(`${this.basePath}/users/${userId}/resend-activation`, {});
   }

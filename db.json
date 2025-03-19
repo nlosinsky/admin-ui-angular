@@ -1,247 +1,47 @@
 {
   "companies": [
     {
-      "id": "1",
-      "name": "Company A",
-      "website": "https://companya.com",
-      "streetAddress": "123 Main St",
-      "city": "Metropolis",
-      "state": "NY",
+      "id": "COMP-1000",
+      "name": "Boise Cascade",
+      "website": "https://www.boisecascade.com",
+      "streetAddress": "4885 Main St",
+      "city": "Some City",
+      "state": "Some State",
       "country": "USA",
-      "zipCode": "12345",
-      "logoUrl": "https://companya.com/logo.png",
+      "zipCode": "37623",
+      "logoUrl": "https://www.boisecascade.com/logo.png",
       "companyState": "ACTIVE",
       "contract": {
         "type": "BP_ONLY",
-        "basisPoints": 100
-      },
-      "totals": {
-        "crmAccounts": 10,
-        "users": 12
-      },
-      "features": {
-        "accounting": true,
-        "advancedReporting": false,
-        "contractInventory": true,
-        "marketData": true,
-        "onlineTransactions": false
-      },
-      "createdAt": "2023-01-01T00:00:00Z"
-    },
-    {
-      "id": "2",
-      "name": "Company B",
-      "website": "https://companyb.com",
-      "streetAddress": "456 Elm St",
-      "city": "Gotham",
-      "state": "CA",
-      "country": "USA",
-      "zipCode": "67890",
-      "logoUrl": "https://companyb.com/logo.png",
-      "companyState": "ARCHIVED",
-      "contract": {
-        "type": "FREE",
-        "basisPoints": 0
-      },
-      "totals": {
-        "crmAccounts": 4,
-        "users": 6
-      },
-      "features": {
-        "accounting": false,
-        "advancedReporting": true,
-        "contractInventory": false,
-        "marketData": false,
-        "onlineTransactions": true
-      },
-      "createdAt": "2023-02-01T00:00:00Z"
-    },
-    {
-      "id": "3",
-      "name": "Company C",
-      "website": "https://companyc.com",
-      "streetAddress": "789 Oak St",
-      "city": "Star City",
-      "state": "TX",
-      "country": "USA",
-      "zipCode": "54321",
-      "logoUrl": "https://companyc.com/logo.png",
-      "companyState": "ACTIVE",
-      "contract": {
-        "type": "BP_ONLY",
-        "basisPoints": 150
-      },
-      "totals": {
-        "crmAccounts": 5,
-        "users": 8
-      },
-      "features": {
-        "accounting": true,
-        "advancedReporting": true,
-        "contractInventory": true,
-        "marketData": false,
-        "onlineTransactions": true
-      },
-      "createdAt": "2023-03-01T00:00:00Z"
-    },
-    {
-      "id": "4",
-      "name": "Company D",
-      "website": "https://companyd.com",
-      "streetAddress": "101 Pine St",
-      "city": "Central City",
-      "state": "FL",
-      "country": "USA",
-      "zipCode": "98765",
-      "logoUrl": "https://companyd.com/logo.png",
-      "companyState": "ARCHIVED",
-      "contract": {
-        "type": "FREE",
-        "basisPoints": 0
-      },
-      "totals": {
-        "crmAccounts": 7,
-        "users": 10
+        "basisPoints": 184
       },
       "features": {
         "accounting": false,
         "advancedReporting": false,
-        "contractInventory": true,
-        "marketData": true,
-        "onlineTransactions": false
-      },
-      "createdAt": "2023-04-01T00:00:00Z"
-    },
-    {
-      "id": "5",
-      "name": "Company E",
-      "website": "https://companye.com",
-      "streetAddress": "202 Birch St",
-      "city": "Coast City",
-      "state": "WA",
-      "country": "USA",
-      "zipCode": "11223",
-      "logoUrl": "https://companye.com/logo.png",
-      "companyState": "ACTIVE",
-      "contract": {
-        "type": "BP_ONLY",
-        "basisPoints": 200
-      },
-      "totals": {
-        "crmAccounts": 8,
-        "users": 14
-      },
-      "features": {
-        "accounting": true,
-        "advancedReporting": true,
         "contractInventory": false,
         "marketData": false,
-        "onlineTransactions": true
-      },
-      "createdAt": "2023-05-01T00:00:00Z"
-    },
-    {
-      "id": "6",
-      "name": "Company F",
-      "website": "https://companyf.com",
-      "streetAddress": "303 Cedar St",
-      "city": "Emerald City",
-      "state": "OR",
-      "country": "USA",
-      "zipCode": "33445",
-      "logoUrl": "https://companyf.com/logo.png",
-      "companyState": "ACTIVE",
-      "contract": {
-        "type": "BP_ONLY",
-        "basisPoints": 250
-      },
-      "totals": {
-        "crmAccounts": 6,
-        "users": 9
-      },
-      "features": {
-        "accounting": true,
-        "advancedReporting": false,
-        "contractInventory": true,
-        "marketData": true,
         "onlineTransactions": false
       },
-      "createdAt": "2023-06-01T00:00:00Z"
-    },
-    {
-      "id": "7",
-      "name": "Company G",
-      "website": "https://companyg.com",
-      "streetAddress": "404 Maple St",
-      "city": "Opal City",
-      "state": "NV",
-      "country": "USA",
-      "zipCode": "55667",
-      "logoUrl": "https://companyg.com/logo.png",
-      "companyState": "ARCHIVED",
-      "contract": {
-        "type": "FREE",
-        "basisPoints": 0
-      },
-      "totals": {
-        "crmAccounts": 3,
-        "users": 5
-      },
-      "features": {
-        "accounting": false,
-        "advancedReporting": true,
-        "contractInventory": false,
-        "marketData": false,
-        "onlineTransactions": true
-      },
-      "createdAt": "2023-07-01T00:00:00Z"
-    },
-    {
-      "id": "8",
-      "name": "Company H",
-      "website": "https://companyh.com",
-      "streetAddress": "505 Walnut St",
-      "city": "Ivory City",
-      "state": "AZ",
-      "country": "USA",
-      "zipCode": "77889",
-      "logoUrl": "https://companyh.com/logo.png",
-      "companyState": "ACTIVE",
-      "contract": {
-        "type": "BP_ONLY",
-        "basisPoints": 300
-      },
-      "totals": {
-        "crmAccounts": 9,
-        "users": 13
-      },
-      "features": {
-        "accounting": true,
-        "advancedReporting": true,
-        "contractInventory": true,
-        "marketData": false,
-        "onlineTransactions": true
-      },
-      "createdAt": "2023-08-01T00:00:00Z"
-    },
-    {
-      "id": "9",
-      "name": "Company I",
-      "website": "https://companyi.com",
-      "streetAddress": "606 Chestnut St",
-      "city": "Ruby City",
-      "state": "NM",
-      "country": "USA",
-      "zipCode": "99000",
-      "logoUrl": "https://companyi.com/logo.png",
-      "companyState": "ARCHIVED",
-      "contract": {
-        "type": "FREE",
-        "basisPoints": 0
-      },
+      "createdAt": "2025-03-19T18:18:09.023411",
       "totals": {
         "crmAccounts": 2,
-        "users": 4
+        "users": 340
+      }
+    },
+    {
+      "id": "COMP-1001",
+      "name": "Weyerhaeuser",
+      "website": "https://www.weyerhaeuser.com",
+      "streetAddress": "9037 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "89401",
+      "logoUrl": "https://www.weyerhaeuser.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 96
       },
       "features": {
         "accounting": false,
@@ -250,26 +50,82 @@
         "marketData": true,
         "onlineTransactions": false
       },
-      "createdAt": "2023-09-01T00:00:00Z"
+      "createdAt": "2025-03-19T18:18:09.023437",
+      "totals": {
+        "crmAccounts": 3,
+        "users": 275
+      }
     },
     {
-      "id": "10",
-      "name": "Company J",
-      "website": "https://companyj.com",
-      "streetAddress": "707 Spruce St",
-      "city": "Sapphire City",
-      "state": "UT",
+      "id": "COMP-1002",
+      "name": "Canfor",
+      "website": "https://www.canfor.com",
+      "streetAddress": "3382 Main St",
+      "city": "Some City",
+      "state": "Some State",
       "country": "USA",
-      "zipCode": "11122",
-      "logoUrl": "https://companyj.com/logo.png",
+      "zipCode": "75760",
+      "logoUrl": "https://www.canfor.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 150
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023449",
+      "totals": {
+        "crmAccounts": 12,
+        "users": 202
+      }
+    },
+    {
+      "id": "COMP-1003",
+      "name": "Interfor",
+      "website": "https://www.interfor.com",
+      "streetAddress": "4149 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "80730",
+      "logoUrl": "https://www.interfor.com/logo.png",
       "companyState": "ACTIVE",
       "contract": {
-        "type": "BP_ONLY",
-        "basisPoints": 350
+        "type": "FREE",
+        "basisPoints": 181
       },
+      "features": {
+        "accounting": true,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": true,
+        "onlineTransactions": true
+      },
+      "createdAt": "2025-03-19T18:18:09.023465",
       "totals": {
-        "crmAccounts": 11,
-        "users": 16
+        "crmAccounts": 27,
+        "users": 346
+      }
+    },
+    {
+      "id": "COMP-1004",
+      "name": "Resolute Forest Products",
+      "website": "https://www.resoluteforestproducts.com",
+      "streetAddress": "8293 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "73778",
+      "logoUrl": "https://www.resoluteforestproducts.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 106
       },
       "features": {
         "accounting": true,
@@ -278,7 +134,431 @@
         "marketData": false,
         "onlineTransactions": true
       },
-      "createdAt": "2023-10-01T00:00:00Z"
+      "createdAt": "2025-03-19T18:18:09.023483",
+      "totals": {
+        "crmAccounts": 32,
+        "users": 353
+      }
+    },
+    {
+      "id": "COMP-1005",
+      "name": "Georgia-Pacific",
+      "website": "https://www.georgia-pacific.com",
+      "streetAddress": "4369 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "24684",
+      "logoUrl": "https://www.georgia-pacific.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 142
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": true,
+        "contractInventory": true,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023505",
+      "totals": {
+        "crmAccounts": 20,
+        "users": 28
+      }
+    },
+    {
+      "id": "COMP-1006",
+      "name": "West Fraser Timber",
+      "website": "https://www.westfrasertimber.com",
+      "streetAddress": "5773 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "23288",
+      "logoUrl": "https://www.westfrasertimber.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 86
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": false,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023519",
+      "totals": {
+        "crmAccounts": 16,
+        "users": 131
+      }
+    },
+    {
+      "id": "COMP-1007",
+      "name": "Rayonier Advanced Materials",
+      "website": "https://www.rayonieradvancedmaterials.com",
+      "streetAddress": "3188 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "16244",
+      "logoUrl": "https://www.rayonieradvancedmaterials.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 176
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": false,
+        "contractInventory": false,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2025-03-19T18:18:09.023535",
+      "totals": {
+        "crmAccounts": 49,
+        "users": 318
+      }
+    },
+    {
+      "id": "COMP-1008",
+      "name": "PotlatchDeltic",
+      "website": "https://www.potlatchdeltic.com",
+      "streetAddress": "8082 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "77485",
+      "logoUrl": "https://www.potlatchdeltic.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 62
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": false,
+        "contractInventory": false,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023552",
+      "totals": {
+        "crmAccounts": 47,
+        "users": 439
+      }
+    },
+    {
+      "id": "COMP-1009",
+      "name": "Deltic Timber",
+      "website": "https://www.deltictimber.com",
+      "streetAddress": "5956 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "38649",
+      "logoUrl": "https://www.deltictimber.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 196
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": true,
+        "contractInventory": true,
+        "marketData": false,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023567",
+      "totals": {
+        "crmAccounts": 25,
+        "users": 226
+      }
+    },
+    {
+      "id": "COMP-1010",
+      "name": "Sierra Pacific Industries",
+      "website": "https://www.sierrapacificindustries.com",
+      "streetAddress": "1609 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "98358",
+      "logoUrl": "https://www.sierrapacificindustries.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 179
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": false,
+        "contractInventory": false,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023582",
+      "totals": {
+        "crmAccounts": 39,
+        "users": 149
+      }
+    },
+    {
+      "id": "COMP-1011",
+      "name": "Hampton Lumber",
+      "website": "https://www.hamptonlumber.com",
+      "streetAddress": "3931 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "13952",
+      "logoUrl": "https://www.hamptonlumber.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 165
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": true,
+        "contractInventory": true,
+        "marketData": false,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023595",
+      "totals": {
+        "crmAccounts": 43,
+        "users": 416
+      }
+    },
+    {
+      "id": "COMP-1012",
+      "name": "Tolko Industries",
+      "website": "https://www.tolkoindustries.com",
+      "streetAddress": "4077 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "49142",
+      "logoUrl": "https://www.tolkoindustries.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 78
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023605",
+      "totals": {
+        "crmAccounts": 20,
+        "users": 57
+      }
+    },
+    {
+      "id": "COMP-1013",
+      "name": "Mercer International",
+      "website": "https://www.mercerinternational.com",
+      "streetAddress": "4996 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "14723",
+      "logoUrl": "https://www.mercerinternational.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 199
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": true,
+        "contractInventory": false,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2025-03-19T18:18:09.023614",
+      "totals": {
+        "crmAccounts": 32,
+        "users": 284
+      }
+    },
+    {
+      "id": "COMP-1014",
+      "name": "Pope Resources",
+      "website": "https://www.poperesources.com",
+      "streetAddress": "8036 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "84101",
+      "logoUrl": "https://www.poperesources.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 178
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": false,
+        "contractInventory": true,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2025-03-19T18:18:09.023623",
+      "totals": {
+        "crmAccounts": 40,
+        "users": 209
+      }
+    },
+    {
+      "id": "COMP-1015",
+      "name": "Green Diamond Resource Company",
+      "website": "https://www.greendiamondresourcecompany.com",
+      "streetAddress": "2269 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "76864",
+      "logoUrl": "https://www.greendiamondresourcecompany.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 178
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": false,
+        "contractInventory": false,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023641",
+      "totals": {
+        "crmAccounts": 20,
+        "users": 475
+      }
+    },
+    {
+      "id": "COMP-1016",
+      "name": "Domtar Corporation",
+      "website": "https://www.domtarcorporation.com",
+      "streetAddress": "2602 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "30609",
+      "logoUrl": "https://www.domtarcorporation.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 192
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": true,
+        "contractInventory": false,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2025-03-19T18:18:09.023652",
+      "totals": {
+        "crmAccounts": 17,
+        "users": 292
+      }
+    },
+    {
+      "id": "COMP-1017",
+      "name": "J.D. Irving Limited",
+      "website": "https://www.j.d.irvinglimited.com",
+      "streetAddress": "7471 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "47247",
+      "logoUrl": "https://www.j.d.irvinglimited.com/logo.png",
+      "companyState": "ACTIVE",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 78
+      },
+      "features": {
+        "accounting": false,
+        "advancedReporting": false,
+        "contractInventory": false,
+        "marketData": true,
+        "onlineTransactions": false
+      },
+      "createdAt": "2025-03-19T18:18:09.023662",
+      "totals": {
+        "crmAccounts": 33,
+        "users": 287
+      }
+    },
+    {
+      "id": "COMP-1018",
+      "name": "Stimson Lumber Company",
+      "website": "https://www.stimsonlumbercompany.com",
+      "streetAddress": "3429 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "84887",
+      "logoUrl": "https://www.stimsonlumbercompany.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "FREE",
+        "basisPoints": 107
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": true,
+        "contractInventory": true,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2025-03-19T18:18:09.023671",
+      "totals": {
+        "crmAccounts": 30,
+        "users": 180
+      }
+    },
+    {
+      "id": "COMP-1019",
+      "name": "Biewer Lumber",
+      "website": "https://www.biewerlumber.com",
+      "streetAddress": "1010 Main St",
+      "city": "Some City",
+      "state": "Some State",
+      "country": "USA",
+      "zipCode": "30018",
+      "logoUrl": "https://www.biewerlumber.com/logo.png",
+      "companyState": "PENDING",
+      "contract": {
+        "type": "BP_ONLY",
+        "basisPoints": 190
+      },
+      "features": {
+        "accounting": true,
+        "advancedReporting": false,
+        "contractInventory": false,
+        "marketData": false,
+        "onlineTransactions": true
+      },
+      "createdAt": "2025-03-19T18:18:09.023680",
+      "totals": {
+        "crmAccounts": 10,
+        "users": 106
+      }
     }
   ],
   "company-members": [
@@ -483,48 +763,6 @@
       "title": "Scientist",
       "callingCode": "+1",
       "workPhone": "012-345-6789"
-    }
-  ],
-  "temporary-companies": [
-    {
-      "id": "1",
-      "name": "Temporary Company A"
-    },
-    {
-      "id": "2",
-      "name": "Temporary Company B"
-    },
-    {
-      "id": "3",
-      "name": "Temporary Company C"
-    },
-    {
-      "id": "4",
-      "name": "Temporary Company D"
-    },
-    {
-      "id": "5",
-      "name": "Temporary Company E"
-    },
-    {
-      "id": "6",
-      "name": "Temporary Company F"
-    },
-    {
-      "id": "7",
-      "name": "Temporary Company G"
-    },
-    {
-      "id": "8",
-      "name": "Temporary Company H"
-    },
-    {
-      "id": "9",
-      "name": "Temporary Company I"
-    },
-    {
-      "id": "10",
-      "name": "Temporary Company J"
     }
   ]
 }

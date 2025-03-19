@@ -13,18 +13,21 @@ export class AccountsApiService {
 
   constructor(private http: HttpClient) {}
 
+  //  todo
   getAccounts(companyId: string, limit = 1000, offset = 0): Observable<Account[]> {
     return this.http
       .get<Account[]>(`${this.basePath}/accounts`, {
-        params: {
-          limit: limit.toString(),
-          offset: offset.toString(),
-          companyId: companyId.toString()
-        }
+        // todo
+        // params: {
+        //   limit: limit.toString(),
+        //   offset: offset.toString(),
+        //   companyId: companyId.toString()
+        // }
       })
       .pipe(map(resp => resp.map(item => new Account(item))));
   }
 
+  //  todo
   addAccount(payload: AccountDTO): Observable<Account> {
     return this.http.post<Account>(`${this.basePath}/accounts`, payload).pipe(map(data => new Account(data)));
   }

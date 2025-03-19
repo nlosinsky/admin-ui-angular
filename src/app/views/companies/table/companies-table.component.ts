@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { tableIndicatorSrc } from '@app/shared/constants';
-import { Company, ExportGridExcelCell, HttpError, TemporaryCompany } from '@app/shared/models';
+import { Company, ExportGridExcelCell, HttpError } from '@app/shared/models';
 import { CompanyContractType } from '@app/shared/models/companies/company.enum';
 import { TransformHelper } from '@app/shared/utils/transform-helper';
 import { CompaniesService } from '@services/data/companies.service';
@@ -42,7 +42,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
   @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;
 
   companies!: Company[];
-  temporaryCompanies!: TemporaryCompany[];
+  temporaryCompanies!: Company[];
   approveRequestsSet = new Set<string>();
   declineRequestsSet = new Set<string>();
   isDataLoaded = false;
@@ -161,7 +161,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
     this.searchSubj.next((event.target as HTMLInputElement).value);
   }
 
-  trackByTmpCompany(index: number, company: TemporaryCompany): string {
+  trackByTmpCompany(index: number, company: Company): string {
     return company.id;
   }
 

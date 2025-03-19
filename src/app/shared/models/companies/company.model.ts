@@ -55,15 +55,6 @@ export class CompanyMember extends Member {
   }
 }
 
-export class TemporaryCompany {
-  id!: string;
-  name!: string;
-
-  constructor(input: Partial<TemporaryCompany>) {
-    Object.assign(this, input);
-  }
-}
-
 export class Company {
   id!: string;
   name!: string;

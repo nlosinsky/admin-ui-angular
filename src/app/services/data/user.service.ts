@@ -46,8 +46,8 @@ export class UserService {
     );
   }
 
-  getPendingUsers(offset = 0, limit = 1000) {
-    return this.userApiService.getPendingUsers({ offset, limit });
+  getPendingUsers() {
+    return this.userApiService.getPendingUsers();
   }
 
   resendUserActivation(userId: string) {

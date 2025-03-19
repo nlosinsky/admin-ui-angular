@@ -12,6 +12,7 @@ export class AuthApiService {
 
   constructor(private http: HttpClient) {}
 
+  //  todo
   login({ username, password }: LoginCredentials): Observable<Token> {
     const body = new HttpParams().set('grant_type', 'password').set('username', username).set('password', password);
 

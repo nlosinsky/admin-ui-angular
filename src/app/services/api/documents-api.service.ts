@@ -13,6 +13,7 @@ export class DocumentsApiService {
 
   constructor(private http: HttpClient) {}
 
+  //  todo
   getDocumentsStats(): Observable<DocumentsStat[]> {
     return this.http
       .get<DocumentsStat[]>(`${this.basePath}/documents/stats`)
