@@ -36,10 +36,10 @@ export class SidenavService {
         route: 'usage',
         label: 'Usage Data'
       },
-      // {
-      //   route: 'transactions',
-      //   label: 'Transactions'
-      // },
+      {
+        route: 'transactions',
+        label: 'Transactions'
+      },
       // {
       //   route: 'pending-users',
       //   label: 'Pending Users'

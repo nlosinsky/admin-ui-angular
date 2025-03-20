@@ -60,32 +60,24 @@ export class TransactionsTableService {
 
   getSearchPayload(formValue: TransactionsForm): TransactionsCountDTO {
     const { startDate, endDate, userId, companyId } = formValue;
-    const payload: TransactionsCountDTO = {
+    return {
       startDate: startOfDay(new Date(startDate)),
-      endDate: endOfDay(new Date(endDate))
+      endDate: endOfDay(new Date(endDate)),
+      userId: userId || '',
+      companyId: companyId || ''
     };
-
-    // todo rewrite with deleteEmptyProperties
-    if (userId) {
-      payload.userId = userId;
-    }
-
-    if (companyId) {
-      payload.companyId = companyId;
-    }
-
-    return payload;
   }
 
   private formatItemsResp(items: TransactionsCount[]) {
     if (items.length !== 1) {
       return items;
     }
+
     const item = items[0];
     const date = new Date(item.date);
     const fakeDate = date.getMilliseconds() > 1 ? subMilliseconds(date, 1) : addMilliseconds(date, 1);
 
-    return [item].concat({ count: 0, date: fakeDate.toISOString() });
+    return [item].concat({ count: 0, date: fakeDate.toISOString(), companyId: '', userId: '' });
   }
 
   getTickInterval(value: TransactionsSeries): TickIntervalType {

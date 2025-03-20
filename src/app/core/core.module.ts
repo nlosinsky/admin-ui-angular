@@ -1,7 +1,22 @@
-import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { APP_INITIALIZER, ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { ConstantDataHelperService } from '@services/helpers/constant-data-helper.service';
+import dxDataGrid from 'devextreme/ui/data_grid';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-// eslint-disable-next-line import/no-cycle
 import { throwIfAlreadyLoaded } from './module-import-guard';
+
+export function constantDataResolveFactory(provider: ConstantDataHelperService) {
+  return () => provider.load();
+}
+
+dxDataGrid.defaultOptions({
+  options: {
+    columnChooser: {
+      mode: 'select',
+      title: '',
+      sortOrder: 'asc'
+    }
+  }
+});
 
 @NgModule({
   declarations: [],
@@ -11,7 +26,14 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
-      providers: []
+      providers: [
+        {
+          provide: APP_INITIALIZER,
+          useFactory: constantDataResolveFactory,
+          deps: [ConstantDataHelperService],
+          multi: true
+        }
+      ]
     };
   }
 

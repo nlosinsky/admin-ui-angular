@@ -21,11 +21,11 @@ const routes: Routes = [
         path: 'usage',
         loadChildren: () => import('./views/usage/usage.module').then(m => m.UsageModule)
       },
+      {
+        path: 'transactions',
+        loadChildren: () => import('./views/transactions/transactions.module').then(m => m.TransactionsModule)
+      },
       // todo
-      // {
-      //   path: 'transactions',
-      //   loadChildren: () => import('./views/transactions/transactions.module').then(m => m.TransactionsModule)
-      // },
       // {
       //   path: 'pending-users',
       //   loadChildren: () => import('./views/pending-users/pending-users.module').then(m => m.PendingUsersModule)
