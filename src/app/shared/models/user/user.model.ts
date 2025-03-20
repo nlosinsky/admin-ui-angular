@@ -2,18 +2,14 @@ import { CompanyMemberAccountStateType } from '@app/shared/models/companies/comp
 
 export class User {
   id!: string;
-  username!: string;
+  email!: string;
   firstName!: string;
   lastName!: string;
   profilePictureUrl!: string;
-  productsOfInterestIds!: string[];
   title!: string;
   callingCode!: string;
   workPhone!: string;
   accountState!: CompanyMemberAccountStateType;
-  privacySettings!: {
-    allowListing: boolean;
-  };
   companyId!: string;
   temporaryCompanyId!: string;
   updatedAt!: Date;
@@ -36,7 +32,7 @@ export class User {
     } else if (this.lastName) {
       displayName = this.lastName;
     } else {
-      displayName = this.username;
+      displayName = this.email;
     }
 
     return displayName;
@@ -49,7 +45,7 @@ export class User {
 
 export class PendingUser {
   id!: string;
-  username!: string;
+  email!: string;
   accountState!: CompanyMemberAccountStateType;
 
   constructor(input: Partial<User> = {}) {

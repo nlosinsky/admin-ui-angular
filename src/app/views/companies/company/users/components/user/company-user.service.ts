@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpError, User } from '@app/shared/models';
+import { CompanyMember, HttpError } from '@app/shared/models';
 import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { EMPTY, Observable, of } from 'rxjs';
@@ -11,12 +11,12 @@ import { catchError } from 'rxjs/operators';
 export class CompanyUserService {
   constructor(private companiesService: CompaniesService, private toastService: ToastService) {}
 
-  getData(companyId: string, memberId: string): Observable<User | null> {
-    if (!companyId || !memberId) {
+  getData(memberId: string): Observable<CompanyMember | null> {
+    if (!memberId) {
       return of(null);
     }
 
-    return this.companiesService.getMemberById(companyId, memberId).pipe(
+    return this.companiesService.getMemberById(memberId).pipe(
       catchError((error: HttpError) => {
         this.toastService.showHttpError(error);
         return EMPTY;

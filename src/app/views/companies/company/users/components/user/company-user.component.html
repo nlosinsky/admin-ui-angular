@@ -11,9 +11,7 @@
             <img [src]="member.userAvatar" alt="{{ member.firstName }}'s avatar" />
           </span>
 
-          <div class="flex-col">
-            <!--          todo: add action buttons-->
-          </div>
+          <div class="flex-col"></div>
         </div>
       </div>
 
@@ -35,7 +33,7 @@
         <div class="table-list-row">
           <div class="table-list-col">
             <div class="table-list-label">Email</div>
-            <div class="table-list-content">{{ member.username }}</div>
+            <div class="table-list-content">{{ member.email }}</div>
           </div>
         </div>
 
@@ -58,22 +56,6 @@
             <div class="table-list-col">
               <div class="table-list-label">Phone</div>
               <div class="table-list-content">{{ member.workPhone }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Product Interests</div>
-            <div class="table-list-content table-list-checkboxes-column">
-              <ng-container *ngFor="let item of productsOfInterests">
-                <dx-check-box
-                  [readOnly]="true"
-                  [text]="item.name"
-                  [iconSize]="20"
-                  [value]="item.isSelected"
-                ></dx-check-box>
-              </ng-container>
             </div>
           </div>
         </div>
@@ -105,20 +87,6 @@
                   <dx-text-box [visible]="false"></dx-text-box>
                 </div>
               </dx-select-box>
-            </div>
-          </div>
-        </div>
-
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Privacy Settings</div>
-            <div class="table-list-content">
-              <dx-check-box
-                [readOnly]="true"
-                [value]="!member.privacySettings.allowListing"
-                text="Unlisted Profile"
-                [iconSize]="20"
-              ></dx-check-box>
             </div>
           </div>
         </div>

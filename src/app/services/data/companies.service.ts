@@ -4,8 +4,7 @@ import {
   CompanyContract,
   CompanyFeatures,
   CompanyMember,
-  CompanyUpdateDTO,
-  User
+  CompanyUpdateDTO
 } from '@app/shared/models';
 import { CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
 import { CompaniesApiService } from '@services/api/companies-api.service';
@@ -53,16 +52,15 @@ export class CompaniesService {
     return this.companiesApiService.getMembers(id);
   }
 
-  getMemberById(companyId: string, memberId: string): Observable<User> {
-    return this.companiesApiService.getMemberById(companyId, memberId);
+  getMemberById(memberId: string): Observable<CompanyMember> {
+    return this.companiesApiService.getMemberById(memberId);
   }
 
   updateCompanyMemberAccountState(
-    companyId: string,
     memberId: string,
     accountState: CompanyMemberAccountStateType
   ): Observable<{ accountState: CompanyMemberAccountStateType }> {
-    return this.companiesApiService.updateCompanyMemberAccountState(companyId, memberId, accountState);
+    return this.companiesApiService.updateCompanyMemberAccountState(memberId, accountState);
   }
 
   updateCompanyFeatures(id: string, features: CompanyFeatures): Observable<Company> {

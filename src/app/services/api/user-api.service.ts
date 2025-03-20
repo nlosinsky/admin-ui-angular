@@ -33,7 +33,8 @@ export class UserApiService {
       }
     }).pipe(
       map(users => {
-        return users.map(user => new PendingUser(user)).sort((a, b) => a.username.localeCompare(b.username));
+        return users.map(user => new PendingUser(user))
+          .sort((a, b) => a.email.localeCompare(b.email));
       })
     );
   }

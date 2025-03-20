@@ -8,14 +8,14 @@
   <form [formGroup]="form" (ngSubmit)="onFormSubmit($event)" novalidate>
     <div class="table-list-row">
       <div class="table-list-col">
-        <div class="table-list-label">Username</div>
+        <div class="table-list-label">Email</div>
         <div class="table-list-content">
-          <dx-text-box formControlName="username" validationMessageMode="always" mode="email">
+          <dx-text-box formControlName="email" validationMessageMode="always" mode="email">
             <dx-validator>
               <dxi-validation-rule
                 type="custom"
-                [validationCallback]="onValidateRule('username')"
-                [message]="form.get('username')?.errors | errorMessage"
+                [validationCallback]="onValidateRule('email')"
+                [message]="form.get('email')?.errors | errorMessage"
               >
               </dxi-validation-rule>
             </dx-validator>

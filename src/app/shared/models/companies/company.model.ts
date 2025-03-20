@@ -10,6 +10,10 @@ export class CompanyMember {
   profilePictureUrl!: string;
   fullName: string;
   accountState!: CompanyMemberAccountStateType;
+  companyId!: string;
+  title!: string;
+  callingCode!: string;
+  workPhone!: string;
 
   constructor(input: Partial<CompanyMember>) {
     Object.assign(this, input);

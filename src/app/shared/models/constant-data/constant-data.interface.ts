@@ -1,10 +1,3 @@
-export interface ProductsOfInterest {
-  id: string;
-  name: string;
-  description: string;
-  isSelected?: boolean;
-}
-
 export interface Country {
   name: string;
   countryCallingCodes: string[];

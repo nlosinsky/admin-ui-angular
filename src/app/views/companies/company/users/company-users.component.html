@@ -78,28 +78,24 @@
         ></app-status-item>
       </div>
 
-<!--	    todo-->
-<!--      <dxi-column-->
-<!--        [allowReordering]="false"-->
-<!--        [allowHiding]="false"-->
-<!--        [allowGrouping]="false"-->
-<!--        [width]="48"-->
-<!--        cssClass="actions-column"-->
-<!--        cellTemplate="actionsTemplate"-->
-<!--      ></dxi-column>-->
-<!--      <div *dxTemplate="let item of 'actionsTemplate'">-->
-<!--        <dx-drop-down-button-->
-<!--          icon="/assets/images/icons/overflow.svg"-->
-<!--          [showArrowIcon]="false"-->
-<!--          class="actions-dropdown-btn"-->
-<!--          [dropDownOptions]="{ container: '.actions-dropdown-btn', width: 150 }"-->
-<!--        >-->
-<!--          <dxi-item (click)="onEditMember(item.data)">Edit information</dxi-item>-->
-<!--        </dx-drop-down-button>-->
-<!--      </div>-->
+      <dxi-column
+        [allowReordering]="false"
+        [allowHiding]="false"
+        [allowGrouping]="false"
+        [width]="48"
+        cssClass="actions-column"
+        cellTemplate="actionsTemplate"
+      ></dxi-column>
+      <div *dxTemplate="let item of 'actionsTemplate'">
+        <dx-drop-down-button
+          icon="/assets/images/icons/overflow.svg"
+          [showArrowIcon]="false"
+          class="actions-dropdown-btn"
+          [dropDownOptions]="{ container: '.actions-dropdown-btn', width: 150 }"
+        >
+          <dxi-item (click)="onEditMember(item.data)">Edit information</dxi-item>
+        </dx-drop-down-button>
+      </div>
     </dx-data-grid>
   </section>
-
-  <!--	 todo enable later-->
-  <!--	<a href="#" disabled (click)="onAddNewMember($event)" class="link-btn add-member-btn">Add new member</a>-->
 </ng-container>

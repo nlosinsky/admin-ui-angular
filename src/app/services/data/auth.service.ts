@@ -33,7 +33,7 @@ export class AuthService {
         let errorMessage = '';
 
         if (error?.status === 404) {
-          errorMessage = 'The username you have entered not found.';
+          errorMessage = 'The email you have entered not found.';
         } else if (error?.status === 401) {
           errorMessage = 'The password you have entered is incorrect.';
         } else {

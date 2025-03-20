@@ -119,11 +119,6 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
       });
   }
 
-  onAddNewMember(event: MouseEvent): void {
-    event.preventDefault();
-    //  todo: add implementation
-  }
-
   trackByPending(index: number, member: CompanyMember): string {
     return member.id;
   }

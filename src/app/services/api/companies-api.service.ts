@@ -64,17 +64,15 @@ export class CompaniesApiService {
     return this.getFilteredMembers(companyId);
   }
 
-  //  todo
-  getMemberById(companyId: string, memberId: string) {
+  getMemberById(memberId: string) {
     return this.http
-      .get<User>(`${this.basePath}/companies/${companyId}/members/${memberId}`)
-      .pipe(map(resp => new User(resp)));
+      .get<User>(`${this.basePath}/members/${memberId}`)
+      .pipe(map(resp => new CompanyMember(resp)));
   }
 
-  //  todo
-  updateCompanyMemberAccountState(companyId: string, memberId: string, accountState: CompanyMemberAccountStateType) {
-    return this.http.put<{ accountState: CompanyMemberAccountStateType }>(
-      `${this.basePath}/companies/${companyId}/members/${memberId}/account-state`,
+  updateCompanyMemberAccountState(memberId: string, accountState: CompanyMemberAccountStateType) {
+    return this.http.patch<{ accountState: CompanyMemberAccountStateType }>(
+      `${this.basePath}/members/${memberId}`,
       {accountState}
     );
   }

@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpError, ProductsOfInterest, User } from '@app/shared/models';
+import { CompanyMember, HttpError } from '@app/shared/models';
 import { CompanyMemberAccountState, CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions } from '@app/shared/models/components';
 import { CompaniesService } from '@services/data/companies.service';
-import { ConstantDataHelperService } from '@services/helpers/constant-data-helper.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyUserService } from '@views/companies/company/users/components/user/company-user.service';
 import { EMPTY, Subject } from 'rxjs';
@@ -20,15 +19,12 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
 export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
   form!: FormGroup;
   isDataLoaded = false;
-  member!: User;
+  member!: CompanyMember;
   isSubmitting = false;
   isEditMode = false;
-  productsOfInterests: ProductsOfInterest[] = [];
 
-  private companyId!: string;
   private memberId!: string;
 
-  readonly memberAccountState = CompanyMemberAccountState;
   readonly accountStateList = [
     CompanyMemberAccountState.APPROVED,
     CompanyMemberAccountState.HOLD,
@@ -44,8 +40,7 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
     private cd: ChangeDetectorRef,
     private companyUserService: CompanyUserService,
     private fb: FormBuilder,
-    private toastService: ToastService,
-    private constantDataHelperService: ConstantDataHelperService
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -83,7 +78,7 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
     this.isSubmitting = true;
 
     this.companiesService
-      .updateCompanyMemberAccountState(this.companyId, this.memberId, newAccountState)
+      .updateCompanyMemberAccountState(this.memberId, newAccountState)
       .pipe(
         catchError((error: HttpError) => {
           this.toastService.showHttpError(error);
@@ -120,10 +115,10 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
   }
 
   private loadData() {
-    this.companyId = this.route.snapshot.paramMap.get('companyId') || '';
     this.memberId = this.route.snapshot.paramMap.get('id') || '';
+
     this.companyUserService
-      .getData(this.companyId, this.memberId)
+      .getData(this.memberId)
       .pipe(
         finalize(() => {
           this.isDataLoaded = true;
@@ -138,22 +133,15 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
 
         this.member = member;
         this.initFormData(member);
-        this.initProductsOfInterests();
       });
   }
 
-  private initFormData(data: User): void {
+  private initFormData(data: CompanyMember): void {
     this.form = this.fb.group({ accountState: data.accountState });
   }
 
   private restoreForm(): void {
     const { accountState } = this.member;
     this.form.reset({ accountState });
-  }
-
-  private initProductsOfInterests() {
-    this.productsOfInterests = this.constantDataHelperService.getProductOfInterest().map(item => {
-      return { ...item, isSelected: this.member.productsOfInterestIds.includes(item.id) };
-    });
   }
 }
