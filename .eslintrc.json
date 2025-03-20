@@ -22,7 +22,9 @@
         ],
         "createDefaultProgram": true
       },
-      "plugins": [],
+      "plugins": [
+        "rxjs"
+      ],
       "extends": [
         "eslint:recommended",
         "plugin:import/recommended",
@@ -30,6 +32,7 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:@angular-eslint/recommended",
+//        "plugin:rxjs/recommended",
         "plugin:sonarjs/recommended",
         "plugin:prettier/recommended"
       ],
@@ -58,7 +61,10 @@
           }
         ],
         "import/no-unresolved": "error",
-        "max-classes-per-file": ["error", 2],
+        "max-classes-per-file": [
+          "error",
+          2
+        ],
         "prettier/prettier": [
           "error",
           {
@@ -69,6 +75,12 @@
             "arrowParens": "avoid",
             "trailingComma": "none"
           }
+//        ],
+//        "newline-per-chained-call": [
+//          "error",
+//          {
+//            "ignoreChainWithDepth": 2
+//          }
         ]
       }
     },
@@ -105,7 +117,9 @@
   ],
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts"]
+      "@typescript-eslint/parser": [
+        ".ts"
+      ]
     },
     "import/resolver": {
       "typescript": {
