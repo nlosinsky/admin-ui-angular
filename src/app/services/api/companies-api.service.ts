@@ -16,15 +16,14 @@ import { map } from 'rxjs/operators';
 export class CompaniesApiService {
   private readonly basePath = environment.baseAdminUrl;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getCompanies(): Observable<Company[]> {
-    return this.getCompaniesByState(CompanyState.ACTIVE)
+    return this.getCompaniesByState(CompanyState.ACTIVE);
   }
 
   getTemporaryCompanies(): Observable<Company[]> {
-    return this.getCompaniesByState(CompanyState.PENDING)
+    return this.getCompaniesByState(CompanyState.PENDING);
   }
 
   approveTemporaryCompany(id: string): Observable<unknown> {
@@ -52,8 +51,7 @@ export class CompaniesApiService {
   }
 
   getCompany(id: string): Observable<Company> {
-    return this.http.get<Company>(`${this.basePath}/companies/${id}`)
-      .pipe(map(resp => new Company(resp)));
+    return this.http.get<Company>(`${this.basePath}/companies/${id}`).pipe(map(resp => new Company(resp)));
   }
 
   getPendingMembers(companyId: string): Observable<CompanyMember[]> {
@@ -65,38 +63,34 @@ export class CompaniesApiService {
   }
 
   getMemberById(memberId: string) {
-    return this.http
-      .get<User>(`${this.basePath}/members/${memberId}`)
-      .pipe(map(resp => new CompanyMember(resp)));
+    return this.http.get<User>(`${this.basePath}/members/${memberId}`).pipe(map(resp => new CompanyMember(resp)));
   }
 
   updateCompanyMemberAccountState(memberId: string, accountState: CompanyMemberAccountStateType) {
-    return this.http.patch<{ accountState: CompanyMemberAccountStateType }>(
-      `${this.basePath}/members/${memberId}`,
-      {accountState}
-    );
+    return this.http.patch<{ accountState: CompanyMemberAccountStateType }>(`${this.basePath}/members/${memberId}`, {
+      accountState
+    });
   }
 
   updateCompanyFeatures(id: string, features: CompanyFeatures): Observable<Company> {
-    return this.http.patch<Company>(`${this.basePath}/companies/${id}`, {features});
+    return this.http.patch<Company>(`${this.basePath}/companies/${id}`, { features });
   }
 
   updateCompanyContract(id: string, contract: CompanyContract): Observable<Company> {
-    console.log(contract);
-    return this.http.patch<Company>(`${this.basePath}/companies/${id}`, {contract});
+    return this.http.patch<Company>(`${this.basePath}/companies/${id}`, { contract });
   }
 
   updateCompany(id: string, data: CompanyUpdateDTO): Observable<Company> {
     return this.http.patch<Company>(`${this.basePath}/companies/${id}`, data).pipe(map(resp => new Company(resp)));
   }
 
-  private getFilteredMembers(companyId: string, pending: boolean = false, limit = 100, offset = 0): Observable<CompanyMember[]> {
+  private getFilteredMembers(companyId: string, pending = false, limit = 100, offset = 0): Observable<CompanyMember[]> {
     const params = {
       _limit: limit.toString(),
       _start: offset.toString(),
       companyId,
       accountState_ne: CompanyMemberAccountState.DECLINED
-    }
+    };
 
     if (pending) {
       params['accountState'] = CompanyMemberAccountState.WAIT_APPROVAL;
@@ -104,14 +98,11 @@ export class CompaniesApiService {
       params['accountState_ne'] = CompanyMemberAccountState.DECLINED;
     }
 
-    return this.http
-      .get<CompanyMember[]>(`${this.basePath}/members`, {params})
-      .pipe(
-        map((resp: CompanyMember[]) => {
-          return resp.map(item => new CompanyMember(item))
-            .sort((a, b) => a.fullName.localeCompare(b.fullName));
-        })
-      );
+    return this.http.get<CompanyMember[]>(`${this.basePath}/members`, { params }).pipe(
+      map((resp: CompanyMember[]) => {
+        return resp.map(item => new CompanyMember(item)).sort((a, b) => a.fullName.localeCompare(b.fullName));
+      })
+    );
   }
 
   private getCompaniesByState(state: CompanyState, limit = 100, offset = 0): Observable<Company[]> {

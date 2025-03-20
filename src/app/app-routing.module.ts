@@ -24,7 +24,7 @@ const routes: Routes = [
       {
         path: 'transactions',
         loadChildren: () => import('./views/transactions/transactions.module').then(m => m.TransactionsModule)
-      },
+      }
       // todo
       // {
       //   path: 'pending-users',

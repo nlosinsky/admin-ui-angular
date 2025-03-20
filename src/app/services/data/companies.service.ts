@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Company,
-  CompanyContract,
-  CompanyFeatures,
-  CompanyMember,
-  CompanyUpdateDTO
-} from '@app/shared/models';
+import { Company, CompanyContract, CompanyFeatures, CompanyMember, CompanyUpdateDTO } from '@app/shared/models';
 import { CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
 import { CompaniesApiService } from '@services/api/companies-api.service';
 import { Observable } from 'rxjs';

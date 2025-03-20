@@ -1,0 +1,10 @@
+**/dist
+**/coverage
+**/.vscode
+**/.idea
+**/.github
+**/node_modules
+
+.DS_Store
+
+tmp

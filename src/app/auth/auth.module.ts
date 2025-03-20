@@ -20,7 +20,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
     ErrorMessagePipeModule,
     DxValidatorModule,
     QuicklinkModule
-  ],
+  ]
   // todo
   // providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }]
 })

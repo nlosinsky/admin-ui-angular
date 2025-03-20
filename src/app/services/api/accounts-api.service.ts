@@ -26,8 +26,8 @@ export class AccountsApiService {
   }
 
   addAccount(payload: AccountDTO): Observable<Account> {
-    return this.http.post<Account>(`${this.basePath}/accounts`,
-      {...payload, createdAt: new Date().toISOString()}
-    ).pipe(map(data => new Account(data)));
+    return this.http
+      .post<Account>(`${this.basePath}/accounts`, { ...payload, createdAt: new Date().toISOString() })
+      .pipe(map(data => new Account(data)));
   }
 }

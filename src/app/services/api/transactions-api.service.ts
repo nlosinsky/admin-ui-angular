@@ -25,11 +25,10 @@ export class TransactionsApiService {
       params['userId'] = data.userId;
     }
 
-    return this.http.get<TransactionsCount[]>(`${this.basePath}/transactions`, {params})
-      .pipe(
-        map(resp => {
-          return resp.filter(item => isWithinInterval(new Date(item.date), {start: data.startDate, end: data.endDate}));
-        })
-      )
+    return this.http.get<TransactionsCount[]>(`${this.basePath}/transactions`, { params }).pipe(
+      map(resp => {
+        return resp.filter(item => isWithinInterval(new Date(item.date), { start: data.startDate, end: data.endDate }));
+      })
+    );
   }
 }

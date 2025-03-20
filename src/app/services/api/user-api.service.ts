@@ -17,7 +17,7 @@ export class UserApiService {
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.basePath}/users/current`).pipe(
       map(user => new User(user)),
-    //   todo remove this
+      //   todo remove this
       catchError(() => {
         return EMPTY;
       })
@@ -26,17 +26,18 @@ export class UserApiService {
 
   //  todo
   getPendingUsers(limit = 1000, offset = 0): Observable<PendingUser[]> {
-    return this.http.get<PendingUser[]>(`${this.basePath}/users/pending`, {
-      params: {
-        _limit: limit.toString(),
-        _start: offset.toString()
-      }
-    }).pipe(
-      map(users => {
-        return users.map(user => new PendingUser(user))
-          .sort((a, b) => a.email.localeCompare(b.email));
+    return this.http
+      .get<PendingUser[]>(`${this.basePath}/users/pending`, {
+        params: {
+          _limit: limit.toString(),
+          _start: offset.toString()
+        }
       })
-    );
+      .pipe(
+        map(users => {
+          return users.map(user => new PendingUser(user)).sort((a, b) => a.email.localeCompare(b.email));
+        })
+      );
   }
 
   //  todo
