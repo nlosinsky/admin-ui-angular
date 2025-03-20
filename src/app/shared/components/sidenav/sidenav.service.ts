@@ -40,10 +40,6 @@ export class SidenavService {
         route: 'transactions',
         label: 'Transactions'
       }
-      // {
-      //   route: 'pending-users',
-      //   label: 'Pending Users'
-      // }
     ];
   }
 }
