@@ -2,15 +2,16 @@
 import { CompanyContract, CompanyFeatures } from '@app/shared/models';
 import { CompanyMemberAccountStateType, CompanyStateType } from '@app/shared/models/companies/company.enum';
 
-abstract class Member {
+export class CompanyMember {
   id!: string;
-  username!: string;
+  email!: string;
   firstName!: string;
   lastName!: string;
   profilePictureUrl!: string;
   fullName: string;
+  accountState!: CompanyMemberAccountStateType;
 
-  constructor(input: Partial<Member>) {
+  constructor(input: Partial<CompanyMember>) {
     Object.assign(this, input);
 
     this.fullName = this.getFullName();
@@ -26,7 +27,7 @@ abstract class Member {
     } else if (this.lastName) {
       displayName = this.lastName;
     } else {
-      displayName = this.username;
+      displayName = this.email;
     }
 
     return displayName;
@@ -34,24 +35,6 @@ abstract class Member {
 
   get userAvatar(): string {
     return this.profilePictureUrl || '/assets/images/unknown-face.png';
-  }
-}
-
-export class CompanyPendingMember extends Member {
-  title!: string;
-  callingCode!: string;
-  workPhone!: string;
-
-  constructor(input: Partial<CompanyPendingMember> = {}) {
-    super(input);
-  }
-}
-
-export class CompanyMember extends Member {
-  accountState!: CompanyMemberAccountStateType;
-
-  constructor(input: Partial<CompanyMember> = {}) {
-    super(input);
   }
 }
 

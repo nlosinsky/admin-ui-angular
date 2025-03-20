@@ -5,13 +5,16 @@ import {
   CompanyContract,
   CompanyFeatures,
   CompanyMember,
-  CompanyPendingMember,
   CompanyUpdateDTO,
   User
 } from '@app/shared/models';
-import { CompanyMemberAccountStateType, CompanyState } from '@app/shared/models/companies/company.enum';
+import {
+  CompanyMemberAccountState,
+  CompanyMemberAccountStateType,
+  CompanyState
+} from '@app/shared/models/companies/company.enum';
 import { environment } from '@env/environment';
-import { EMPTY, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -42,17 +45,16 @@ export class CompaniesApiService {
     });
   }
 
-  //  todo
-  approvePendingMember(companyId: string, pendingMemberId: string): Observable<unknown> {
-    return this.http.post(`${this.basePath}/companies/${companyId}/pending-members/${pendingMemberId}/approval`, {});
+  approvePendingMember(pendingMemberId: string): Observable<unknown> {
+    return this.http.patch(`${this.basePath}/members/${pendingMemberId}`, {
+      accountState: CompanyMemberAccountState.APPROVED
+    });
   }
 
-  //  todo
-  disapprovePendingMember(companyId: string, pendingMemberId: string): Observable<unknown> {
-    return this.http.post(
-      `${this.basePath}/companies/${companyId}/pending-members/${pendingMemberId}/disapproval`,
-      null
-    );
+  disapprovePendingMember(pendingMemberId: string): Observable<unknown> {
+    return this.http.patch(`${this.basePath}/members/${pendingMemberId}`, {
+      accountState: CompanyMemberAccountState.DECLINED
+    });
   }
 
   getCompany(id: string): Observable<Company> {
@@ -60,28 +62,31 @@ export class CompaniesApiService {
   }
 
   //  todo
-  getPendingMembers(id: string, limit = 100, offset = 0): Observable<CompanyPendingMember[]> {
+  getPendingMembers(companyId: string, limit = 100, offset = 0): Observable<CompanyMember[]> {
     return this.http
-      .get<CompanyPendingMember[]>(`${this.basePath}/companies/${id}/pending-members`, {
+      .get<CompanyMember[]>(`${this.basePath}/members`, {
         params: {
           _limit: limit.toString(),
-          _start: offset.toString()
+          _start: offset.toString(),
+          companyId,
+          accountState: CompanyMemberAccountState.WAIT_APPROVAL
         }
       })
       .pipe(
-        map((resp: CompanyPendingMember[]) => {
-          return resp.map(item => new CompanyPendingMember(item)).sort((a, b) => a.fullName.localeCompare(b.fullName));
+        map((resp: CompanyMember[]) => {
+          return resp.map(item => new CompanyMember(item)).sort((a, b) => a.fullName.localeCompare(b.fullName));
         })
       );
   }
 
   //  todo
-  getMembers(id: string, limit = 100, offset = 0): Observable<CompanyMember[]> {
+  getMembers(companyId: string, limit = 100, offset = 0): Observable<CompanyMember[]> {
     return this.http
-      .get<CompanyMember[]>(`${this.basePath}/companies/${id}/members`, {
+      .get<CompanyMember[]>(`${this.basePath}/members`, {
         params: {
           _limit: limit.toString(),
-          _start: offset.toString()
+          _start: offset.toString(),
+          companyId
         }
       })
       .pipe(

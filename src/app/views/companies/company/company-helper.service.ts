@@ -11,10 +11,10 @@ export class CompanyHelperService {
         text: 'Information',
         route: 'information'
       },
-      // {
-      //   text: 'Users',
-      //   route: 'users'
-      // },
+      {
+        text: 'Users',
+        route: 'users'
+      },
       {
         text: 'Contract',
         route: 'contract'

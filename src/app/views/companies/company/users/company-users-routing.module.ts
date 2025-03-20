@@ -5,7 +5,7 @@ import { CompanyUserComponent } from '@views/companies/company/users/components/
 
 const routes: Routes = [
   { path: '', component: CompanyUsersComponent },
-  { path: ':id', component: CompanyUserComponent }
+  // { path: ':id', component: CompanyUserComponent }
 ];
 
 @NgModule({

@@ -14,11 +14,11 @@ export enum CompanyState {
 export type CompanyStateType = 'ACTIVE' | 'ARCHIVED' | 'PENDING';
 
 export enum CompanyMemberAccountState {
-  NOT_ACTIVE = 'NOT_ACTIVE',
   WAIT_APPROVAL = 'WAIT_APPROVAL',
   APPROVED = 'APPROVED',
   HOLD = 'HOLD',
-  UPDATE_REQUIRED = 'UPDATE_REQUIRED'
+  UPDATE_REQUIRED = 'UPDATE_REQUIRED',
+  DECLINED = 'DECLINED'
 }
 
-export type CompanyMemberAccountStateType = 'NOT_ACTIVE' | 'WAIT_APPROVAL' | 'APPROVED' | 'HOLD' | 'UPDATE_REQUIRED';
+export type CompanyMemberAccountStateType = 'WAIT_APPROVAL' | 'APPROVED' | 'HOLD' | 'UPDATE_REQUIRED' | 'DECLINED';

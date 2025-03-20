@@ -17,9 +17,6 @@ export class StatusColorHelper {
       case CompanyMemberAccountState.WAIT_APPROVAL:
         return StatusColorsEnum.WARNING;
 
-      case CompanyMemberAccountState.NOT_ACTIVE:
-        return StatusColorsEnum.DANGER;
-
       default:
         return StatusColorsEnum.DEFAULT;
     }

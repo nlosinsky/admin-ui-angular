@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
-import { Company, CompanyMember, CompanyPendingMember, HttpError } from '@app/shared/models';
+import { Company, CompanyMember, HttpError } from '@app/shared/models';
 import { CompanyMemberAccountState } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions } from '@app/shared/models/components';
 import { CompaniesService } from '@services/data/companies.service';
@@ -21,7 +21,7 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
 export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
   company!: Company;
   isDataLoaded = false;
-  pendingMembers: CompanyPendingMember[] = [];
+  pendingMembers: CompanyMember[] = [];
   members: CompanyMember[] = [];
   approveRequestsSet = new Set<string>();
   declineRequestsSet = new Set<string>();
@@ -74,7 +74,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
         mergeMap(() => {
           this.declineRequestsSet.add(memberId);
           this.cd.markForCheck();
-          return this.companiesService.disapprovePendingMember(this.company.id, memberId);
+          return this.companiesService.disapprovePendingMember(memberId);
         }),
         catchError((error: HttpError) => {
           this.toastService.showHttpError(error);
@@ -99,7 +99,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
 
     this.approveRequestsSet.add(memberId);
     this.companiesService
-      .approvePendingMember(this.company.id, memberId)
+      .approvePendingMember(memberId)
       .pipe(
         mergeMap(() => this.companiesService.getMembers(this.company.id)),
         catchError((error: HttpErrorResponse) => {
@@ -124,7 +124,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
     //  todo: add implementation
   }
 
-  trackByPending(index: number, member: CompanyPendingMember): string {
+  trackByPending(index: number, member: CompanyMember): string {
     return member.id;
   }
 

@@ -4,7 +4,6 @@ import {
   CompanyContract,
   CompanyFeatures,
   CompanyMember,
-  CompanyPendingMember,
   CompanyUpdateDTO,
   User
 } from '@app/shared/models';
@@ -34,19 +33,19 @@ export class CompaniesService {
     return this.companiesApiService.disapproveTemporaryCompany(id);
   }
 
-  approvePendingMember(companyId: string, pendingMemberId: string): Observable<unknown> {
-    return this.companiesApiService.approvePendingMember(companyId, pendingMemberId);
+  approvePendingMember(pendingMemberId: string): Observable<unknown> {
+    return this.companiesApiService.approvePendingMember(pendingMemberId);
   }
 
-  disapprovePendingMember(companyId: string, pendingMemberId: string): Observable<unknown> {
-    return this.companiesApiService.disapprovePendingMember(companyId, pendingMemberId);
+  disapprovePendingMember(pendingMemberId: string): Observable<unknown> {
+    return this.companiesApiService.disapprovePendingMember(pendingMemberId);
   }
 
   getCompany(id: string): Observable<Company> {
     return this.companiesApiService.getCompany(id);
   }
 
-  getPendingMembers(id: string): Observable<CompanyPendingMember[]> {
+  getPendingMembers(id: string): Observable<CompanyMember[]> {
     return this.companiesApiService.getPendingMembers(id);
   }
 
