@@ -9,10 +9,8 @@ export class Account {
   subtype?: string;
   description!: string;
   readonly archived?: boolean;
-  readonly system?: boolean;
   companyId!: string;
   readonly createdAt?: string;
-  readonly updatedAt?: string;
 
   constructor(data: Partial<Account>) {
     Object.assign(this, data);

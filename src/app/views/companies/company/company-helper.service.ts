@@ -19,16 +19,10 @@ export class CompanyHelperService {
         text: 'Contract',
         route: 'contract'
       },
-      // {
-      //   text: 'Accounts',
-      //   route: 'accounts'
-      // }
+      {
+        text: 'Accounts',
+        route: 'accounts'
+      }
     ];
-  }
-
-  getTabIndex(path: string): Tab | undefined {
-    const tabs = this.getTabs();
-
-    return tabs.find(item => item.route === path);
   }
 }
