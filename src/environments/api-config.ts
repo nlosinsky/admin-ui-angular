@@ -9,7 +9,7 @@ export const apiConfig = {
   },
   development: {
     auth_api: '',
-    admin_api: 'http://localhost:3001'
+    admin_api: 'http://localhost:3000'
   }
 };
 

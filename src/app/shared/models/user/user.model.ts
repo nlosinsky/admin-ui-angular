@@ -1,5 +1,6 @@
 import { CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
 
+//  todo remove?
 export class User {
   id!: string;
   email!: string;
@@ -40,15 +41,5 @@ export class User {
 
   get userAvatar(): string {
     return this.profilePictureUrl || '/assets/images/unknown-face.png';
-  }
-}
-
-export class PendingUser {
-  id!: string;
-  email!: string;
-  accountState!: CompanyMemberAccountStateType;
-
-  constructor(input: Partial<User> = {}) {
-    Object.assign(this, input);
   }
 }

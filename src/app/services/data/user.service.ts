@@ -45,12 +45,4 @@ export class UserService {
       })
     );
   }
-
-  getPendingUsers() {
-    return this.userApiService.getPendingUsers();
-  }
-
-  resendUserActivation(userId: string) {
-    return this.userApiService.resendUserActivation(userId);
-  }
 }

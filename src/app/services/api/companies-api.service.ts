@@ -54,12 +54,32 @@ export class CompaniesApiService {
     return this.http.get<Company>(`${this.basePath}/companies/${id}`).pipe(map(resp => new Company(resp)));
   }
 
-  getPendingMembers(companyId: string): Observable<CompanyMember[]> {
-    return this.getFilteredMembers(companyId, true);
+  getPendingMembers(companyId: string, limit = 100, offset = 0): Observable<CompanyMember[]> {
+    const params = {
+      companyId,
+      limit,
+      offset
+    };
+
+    return this.http.get<CompanyMember[]>(`${this.basePath}/members/pending`, { params }).pipe(
+      map((resp: CompanyMember[]) => {
+        return resp.map(item => new CompanyMember(item)).sort((a, b) => a.fullName.localeCompare(b.fullName));
+      })
+    );
   }
 
-  getMembers(companyId: string): Observable<CompanyMember[]> {
-    return this.getFilteredMembers(companyId);
+  getMembers(companyId: string, limit = 100, offset = 0): Observable<CompanyMember[]> {
+    const params = {
+      companyId,
+      limit,
+      offset
+    };
+
+    return this.http.get<CompanyMember[]>(`${this.basePath}/members/approved`, { params }).pipe(
+      map((resp: CompanyMember[]) => {
+        return resp.map(item => new CompanyMember(item)).sort((a, b) => a.fullName.localeCompare(b.fullName));
+      })
+    );
   }
 
   getMemberById(memberId: string) {
@@ -84,34 +104,12 @@ export class CompaniesApiService {
     return this.http.patch<Company>(`${this.basePath}/companies/${id}`, data).pipe(map(resp => new Company(resp)));
   }
 
-  private getFilteredMembers(companyId: string, pending = false, limit = 100, offset = 0): Observable<CompanyMember[]> {
-    const params = {
-      _limit: limit.toString(),
-      _start: offset.toString(),
-      companyId,
-      accountState_ne: CompanyMemberAccountState.DECLINED
-    };
-
-    if (pending) {
-      params['accountState'] = CompanyMemberAccountState.WAIT_APPROVAL;
-    } else {
-      params['accountState_ne'] = CompanyMemberAccountState.DECLINED;
-    }
-
-    return this.http.get<CompanyMember[]>(`${this.basePath}/members`, { params }).pipe(
-      map((resp: CompanyMember[]) => {
-        return resp.map(item => new CompanyMember(item)).sort((a, b) => a.fullName.localeCompare(b.fullName));
-      })
-    );
-  }
-
   private getCompaniesByState(state: CompanyState, limit = 100, offset = 0): Observable<Company[]> {
     return this.http
       .get<Company[]>(`${this.basePath}/companies`, {
         params: {
-          _limit: limit.toString(),
-          _start: offset.toString(),
-          _sort: 'name',
+          limit,
+          offset,
           companyState: state
         }
       })

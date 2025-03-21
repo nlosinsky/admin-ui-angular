@@ -17,17 +17,15 @@ export class AccountsApiService {
     return this.http
       .get<Account[]>(`${this.basePath}/accounts`, {
         params: {
-          _limit: limit.toString(),
-          _start: offset.toString(),
-          companyId: companyId.toString()
+          limit,
+          offset,
+          companyId: companyId
         }
       })
       .pipe(map(resp => resp.map(item => new Account(item))));
   }
 
   addAccount(payload: AccountDTO): Observable<Account> {
-    return this.http
-      .post<Account>(`${this.basePath}/accounts`, { ...payload, createdAt: new Date().toISOString() })
-      .pipe(map(data => new Account(data)));
+    return this.http.post<Account>(`${this.basePath}/accounts`, payload).pipe(map(data => new Account(data)));
   }
 }
