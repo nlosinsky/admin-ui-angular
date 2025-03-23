@@ -182,7 +182,9 @@ export class CompanyInformationComponent
     return { name, website, streetAddress, country, state, city, zipCode, companyState };
   }
 
-  onCountryChange({ value: countryName }: { value: string }) {
+  //   todo fix
+  onCountryChange({ value: countryName }: any) {
+  // onCountryChange({ value: countryName }: { value: string }) {
     const country = this.countries.find(item => item.name === countryName);
 
     if (!country) {
@@ -196,7 +198,9 @@ export class CompanyInformationComponent
     }
   }
 
-  onStateChange({ value: stateName }: { value: string }) {
+  //   todo fix
+  onStateChange({ value: stateName }: any) {
+  // onStateChange({ value: stateName }: { value: string }) {
     const state = this.states.find(item => item.name === stateName);
 
     if (!state) {
@@ -216,7 +220,9 @@ export class CompanyInformationComponent
     }
   }
 
-  onCityChange({ value: cityName }: { value: string }) {
+  //   todo fix
+  onCityChange({ value: cityName }: any) {
+  // onCityChange({ value: cityName }: { value: string }) {
     const city = this.cities.find(item => item.name === cityName);
 
     if (!cityName) {
@@ -236,7 +242,9 @@ export class CompanyInformationComponent
     }
   }
 
-  onAddCustomCity(data: { text: string; customItem: unknown }) {
+  //   todo fix
+  onAddCustomCity(data: any) {
+  // onAddCustomCity(data: { text: string; customItem: unknown }) {
     if (!data.text) {
       data.customItem = null;
       return;
@@ -248,7 +256,9 @@ export class CompanyInformationComponent
     this.city.setValue(data.text);
   }
 
-  onAddCustomZipCode(data: { text: string; customItem: unknown }) {
+  //   todo fix
+  onAddCustomZipCode(data: any) {
+  // onAddCustomZipCode(data: { text: string; customItem: unknown }) {
     if (!data.text) {
       data.customItem = null;
       return;

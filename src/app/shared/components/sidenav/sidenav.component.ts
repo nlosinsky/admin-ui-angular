@@ -31,7 +31,9 @@ export class SidenavComponent implements OnInit {
     this.user$ = this.service.getCurrentUser();
   }
 
-  onItemClick(event: ItemClickEvent<UserDropdownItem>): void {
+  //   todo fix
+  onItemClick(event: any): void {
+  // onItemClick(event: ItemClickEvent<UserDropdownItem>): void {
     const eventId = event?.itemData?.id;
 
     if (eventId === DropdownTypes.LOGOUT) {

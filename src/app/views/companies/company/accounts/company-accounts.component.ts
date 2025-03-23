@@ -96,7 +96,9 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
       });
   }
 
-  onCellPrepared(event: { rowType: string; column: { dataField: string }; cellElement: HTMLElement; data: Account }) {
+  //   todo fix
+  onCellPrepared(event: any) {
+  // onCellPrepared(event: { rowType: string; column: { dataField: string }; cellElement: HTMLElement; data: Account }) {
     if (event.rowType === 'data' && ['name', 'description', 'subtype'].includes(event.column.dataField)) {
       on(event.cellElement, 'mouseover', (arg: { target: HTMLElement }) => {
         const key = event.column.dataField as keyof Account;
