@@ -18828,5 +18828,15 @@
       "companyId": "COMP-1019",
       "userId": "MEM-COMP-1019-3919"
     }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@example.com",
+      "firstName": "Admin",
+      "lastName": "Main",
+      "profilePictureUrl": "https://randomuser.me/api/portraits/men/20.jpg",
+      "password": "admin"
+    }
   ]
 }

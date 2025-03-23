@@ -84,13 +84,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         }),
         takeUntil(this.ngUnsub)
       )
-      .subscribe(({ allow, message }) => {
-        if (!allow) {
-          this.errorMessage = message;
-          return;
-        }
-        // todo: not working
+      .subscribe(() => {
+        // todo seems it doesn't work
         const url = this.route.snapshot.queryParamMap.get('returnUrl') || '/companies';
+        console.log(url);
         this.router.navigateByUrl(url);
       });
   }

@@ -4,6 +4,6 @@ const config = getTargetConfig('development');
 
 export const environment = {
   name: 'DEVELOPMENT',
-  production: true,
+  production: false,
   ...config.constructedConfig
 };

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginCredentials, Token } from '@app/shared/models/auth';
 import { environment } from '@env/environment';
@@ -12,15 +12,7 @@ export class AuthApiService {
 
   constructor(private http: HttpClient) {}
 
-  //  todo implement
-  login({ email, password }: LoginCredentials): Observable<Token> {
-    const body = new HttpParams().set('grant_type', 'password').set('email', email).set('password', password);
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ` // todo implement
-    });
-
-    return this.http.post<Token>(`${this.basePath}/oauth2/token`, body, { headers });
+  login(credentials: LoginCredentials): Observable<Token> {
+    return this.http.post<Token>(`${this.basePath}/auth/login`, credentials);
   }
 }

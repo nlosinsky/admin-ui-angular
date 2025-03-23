@@ -19,20 +19,19 @@
     ></dx-button>
   </div>
 
-  <!--	todo-->
-  <!--  <dx-drop-down-button-->
-  <!--    *ngIf="user$ | async as user"-->
-  <!--    stylingMode="outlined"-->
-  <!--    [text]="user.fullName"-->
-  <!--    [icon]="user.userAvatar"-->
-  <!--    [showArrowIcon]="false"-->
-  <!--    [items]="userDropdownItems"-->
-  <!--    displayExpr="text"-->
-  <!--    (onItemClick)="onItemClick($event)"-->
-  <!--    height="48"-->
-  <!--    width="100%"-->
-  <!--    class="sidenav-user-btn"-->
-  <!--  ></dx-drop-down-button>-->
+  <dx-drop-down-button
+    *ngIf="user$ | async as user"
+    stylingMode="outlined"
+    [text]="user.fullName"
+    [icon]="user.userAvatar"
+    [showArrowIcon]="false"
+    [items]="userDropdownItems"
+    displayExpr="text"
+    (onItemClick)="onItemClick($event)"
+    height="48"
+    width="100%"
+    class="sidenav-user-btn"
+  ></dx-drop-down-button>
 </div>
 
 <main class="main">

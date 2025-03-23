@@ -6,19 +6,13 @@ import { TokenHelperService } from '@services/helpers/token-helper.service';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-interface ServerError {
-  code: string;
-  message: string;
-  status: number;
-}
-
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
   constructor(private injector: Injector) {}
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!request.url.startsWith(environment.baseAdminUrl)) {
+    if (!request.url.startsWith(environment.baseAdminUrl) || request.url.endsWith('/auth/login')) {
       return next.handle(request);
     }
 
@@ -32,12 +26,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
     return next.handle(this.addToken(request, tokenService.accessToken)).pipe(
       catchError((error: HttpErrorResponse) => {
-        const { message } = error.error as ServerError;
-        if (
-          error.status === 401 ||
-          (error.status === 403 && message.includes('authorized scope is insufficient')) ||
-          (error.status === 404 && message.startsWith('The token for'))
-        ) {
+        if (error.status === 401 || error.status === 403) {
           authService.logout(true);
           return EMPTY;
         }

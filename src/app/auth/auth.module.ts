@@ -1,6 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptorService } from '@app/auth/auth-interceptor.service';
 import { AuthRoutingModule } from '@app/auth/auth-routing.module';
@@ -20,8 +20,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
     ErrorMessagePipeModule,
     DxValidatorModule,
     QuicklinkModule
-  ]
-  // todo
-  // providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }]
+  ],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }]
 })
 export class AuthModule {}

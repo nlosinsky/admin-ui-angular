@@ -7,8 +7,9 @@ export const apiConfig = {
     auth_api: '',
     admin_api: ''
   },
+  //  todo change to one api path
   development: {
-    auth_api: '',
+    auth_api: 'http://localhost:3000',
     admin_api: 'http://localhost:3000'
   }
 };
