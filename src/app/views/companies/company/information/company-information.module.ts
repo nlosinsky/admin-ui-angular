@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BgSpinnerModule } from '@components/bg-spinner/bg-spinner.component';
-import { StatusItemModule } from '@components/status-item/status-item.component';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { StatusItemComponent } from '@components/status-item/status-item.component';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
 import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
@@ -22,7 +22,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
   imports: [
     CommonModule,
     CompanyInformationRoutingModule,
-    BgSpinnerModule,
+    BgSpinnerComponent,
     ReactiveFormsModule,
     DxTextBoxModule,
     ErrorMessagePipe,
@@ -31,7 +31,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
     DxValidatorModule,
     DxSelectBoxModule,
     StringValueCapitalizePipe,
-    StatusItemModule,
+    StatusItemComponent,
     StatusColorPipe,
     QuicklinkModule
   ]

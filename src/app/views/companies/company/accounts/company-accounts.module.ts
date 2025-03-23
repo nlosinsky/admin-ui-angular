@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BgSpinnerModule } from '@components/bg-spinner/bg-spinner.component';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
 import { BooleanYesNoPipe } from '@pipes/boolean-yes-no/boolean-yes-no.pipe';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
@@ -27,7 +27,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
     CommonModule,
     CompanyAccountsRoutingModule,
     DxDataGridModule,
-    BgSpinnerModule,
+    BgSpinnerComponent,
     DxTooltipModule,
     StringValueCapitalizePipe,
     DxButtonModule,

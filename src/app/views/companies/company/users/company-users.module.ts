@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AvatarBoxModule } from '@components/avatar-box/avatar-box.component';
-import { BgSpinnerModule } from '@components/bg-spinner/bg-spinner.component';
-import { StatusItemModule } from '@components/status-item/status-item.component';
+import { AvatarBoxComponent } from '@components/avatar-box/avatar-box.component';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { StatusItemComponent } from '@components/status-item/status-item.component';
 import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
 import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
 import { CompanyUsersRoutingModule } from '@views/companies/company/users/company-users-routing.module';
@@ -24,12 +24,12 @@ import { QuicklinkModule } from 'ngx-quicklink';
   imports: [
     CommonModule,
     CompanyUsersRoutingModule,
-    AvatarBoxModule,
+    AvatarBoxComponent,
     DxDataGridModule,
     DxButtonModule,
-    StatusItemModule,
+    StatusItemComponent,
     StringValueCapitalizePipe,
-    BgSpinnerModule,
+    BgSpinnerComponent,
     DxDropDownButtonModule,
     ReactiveFormsModule,
     DxSelectBoxModule,

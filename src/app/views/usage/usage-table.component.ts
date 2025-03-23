@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { DocumentsStat, HttpError } from '@app/shared/models';
-import { BgSpinnerModule } from '@components/bg-spinner/bg-spinner.component';
-import { GeneralToolbarModule } from '@components/general-toolbar/general-toolbar.component';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
 import { DocumentsService } from '@services/data/documents.service';
 import { DataGridHelperService } from '@services/helpers/data-grid-helper.service';
 import { ToastService } from '@services/helpers/toast.service';
@@ -20,12 +20,12 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } f
   standalone: true,
   imports: [
     CommonModule,
-    GeneralToolbarModule,
+    GeneralToolbarComponent,
     DxDataGridModule,
     DxButtonModule,
     DxTextBoxModule,
     QuicklinkModule,
-    BgSpinnerModule
+    BgSpinnerComponent
   ]
 })
 export class UsageTableComponent implements OnInit, OnDestroy {

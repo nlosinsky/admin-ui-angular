@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-avatar-box',
   templateUrl: './avatar-box.component.html',
   styleUrls: ['./avatar-box.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule]
 })
 export class AvatarBoxComponent {
   @Input() avatar = '';
@@ -21,11 +23,3 @@ export class AvatarBoxComponent {
     this.itemClicked.emit();
   }
 }
-
-@NgModule({
-  imports: [CommonModule],
-  exports: [AvatarBoxComponent],
-  declarations: [AvatarBoxComponent],
-  providers: []
-})
-export class AvatarBoxModule {}

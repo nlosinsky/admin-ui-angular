@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { ItemClickEvent } from '@app/shared/models';
@@ -14,7 +14,15 @@ import { Observable } from 'rxjs';
   selector: 'app-sidenav',
   templateUrl: 'sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    RouterModule,
+    DxButtonModule,
+    CommonModule,
+    DxDropDownButtonModule,
+    QuicklinkModule
+  ]
 })
 export class SidenavComponent implements OnInit {
   items: NavItem[] = [];
@@ -49,10 +57,3 @@ export class SidenavComponent implements OnInit {
     this.service.logout();
   }
 }
-
-@NgModule({
-  imports: [RouterModule, DxButtonModule, CommonModule, DxDropDownButtonModule, QuicklinkModule],
-  exports: [SidenavComponent],
-  declarations: [SidenavComponent]
-})
-export class SidenavModule {}

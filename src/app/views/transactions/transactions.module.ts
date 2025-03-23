@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { GeneralToolbarModule } from '@components/general-toolbar/general-toolbar.component';
+import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { TransactionsTableComponent } from '@views/transactions/table/transactions-table.component';
 import { TransactionsRoutingModule } from '@views/transactions/transactions-routing.module';
@@ -26,7 +26,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
     DxValidatorModule,
     ErrorMessagePipe,
     DxChartModule,
-    GeneralToolbarModule,
+    GeneralToolbarComponent,
     DxButtonModule,
     DxDropDownButtonModule,
     QuicklinkModule

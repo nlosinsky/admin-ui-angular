@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BgSpinnerModule } from '@components/bg-spinner/bg-spinner.component';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
 import { ContractTypePipe } from '@pipes/contract-type/contract-type.pipe';
 import { CompanyContractRoutingModule } from '@views/companies/company/contract/company-contract-routing.module';
 import { CompanyContractComponent } from '@views/companies/company/contract/company-contract.component';
@@ -26,7 +26,7 @@ import { QuicklinkModule } from 'ngx-quicklink';
     DxSelectBoxModule,
     DxNumberBoxModule,
     DxTextBoxModule,
-    BgSpinnerModule,
+    BgSpinnerComponent,
     DxButtonModule,
     DxDropDownButtonModule,
     QuicklinkModule
