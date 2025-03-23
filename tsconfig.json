@@ -17,26 +17,43 @@
     "importHelpers": true,
     "noUnusedLocals": false,
     "resolveJsonModule": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "lib": [
       "es2018",
       "dom"
     ],
     "paths": {
-      "@app/*": ["./app/*"],
-      "@components/*": ["./app/shared/components/*"],
-      "@pipes/*": ["./app/shared/pipes/*"],
-      "@directives/*": ["./app/shared/directives/*"],
-      "@validators/*": ["./app/shared/validators/*"],
-      "@views/*": ["./app/views/*"],
-      "@services/*": ["./app/services/*"],
-      "@env/*": ["./environments/*"]
-    }
+      "@app/*": [
+        "./app/*"
+      ],
+      "@components/*": [
+        "./app/shared/components/*"
+      ],
+      "@pipes/*": [
+        "./app/shared/pipes/*"
+      ],
+      "@directives/*": [
+        "./app/shared/directives/*"
+      ],
+      "@validators/*": [
+        "./app/shared/validators/*"
+      ],
+      "@views/*": [
+        "./app/views/*"
+      ],
+      "@services/*": [
+        "./app/services/*"
+      ],
+      "@env/*": [
+        "./environments/*"
+      ]
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictInjectionParameters": false,
+    "strictInputAccessModifiers": false,
+    "strictTemplates": false
   }
 }

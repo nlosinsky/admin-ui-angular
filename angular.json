@@ -29,7 +29,12 @@
               "faker",
               "jszip",
               "exceljs",
-              "raf"
+              "raf",
+              "rgbcolor",
+              "devexpress-diagram",
+              "devexpress-gantt",
+              "devextreme-quill",
+              "file-saver"
             ],
             "outputPath": "dist/admin-ui-angular",
             "index": "src/index.html",
@@ -149,5 +154,13 @@
   },
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }
