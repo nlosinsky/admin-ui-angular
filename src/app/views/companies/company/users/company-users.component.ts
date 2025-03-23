@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -5,10 +6,21 @@ import { tableIndicatorSrc } from '@app/shared/constants';
 import { Company, CompanyMember, HttpError } from '@app/shared/models';
 import { CompanyMemberAccountState } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions } from '@app/shared/models/components';
+import { AvatarBoxComponent } from '@components/avatar-box/avatar-box.component';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { StatusItemComponent } from '@components/status-item/status-item.component';
+import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
+import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
 import { CompaniesService } from '@services/data/companies.service';
 import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
+import {
+  DxButtonModule,
+  DxDataGridModule,
+  DxDropDownButtonModule,
+} from 'devextreme-angular';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, from, Subject, zip } from 'rxjs';
 import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operators';
 
@@ -16,7 +28,20 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
   selector: 'app-company-users',
   templateUrl: './company-users.component.html',
   styleUrls: ['./company-users.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    AvatarBoxComponent,
+    DxDataGridModule,
+    DxButtonModule,
+    StatusItemComponent,
+    StringValueCapitalizePipe,
+    BgSpinnerComponent,
+    DxDropDownButtonModule,
+    StatusColorPipe,
+    QuicklinkModule
+  ]
 })
 export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
   company!: Company;

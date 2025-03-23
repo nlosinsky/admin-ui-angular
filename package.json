@@ -1,6 +1,6 @@
 {
   "name": "admin-ui-angular",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "scripts": {
     "ng": "ng",
     "start:front": "ng serve --port=4300",

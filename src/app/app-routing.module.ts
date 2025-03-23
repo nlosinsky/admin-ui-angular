@@ -14,10 +14,9 @@ const routes: Routes = [
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'companies' },
       {
         path: 'companies',
-        loadChildren: () => import('./views/companies/companies.module').then(m => m.CompaniesModule)
+        loadChildren: () => import('./views/companies/routes').then(m => m.ROUTES)
       },
       {
         path: 'usage',
@@ -26,7 +25,8 @@ const routes: Routes = [
       {
         path: 'transactions',
         loadChildren: () => import('./views/transactions/routes').then(m => m.ROUTES)
-      }
+      },
+      { path: '', pathMatch: 'full', redirectTo: 'companies' },
     ]
   }
 ];

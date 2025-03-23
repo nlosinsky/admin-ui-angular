@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -11,25 +12,53 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { City, Company, CompanyUpdateDTO, Country, HttpError, State } from '@app/shared/models';
 import { CompanyState } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { StatusItemComponent } from '@components/status-item/status-item.component';
+import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
+import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
+import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
 import { ConstantDataHelperService } from '@services/helpers/constant-data-helper.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { WebsiteUrlValidator } from '@validators/website-url.validator';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
-import { DxValidatorComponent } from 'devextreme-angular';
+import {
+  DxButtonModule,
+  DxDropDownButtonModule, DxSelectBoxModule,
+  DxTextBoxModule,
+  DxValidatorComponent,
+  DxValidatorModule
+} from 'devextreme-angular';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-company-information',
   templateUrl: './company-information.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    BgSpinnerComponent,
+    ReactiveFormsModule,
+    DxTextBoxModule,
+    ErrorMessagePipe,
+    DxButtonModule,
+    DxDropDownButtonModule,
+    DxValidatorModule,
+    DxSelectBoxModule,
+    StringValueCapitalizePipe,
+    StatusItemComponent,
+    StatusColorPipe,
+    QuicklinkModule
+  ]
 })
 export class CompanyInformationComponent
   implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit

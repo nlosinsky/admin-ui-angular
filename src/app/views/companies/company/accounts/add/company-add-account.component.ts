@@ -1,6 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PopupBaseComponent } from '@app/shared/base/popup.base';
 import { AccountDTO, ObjectLike } from '@app/shared/models';
@@ -8,9 +9,19 @@ import { AccountNaturalBalanceEnum, AccountTypeEnum } from '@app/shared/models/a
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { TransformHelper } from '@app/shared/utils/transform-helper';
+import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AccountsService } from '@services/data/accounts.service';
 import { ToastService } from '@services/helpers/toast.service';
+import {
+  DxNumberBoxModule,
+  DxPopupModule,
+  DxSelectBoxModule,
+  DxTextAreaModule,
+  DxTextBoxModule,
+  DxValidatorModule
+} from 'devextreme-angular';
 import { DxoButtonOptions } from 'devextreme-angular/ui/nested/base/button-options';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -18,7 +29,20 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   selector: 'app-company-add-account',
   templateUrl: 'company-add-account.component.html',
   styleUrls: ['./company-add-account.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    DxTextBoxModule,
+    DxPopupModule,
+    ReactiveFormsModule,
+    ErrorMessagePipe,
+    DxNumberBoxModule,
+    DxTextAreaModule,
+    DxSelectBoxModule,
+    DxValidatorModule,
+    QuicklinkModule
+  ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   form!: FormGroup;
