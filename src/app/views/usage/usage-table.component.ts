@@ -1,10 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { DocumentsStat, HttpError } from '@app/shared/models';
+import { BgSpinnerModule } from '@components/bg-spinner/bg-spinner.component';
+import { GeneralToolbarModule } from '@components/general-toolbar/general-toolbar.component';
 import { DocumentsService } from '@services/data/documents.service';
 import { DataGridHelperService } from '@services/helpers/data-grid-helper.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxTextBoxModule } from 'devextreme-angular';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 
@@ -12,7 +16,17 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } f
   selector: 'app-usage-table',
   templateUrl: './usage-table.component.html',
   styleUrls: ['./usage-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    GeneralToolbarModule,
+    DxDataGridModule,
+    DxButtonModule,
+    DxTextBoxModule,
+    QuicklinkModule,
+    BgSpinnerModule
+  ]
 })
 export class UsageTableComponent implements OnInit, OnDestroy {
   @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;

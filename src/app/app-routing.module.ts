@@ -21,7 +21,7 @@ const routes: Routes = [
       },
       {
         path: 'usage',
-        loadChildren: () => import('./views/usage/usage.module').then(m => m.UsageModule)
+        loadComponent: () => import('./views/usage/usage-table.component').then(m => m.UsageTableComponent)
       },
       {
         path: 'transactions',
