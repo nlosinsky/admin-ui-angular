@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpError } from '@app/shared/models';
 import { User } from '@app/shared/models/user';
-import { environment } from '@env/environment';
 import { UserApiService } from '@services/api/user-api.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';

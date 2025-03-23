@@ -12,7 +12,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!request.url.startsWith(environment.baseAdminUrl) || request.url.endsWith('/auth/login')) {
+    if (!request.url.startsWith(environment.apiUrl) || request.url.endsWith('/auth/login')) {
       return next.handle(request);
     }
 

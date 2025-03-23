@@ -58,7 +58,6 @@ export class ObjectUtil {
     return isArray(item) && item.length === 0;
   }
 
-  // todo add <generic> type?
   static deleteEmptyProperties(obj: ObjectLike, recursive = true): ObjectLike {
     if (!obj || !isObject(obj)) {
       return obj;

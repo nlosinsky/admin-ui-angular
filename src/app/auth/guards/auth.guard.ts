@@ -11,7 +11,6 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    // TODO: add user verification
     return this.router.navigate(['/auth/login']).then(() => false);
   }
 }

@@ -5,7 +5,10 @@ import { AuthGuard } from '@app/auth/guards/auth.guard';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 
 const routes: Routes = [
-  // TODO: make default route content eagerly-loaded
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
   {
     path: '',
     component: AppLayoutComponent,

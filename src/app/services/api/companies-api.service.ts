@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CompaniesApiService {
-  private readonly basePath = environment.baseAdminUrl;
+  private readonly basePath = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

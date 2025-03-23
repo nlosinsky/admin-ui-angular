@@ -1,20 +1,10 @@
-import { CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
-
-//  todo remove?
 export class User {
   id!: string;
   email!: string;
   firstName!: string;
   lastName!: string;
   profilePictureUrl!: string;
-  title!: string;
-  callingCode!: string;
-  workPhone!: string;
-  accountState!: CompanyMemberAccountStateType;
-  companyId!: string;
-  temporaryCompanyId!: string;
-  updatedAt!: Date;
-  createdAt!: Date;
+  password!: string;
   fullName: string;
 
   constructor(input: Partial<User> = {}) {

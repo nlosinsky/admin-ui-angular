@@ -1,15 +1,12 @@
 {
   "name": "admin-ui-angular",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "scripts": {
     "ng": "ng",
     "start:front": "ng serve --port=4300",
     "start:server": "npx nodemon server/index.js",
     "start": "npx concurrently \"npm run start:front\" \"npm run start:server\"",
-    "build": "ng build",
-    "build:dev": "npm run build -- -c development",
-    "build:demo": "npm run build -- -c demo",
-    "build:prod": "npm run build -- -c production",
+    "build": "ng build -c production",
     "test": "ng test",
     "lint:ts": "ng lint",
     "lint:styles": "stylelint **/*.scss",

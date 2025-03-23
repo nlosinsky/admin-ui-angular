@@ -17,7 +17,7 @@ import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
-import { EMPTY, forkJoin, Subject } from 'rxjs';
+import { EMPTY, forkJoin, Observable, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -89,7 +89,7 @@ export class CompanyContractComponent
       return;
     }
 
-    const obsArr: any[] = [];
+    const obsArr: Observable<Company>[] = [];
 
     if (this.isFeaturesChanged) {
       obsArr.push(this.companyStateService.updateCompanyFeatures(this.company.id, this.features));
@@ -148,7 +148,6 @@ export class CompanyContractComponent
     this.verifyTransactionFeeConstraints();
   }
 
-  // todo check if we can optimize these validations
   private verifyTransactionFeeConstraints() {
     if (!this.form) {
       return;

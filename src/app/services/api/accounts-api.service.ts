@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AccountsApiService {
-  private readonly basePath = environment.baseAdminUrl;
+  private readonly basePath = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TransactionsApiService {
-  private readonly basePath = environment.baseAdminUrl;
+  private readonly basePath = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

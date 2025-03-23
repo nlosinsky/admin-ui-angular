@@ -5,7 +5,7 @@ import { LoginComponent } from '@app/auth/login/login.component';
 
 const routes: Routes = [
   {
-    path: 'auth',
+    path: '',
     canActivate: [NoAuthGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'login' },
