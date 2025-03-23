@@ -21,11 +21,11 @@ const routes: Routes = [
       },
       {
         path: 'usage',
-        loadComponent: () => import('./views/usage/usage-table.component').then(m => m.UsageTableComponent)
+        loadChildren: () => import('./views/usage/routes').then(m => m.ROUTES)
       },
       {
         path: 'transactions',
-        loadChildren: () => import('./views/transactions/transactions.module').then(m => m.TransactionsModule)
+        loadChildren: () => import('./views/transactions/routes').then(m => m.ROUTES)
       }
     ]
   }

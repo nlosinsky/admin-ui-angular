@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,8 +9,8 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CompanyMember, Company } from '@app/shared/models';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Company, CompanyMember } from '@app/shared/models';
 import {
   AggregationIntervalType,
   TickIntervalType,
@@ -18,11 +19,23 @@ import {
 } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
-import { TransactionsTableService } from '@views/transactions/table/transactions-table.service';
-import { DxChartComponent, DxValidatorComponent } from 'devextreme-angular';
+import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
+import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
+import { TransactionsTableService } from '@views/transactions/transactions-table.service';
+import { isValid } from 'date-fns';
+import {
+  DxButtonModule,
+  DxChartComponent,
+  DxChartModule,
+  DxDateBoxModule,
+  DxDropDownButtonModule,
+  DxSelectBoxModule,
+  DxValidatorComponent,
+  DxValidatorModule
+} from 'devextreme-angular';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { of, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
-import { isValid } from 'date-fns';
 
 export interface TransactionsForm {
   startDate: string;
@@ -35,7 +48,21 @@ export interface TransactionsForm {
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
   styleUrls: ['./transactions-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    DxDateBoxModule,
+    ReactiveFormsModule,
+    DxSelectBoxModule,
+    DxValidatorModule,
+    ErrorMessagePipe,
+    DxChartModule,
+    GeneralToolbarComponent,
+    DxButtonModule,
+    DxDropDownButtonModule,
+    QuicklinkModule
+  ]
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
