@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BgSpinnerModule } from '@components/bg-spinner/bg-spinner.component';
 import { StatusItemModule } from '@components/status-item/status-item.component';
-import { ErrorMessagePipeModule } from '@pipes/error-message/error-message.pipe';
-import { StatusColorModule } from '@pipes/status-color/status-color.pipe';
-import { StringValueCapitalizeModule } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
+import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
+import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
+import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
 import { CompanyInformationRoutingModule } from '@views/companies/company/information/company-information-routing.module';
 import { CompanyInformationComponent } from '@views/companies/company/information/company-information.component';
 import {
@@ -25,14 +25,14 @@ import { QuicklinkModule } from 'ngx-quicklink';
     BgSpinnerModule,
     ReactiveFormsModule,
     DxTextBoxModule,
-    ErrorMessagePipeModule,
+    ErrorMessagePipe,
     DxButtonModule,
     DxDropDownButtonModule,
     DxValidatorModule,
     DxSelectBoxModule,
-    StringValueCapitalizeModule,
+    StringValueCapitalizePipe,
     StatusItemModule,
-    StatusColorModule,
+    StatusColorPipe,
     QuicklinkModule
   ]
 })

@@ -4,8 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AvatarBoxModule } from '@components/avatar-box/avatar-box.component';
 import { BgSpinnerModule } from '@components/bg-spinner/bg-spinner.component';
 import { StatusItemModule } from '@components/status-item/status-item.component';
-import { StringValueCapitalizeModule } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
-import { StatusColorModule } from '@pipes/status-color/status-color.pipe';
+import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
+import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
 import { CompanyUsersRoutingModule } from '@views/companies/company/users/company-users-routing.module';
 import { CompanyUsersComponent } from '@views/companies/company/users/company-users.component';
 import { CompanyUserComponent } from '@views/companies/company/users/components/user/company-user.component';
@@ -28,13 +28,13 @@ import { QuicklinkModule } from 'ngx-quicklink';
     DxDataGridModule,
     DxButtonModule,
     StatusItemModule,
-    StringValueCapitalizeModule,
+    StringValueCapitalizePipe,
     BgSpinnerModule,
     DxDropDownButtonModule,
     ReactiveFormsModule,
     DxSelectBoxModule,
     DxTextBoxModule,
-    StatusColorModule,
+    StatusColorPipe,
     DxCheckBoxModule,
     QuicklinkModule
   ]

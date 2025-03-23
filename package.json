@@ -61,7 +61,7 @@
     "@types/file-saver": "^2.0.5",
     "@types/jasmine": "^4.0.3",
     "@types/lodash-es": "^4.17.6",
-    "@types/node": "^16.18.126",
+    "@types/node": "^18.19.81",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
     "cors": "^2.8.5",
