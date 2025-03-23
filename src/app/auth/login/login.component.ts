@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -7,12 +8,14 @@ import {
   ViewChildren,
   QueryList
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginCredentials } from '@app/shared/models';
 import { FormHelper } from '@app/shared/utils/form-helper';
+import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AuthService } from '@services/data/auth.service';
-import { DxValidatorComponent } from 'devextreme-angular';
+import { DxButtonModule, DxTextBoxModule, DxValidatorComponent, DxValidatorModule } from 'devextreme-angular';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -20,7 +23,17 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   selector: 'app-auth-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    DxTextBoxModule,
+    ReactiveFormsModule,
+    DxButtonModule,
+    ErrorMessagePipe,
+    DxValidatorModule,
+    QuicklinkModule
+  ]
 })
 export class LoginComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
