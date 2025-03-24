@@ -5,6 +5,8 @@
   border-bottom: 1px solid $light-gray;
   line-height: 1.5em;
   padding: 0 16px;
+  background-color: #fff;
+  box-shadow: none;
 
   .dx-tabs-wrapper {
     display: flex;
@@ -14,6 +16,7 @@
     background: none;
     padding: 0;
     border: none;
+    box-shadow: none !important;
 
     &.dx-tab-selected {
       &::after {
@@ -50,6 +53,7 @@
 
       .dx-tab-text {
         padding: 16px;
+        color: inherit;
       }
     }
   }
