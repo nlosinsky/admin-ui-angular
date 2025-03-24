@@ -32,13 +32,16 @@ export const appConfig: ApplicationConfig = {
       // todo change
       withPreloading(PreloadAllModules)
     ),
+    // todo
     NgxWebstorageModule.forRoot({ prefix: 'angular-dashboard' }).providers as any, // todo change
+    // todo
     {
       provide: APP_INITIALIZER,
       useFactory: constantDataResolveFactory,
       deps: [ConstantDataHelperService],
       multi: true
     },
+    // todo
     provideHttpClient(
       withInterceptors([ AuthInterceptor ])
     )
