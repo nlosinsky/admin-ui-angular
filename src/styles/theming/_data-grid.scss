@@ -11,6 +11,16 @@
     border-bottom: 0;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+
+    &:before {
+      display: none;
+    }
+
+    .dx-datagrid-table {
+      .dx-row > td {
+        border-color: $light-gray;
+      }
+    }
   }
 
   .dx-datagrid-rowsview {

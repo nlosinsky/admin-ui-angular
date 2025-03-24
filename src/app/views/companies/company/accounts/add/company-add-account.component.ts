@@ -17,7 +17,7 @@ import {
   DxPopupModule,
   DxSelectBoxModule,
   DxTextAreaModule,
-  DxTextBoxModule,
+  DxTextBoxModule, DxToolbarModule,
   DxValidatorModule
 } from 'devextreme-angular';
 import { DxoButtonOptions } from 'devextreme-angular/ui/nested/base/button-options';
@@ -40,7 +40,8 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
         DxTextAreaModule,
         DxSelectBoxModule,
         DxValidatorModule,
-        QuicklinkModule
+        QuicklinkModule,
+      DxToolbarModule
     ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
