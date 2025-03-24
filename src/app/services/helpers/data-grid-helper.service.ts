@@ -22,10 +22,9 @@ export class DataGridHelperService {
     }
 
     columnChooserView._popupContainer.option('position', {
-      of: dataGrid.instance.element(),
+      of: ".grid-column-chooser-btn",
       my: 'right top',
-      at: 'right top',
-      offset: '0 0'
+      at: 'right bottom',
     });
   }
 

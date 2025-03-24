@@ -5,23 +5,24 @@
   border-bottom: 1px solid $light-gray;
   line-height: 1.5em;
   padding: 0 16px;
-  background-color: #fff;
-  box-shadow: none;
 
   .dx-tabs-wrapper {
     display: flex;
+    background: transparent;
+    width: auto;
+
+    &:after {
+      display: none;
+    }
   }
 
   .dx-tab {
     background: none;
     padding: 0;
     border: none;
-    box-shadow: none !important;
 
-    &.dx-tab-selected {
-      &::after {
-        display: none;
-      }
+    &::after {
+      display: none;
     }
 
     .dx-tab-content {
