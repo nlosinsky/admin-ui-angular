@@ -32,7 +32,6 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
         "plugin:@angular-eslint/recommended",
-        "plugin:rxjs/recommended",
         "plugin:sonarjs/recommended",
         "plugin:prettier/recommended"
       ],
