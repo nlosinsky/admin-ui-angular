@@ -4,7 +4,7 @@ import { PreloadAllModules, provideRouter, withPreloading, withRouterConfig } fr
 import { AuthInterceptor } from '@app/interceptors/auth-interceptor';
 import { ConstantDataHelperService } from '@services/helpers/constant-data-helper.service';
 import dxDataGrid from 'devextreme/ui/data_grid';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { provideNgxWebstorage } from 'ngx-webstorage';
 import { APP_ROUTES } from './app.routes';
 
 function constantDataResolveFactory(provider: ConstantDataHelperService) {
@@ -33,8 +33,8 @@ export const appConfig: ApplicationConfig = {
       withPreloading(PreloadAllModules)
     ),
     // todo
-    NgxWebstorageModule.forRoot({ prefix: 'angular-dashboard' }).providers as any, // todo change
-    // todo
+    provideNgxWebstorage({prefix: 'angular-dashboard' }),
+    // todo change
     {
       provide: APP_INITIALIZER,
       useFactory: constantDataResolveFactory,
