@@ -1,6 +1,5 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { APP_INITIALIZER } from '@angular/core';
-import { ApplicationConfig } from '@angular/platform-browser';
+import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { PreloadAllModules, provideRouter, withPreloading, withRouterConfig } from '@angular/router';
 import { AuthInterceptor } from '@app/interceptors/auth-interceptor';
 import { ConstantDataHelperService } from '@services/helpers/constant-data-helper.service';
