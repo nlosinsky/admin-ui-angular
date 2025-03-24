@@ -45,24 +45,23 @@ export interface TransactionsForm {
 }
 
 @Component({
-  selector: 'app-transactions-table',
-  templateUrl: './transactions-table.component.html',
-  styleUrls: ['./transactions-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    DxDateBoxModule,
-    ReactiveFormsModule,
-    DxSelectBoxModule,
-    DxValidatorModule,
-    ErrorMessagePipe,
-    DxChartModule,
-    GeneralToolbarComponent,
-    DxButtonModule,
-    DxDropDownButtonModule,
-    QuicklinkModule
-  ]
+    selector: 'app-transactions-table',
+    templateUrl: './transactions-table.component.html',
+    styleUrls: ['./transactions-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        DxDateBoxModule,
+        ReactiveFormsModule,
+        DxSelectBoxModule,
+        DxValidatorModule,
+        ErrorMessagePipe,
+        DxChartModule,
+        GeneralToolbarComponent,
+        DxButtonModule,
+        DxDropDownButtonModule,
+        QuicklinkModule
+    ]
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;

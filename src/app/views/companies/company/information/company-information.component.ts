@@ -40,25 +40,24 @@ import { EMPTY, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-company-information',
-  templateUrl: './company-information.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    BgSpinnerComponent,
-    ReactiveFormsModule,
-    DxTextBoxModule,
-    ErrorMessagePipe,
-    DxButtonModule,
-    DxDropDownButtonModule,
-    DxValidatorModule,
-    DxSelectBoxModule,
-    StringValueCapitalizePipe,
-    StatusItemComponent,
-    StatusColorPipe,
-    QuicklinkModule
-  ]
+    selector: 'app-company-information',
+    templateUrl: './company-information.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        BgSpinnerComponent,
+        ReactiveFormsModule,
+        DxTextBoxModule,
+        ErrorMessagePipe,
+        DxButtonModule,
+        DxDropDownButtonModule,
+        DxValidatorModule,
+        DxSelectBoxModule,
+        StringValueCapitalizePipe,
+        StatusItemComponent,
+        StatusColorPipe,
+        QuicklinkModule
+    ]
 })
 export class CompanyInformationComponent
   implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit

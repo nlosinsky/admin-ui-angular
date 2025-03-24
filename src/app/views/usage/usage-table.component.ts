@@ -13,20 +13,19 @@ import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-usage-table',
-  templateUrl: './usage-table.component.html',
-  styleUrls: ['./usage-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    GeneralToolbarComponent,
-    DxDataGridModule,
-    DxButtonModule,
-    DxTextBoxModule,
-    QuicklinkModule,
-    BgSpinnerComponent
-  ]
+    selector: 'app-usage-table',
+    templateUrl: './usage-table.component.html',
+    styleUrls: ['./usage-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        GeneralToolbarComponent,
+        DxDataGridModule,
+        DxButtonModule,
+        DxTextBoxModule,
+        QuicklinkModule,
+        BgSpinnerComponent
+    ]
 })
 export class UsageTableComponent implements OnInit, OnDestroy {
   @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;

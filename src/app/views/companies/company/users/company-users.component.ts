@@ -25,23 +25,22 @@ import { EMPTY, from, Subject, zip } from 'rxjs';
 import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-company-users',
-  templateUrl: './company-users.component.html',
-  styleUrls: ['./company-users.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    AvatarBoxComponent,
-    DxDataGridModule,
-    DxButtonModule,
-    StatusItemComponent,
-    StringValueCapitalizePipe,
-    BgSpinnerComponent,
-    DxDropDownButtonModule,
-    StatusColorPipe,
-    QuicklinkModule
-  ]
+    selector: 'app-company-users',
+    templateUrl: './company-users.component.html',
+    styleUrls: ['./company-users.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        AvatarBoxComponent,
+        DxDataGridModule,
+        DxButtonModule,
+        StatusItemComponent,
+        StringValueCapitalizePipe,
+        BgSpinnerComponent,
+        DxDropDownButtonModule,
+        StatusColorPipe,
+        QuicklinkModule
+    ]
 })
 export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
   company!: Company;

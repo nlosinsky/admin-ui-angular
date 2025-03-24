@@ -26,23 +26,22 @@ import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-company-add-account',
-  templateUrl: 'company-add-account.component.html',
-  styleUrls: ['./company-add-account.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    DxTextBoxModule,
-    DxPopupModule,
-    ReactiveFormsModule,
-    ErrorMessagePipe,
-    DxNumberBoxModule,
-    DxTextAreaModule,
-    DxSelectBoxModule,
-    DxValidatorModule,
-    QuicklinkModule
-  ]
+    selector: 'app-company-add-account',
+    templateUrl: 'company-add-account.component.html',
+    styleUrls: ['./company-add-account.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        DxTextBoxModule,
+        DxPopupModule,
+        ReactiveFormsModule,
+        ErrorMessagePipe,
+        DxNumberBoxModule,
+        DxTextAreaModule,
+        DxSelectBoxModule,
+        DxValidatorModule,
+        QuicklinkModule
+    ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   form!: FormGroup;

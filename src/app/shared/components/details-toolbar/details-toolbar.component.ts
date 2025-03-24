@@ -4,15 +4,14 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { DxButtonModule } from 'devextreme-angular';
 
 @Component({
-  selector: 'app-details-toolbar',
-  templateUrl: './details-toolbar.component.html',
-  styleUrls: ['./details-toolbar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    DxButtonModule
-  ]
+    selector: 'app-details-toolbar',
+    templateUrl: './details-toolbar.component.html',
+    styleUrls: ['./details-toolbar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        DxButtonModule
+    ]
 })
 export class DetailsToolbarComponent {
   @Input() title = '';

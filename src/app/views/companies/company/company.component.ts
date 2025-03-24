@@ -12,18 +12,17 @@ import { QuicklinkModule } from 'ngx-quicklink';
 import { first, Observable, Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-company',
-  templateUrl: './company.component.html',
-  styleUrls: ['./company.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    DetailsToolbarComponent,
-    DxTabsModule,
-    QuicklinkModule
-  ]
+    selector: 'app-company',
+    templateUrl: './company.component.html',
+    styleUrls: ['./company.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        RouterModule,
+        DetailsToolbarComponent,
+        DxTabsModule,
+        QuicklinkModule
+    ]
 })
 export class CompanyComponent implements OnInit, OnDestroy {
   tabs: Tab[] = [];

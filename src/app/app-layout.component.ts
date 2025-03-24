@@ -4,18 +4,17 @@ import { SidenavComponent } from '@components/sidenav/sidenav.component';
 import { UserService } from '@services/data/user.service';
 
 @Component({
-  selector: 'app-app-layout',
-  template: `
+    selector: 'app-app-layout',
+    template: `
     <app-sidenav>
       <router-outlet></router-outlet>
     </app-sidenav>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    RouterModule,
-    SidenavComponent
-  ]
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        RouterModule,
+        SidenavComponent
+    ]
 })
 export class AppLayoutComponent implements OnInit {
   constructor(private userService: UserService) {}

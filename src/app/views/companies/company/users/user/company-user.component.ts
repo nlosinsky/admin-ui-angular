@@ -18,23 +18,22 @@ import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-company-user',
-  templateUrl: './company-user.component.html',
-  styleUrls: ['./company-user.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    StatusItemComponent,
-    StatusColorPipe,
-    StringValueCapitalizePipe,
-    DxTextBoxModule,
-    DxButtonModule,
-    DxSelectBoxModule,
-    BgSpinnerComponent,
-    QuicklinkModule
-  ]
+    selector: 'app-company-user',
+    templateUrl: './company-user.component.html',
+    styleUrls: ['./company-user.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        StatusItemComponent,
+        StatusColorPipe,
+        StringValueCapitalizePipe,
+        DxTextBoxModule,
+        DxButtonModule,
+        DxSelectBoxModule,
+        BgSpinnerComponent,
+        QuicklinkModule
+    ]
 })
 export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
   form!: FormGroup;

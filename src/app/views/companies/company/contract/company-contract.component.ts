@@ -33,23 +33,22 @@ import { EMPTY, forkJoin, Observable, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-company-contract',
-  templateUrl: './company-contract.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    DxSwitchModule,
-    ContractTypePipe,
-    ReactiveFormsModule,
-    DxSelectBoxModule,
-    DxNumberBoxModule,
-    DxTextBoxModule,
-    BgSpinnerComponent,
-    DxButtonModule,
-    DxDropDownButtonModule,
-    QuicklinkModule
-  ]
+    selector: 'app-company-contract',
+    templateUrl: './company-contract.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        DxSwitchModule,
+        ContractTypePipe,
+        ReactiveFormsModule,
+        DxSelectBoxModule,
+        DxNumberBoxModule,
+        DxTextBoxModule,
+        BgSpinnerComponent,
+        DxButtonModule,
+        DxDropDownButtonModule,
+        QuicklinkModule
+    ]
 })
 export class CompanyContractComponent
   implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit

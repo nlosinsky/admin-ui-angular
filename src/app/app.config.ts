@@ -1,15 +1,12 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer } from '@angular/core';
 import { PreloadAllModules, provideRouter, withPreloading, withRouterConfig } from '@angular/router';
 import { AuthInterceptor } from '@app/interceptors/auth-interceptor';
 import { ConstantDataHelperService } from '@services/helpers/constant-data-helper.service';
 import dxDataGrid from 'devextreme/ui/data_grid';
-import { provideNgxWebstorage } from 'ngx-webstorage';
+import { provideNgxWebstorage, withLocalStorage, withNgxWebstorageConfig } from 'ngx-webstorage';
+import { firstValueFrom } from 'rxjs';
 import { APP_ROUTES } from './app.routes';
-
-function constantDataResolveFactory(provider: ConstantDataHelperService) {
-  return () => provider.load();
-}
 
 dxDataGrid.defaultOptions({
   options: {
@@ -32,15 +29,14 @@ export const appConfig: ApplicationConfig = {
       // todo change
       withPreloading(PreloadAllModules)
     ),
-    // todo
-    provideNgxWebstorage({prefix: 'angular-dashboard' }),
-    // todo change
-    {
-      provide: APP_INITIALIZER,
-      useFactory: constantDataResolveFactory,
-      deps: [ConstantDataHelperService],
-      multi: true
-    },
+    provideNgxWebstorage(
+      withNgxWebstorageConfig({prefix: 'angular-dashboard'}),
+      withLocalStorage()
+    ),
+    provideAppInitializer(() => {
+      const constantDataService = inject(ConstantDataHelperService);
+      return firstValueFrom(constantDataService.load());
+      }),
     // todo
     provideHttpClient(
       withInterceptors([ AuthInterceptor ])

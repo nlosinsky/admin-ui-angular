@@ -38,22 +38,21 @@ import {
 } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-companies-table',
-  templateUrl: './companies-table.component.html',
-  styleUrls: ['./companies-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    GeneralToolbarComponent,
-    DxDataGridModule,
-    DxButtonModule,
-    DxTextBoxModule,
-    ContractTypePipe,
-    RouterModule,
-    QuicklinkModule,
-    BgSpinnerComponent
-  ]
+    selector: 'app-companies-table',
+    templateUrl: './companies-table.component.html',
+    styleUrls: ['./companies-table.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        GeneralToolbarComponent,
+        DxDataGridModule,
+        DxButtonModule,
+        DxTextBoxModule,
+        ContractTypePipe,
+        RouterModule,
+        QuicklinkModule,
+        BgSpinnerComponent
+    ]
 })
 export class CompaniesTableComponent implements OnInit, OnDestroy {
   @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;

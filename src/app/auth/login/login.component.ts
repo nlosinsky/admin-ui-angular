@@ -20,20 +20,19 @@ import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-auth-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    DxTextBoxModule,
-    ReactiveFormsModule,
-    DxButtonModule,
-    ErrorMessagePipe,
-    DxValidatorModule,
-    QuicklinkModule
-  ]
+    selector: 'app-auth-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        DxTextBoxModule,
+        ReactiveFormsModule,
+        DxButtonModule,
+        ErrorMessagePipe,
+        DxValidatorModule,
+        QuicklinkModule
+    ]
 })
 export class LoginComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;

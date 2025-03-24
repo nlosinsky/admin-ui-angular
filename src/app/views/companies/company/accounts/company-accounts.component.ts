@@ -39,22 +39,21 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } f
 import { on } from 'devextreme/events';
 
 @Component({
-  selector: 'app-company-accounts',
-  templateUrl: './company-accounts.component.html',
-  styleUrls: ['./company-accounts.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    DxDataGridModule,
-    BgSpinnerComponent,
-    DxTooltipModule,
-    StringValueCapitalizePipe,
-    DxButtonModule,
-    DxTextBoxModule,
-    QuicklinkModule,
-    BooleanYesNoPipe
-  ]
+    selector: 'app-company-accounts',
+    templateUrl: './company-accounts.component.html',
+    styleUrls: ['./company-accounts.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        DxDataGridModule,
+        BgSpinnerComponent,
+        DxTooltipModule,
+        StringValueCapitalizePipe,
+        DxButtonModule,
+        DxTextBoxModule,
+        QuicklinkModule,
+        BooleanYesNoPipe
+    ]
 })
 export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewInit, CommonCustomerComponentActions {
   @ViewChild(DxTooltipComponent) tooltip!: DxTooltipComponent;

@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'sass:color' as color;
 
 $handle-off-bg: rgba(111, 113, 129, 10%);
 
@@ -31,7 +32,7 @@ $handle-off-bg: rgba(111, 113, 129, 10%);
   &.dx-state-focused {
     .dx-switch-container {
       background-color: $light-gray-3;
-      border-color: darken($light-gray-2, 9%);
+      border-color: color.adjust($light-gray-2, $lightness: -9%);
     }
 
     .dx-switch-handle {
@@ -56,7 +57,7 @@ $handle-off-bg: rgba(111, 113, 129, 10%);
     &.dx-state-hover,
     &.dx-state-focused {
       .dx-switch-container {
-        border-color: darken($green, 9%);
+        border-color: color.adjust($green, $lightness: -9%);
       }
 
       .dx-switch-handle {

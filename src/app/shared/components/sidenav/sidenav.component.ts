@@ -11,18 +11,17 @@ import { QuicklinkModule } from 'ngx-quicklink';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: 'sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    RouterModule,
-    DxButtonModule,
-    CommonModule,
-    DxDropDownButtonModule,
-    QuicklinkModule
-  ]
+    selector: 'app-sidenav',
+    templateUrl: 'sidenav.component.html',
+    styleUrls: ['./sidenav.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        RouterModule,
+        DxButtonModule,
+        CommonModule,
+        DxDropDownButtonModule,
+        QuicklinkModule
+    ]
 })
 export class SidenavComponent implements OnInit {
   items: NavItem[] = [];

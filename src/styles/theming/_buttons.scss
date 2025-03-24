@@ -1,5 +1,6 @@
 @use 'variables' as *;
 @use 'mixins' as mixins;
+@use 'sass:color' as color;
 
 .dx-button-mode-outlined {
   &.dx-button-normal {
@@ -54,7 +55,7 @@
 
         &.dx-state-active {
           color: $black;
-          background-color: darken($light-gray, 9%);
+          background-color: color.adjust($light-gray, $lightness: -9%);
         }
       }
     }
