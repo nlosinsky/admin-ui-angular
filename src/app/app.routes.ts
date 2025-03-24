@@ -24,7 +24,7 @@ export const APP_ROUTES: Routes = [
         path: 'transactions',
         loadChildren: () => import('./views/transactions/routes').then(m => m.ROUTES)
       },
-      { path: '', pathMatch: 'full', redirectTo: 'companies' },
+      { path: '', pathMatch: 'full', redirectTo: 'companies' }
     ]
   }
 ];

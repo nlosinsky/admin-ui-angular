@@ -8,6 +8,12 @@
 
   .dx-tabs-wrapper {
     display: flex;
+    background: transparent;
+    width: auto;
+
+    &:after {
+      display: none;
+    }
   }
 
   .dx-tab {
@@ -15,10 +21,8 @@
     padding: 0;
     border: none;
 
-    &.dx-tab-selected {
-      &::after {
-        display: none;
-      }
+    &::after {
+      display: none;
     }
 
     .dx-tab-content {
@@ -50,6 +54,7 @@
 
       .dx-tab-text {
         padding: 16px;
+        color: inherit;
       }
     }
   }

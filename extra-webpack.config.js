@@ -1,4 +1,4 @@
-// todo check if can be removed
+// todo check if it can be removed
 
 module.exports = {
   resolve: {

@@ -34,7 +34,8 @@
               "devexpress-diagram",
               "devexpress-gantt",
               "devextreme-quill",
-              "file-saver"
+              "file-saver",
+              "date-fns"
             ],
             "outputPath": "dist/admin-ui-angular",
             "index": "src/index.html",
