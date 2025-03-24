@@ -19,11 +19,8 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "extra-webpack.config.js"
-            },
             "allowedCommonJsDependencies": [
               "devextreme",
               "faker",
@@ -98,7 +95,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "buildTarget": "admin-ui-angular:build"
           },
@@ -109,17 +106,14 @@
           }
         },
         "extract-i18n": {
-          "builder": "@angular-builders/custom-webpack:extract-i18n",
+          "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "buildTarget": "admin-ui-angular:build"
           }
         },
         "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "customWebpackConfig": {
-              "path": "extra-webpack.config.js"
-            },
             "polyfills": [
               "zone.js",
               "zone.js/testing"
