@@ -1,10 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AppLayoutComponent } from '@app/app-layout.component';
 import { AuthGuard } from '@app/auth/guards/auth.guard';
-import { QuicklinkStrategy } from 'ngx-quicklink';
 
-const routes: Routes = [
+export const APP_ROUTES: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/routes').then(m => m.ROUTES)
@@ -30,14 +28,3 @@ const routes: Routes = [
     ]
   }
 ];
-
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      paramsInheritanceStrategy: 'always',
-      preloadingStrategy: QuicklinkStrategy
-    })
-  ],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {}
