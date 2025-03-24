@@ -1,7 +1,8 @@
-import { NgModule, Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'errorMessage'
+  name: 'errorMessage',
+  standalone: true
 })
 export class ErrorMessagePipe implements PipeTransform {
   transform(errors: null | undefined | { [key: string]: string & { [key: string]: unknown } }): string {
@@ -43,11 +44,3 @@ export class ErrorMessagePipe implements PipeTransform {
     return '';
   }
 }
-
-@NgModule({
-  imports: [],
-  exports: [ErrorMessagePipe],
-  declarations: [ErrorMessagePipe],
-  providers: []
-})
-export class ErrorMessagePipeModule {}

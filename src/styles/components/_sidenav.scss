@@ -1,5 +1,12 @@
 @use 'variables' as *;
 
+.sidenav-menu {
+  .dx-button-content {
+    justify-content: flex-start;
+    padding-left: 15px;
+  }
+}
+
 .sidenav-user-btn {
   .dx-button {
     text-align: left;

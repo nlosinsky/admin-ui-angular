@@ -11,7 +11,7 @@ import {
 import { CompaniesService } from '@services/data/companies.service';
 import { TransactionsService } from '@services/data/transactions.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { TransactionsForm } from '@views/transactions/table/transactions-table.component';
+import { TransactionsForm } from '@views/transactions/transactions-table.component';
 import { Canvg } from 'canvg';
 import { addMilliseconds, endOfDay, getQuarter, startOfDay, subMilliseconds } from 'date-fns';
 import { DxChartComponent } from 'devextreme-angular';

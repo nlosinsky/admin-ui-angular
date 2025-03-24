@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,16 +9,21 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { Company, ExportGridExcelCell, HttpError } from '@app/shared/models';
 import { CompanyContractType } from '@app/shared/models/companies/company.enum';
 import { TransformHelper } from '@app/shared/utils/transform-helper';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
+import { ContractTypePipe } from '@pipes/contract-type/contract-type.pipe';
 import { CompaniesService } from '@services/data/companies.service';
 import { DataGridHelperService } from '@services/helpers/data-grid-helper.service';
 import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { DxDataGridComponent } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxTextBoxModule } from 'devextreme-angular';
 import { DataGridCell } from 'devextreme/excel_exporter';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, forkJoin, from, Subject } from 'rxjs';
 import {
   catchError,
@@ -36,7 +41,19 @@ import {
   selector: 'app-companies-table',
   templateUrl: './companies-table.component.html',
   styleUrls: ['./companies-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    GeneralToolbarComponent,
+    DxDataGridModule,
+    DxButtonModule,
+    DxTextBoxModule,
+    ContractTypePipe,
+    RouterModule,
+    QuicklinkModule,
+    BgSpinnerComponent
+  ]
 })
 export class CompaniesTableComponent implements OnInit, OnDestroy {
   @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;

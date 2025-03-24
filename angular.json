@@ -29,7 +29,12 @@
               "faker",
               "jszip",
               "exceljs",
-              "raf"
+              "raf",
+              "rgbcolor",
+              "devexpress-diagram",
+              "devexpress-gantt",
+              "devextreme-quill",
+              "file-saver"
             ],
             "outputPath": "dist/admin-ui-angular",
             "index": "src/index.html",
@@ -114,10 +119,11 @@
             "customWebpackConfig": {
               "path": "extra-webpack.config.js"
             },
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -149,5 +155,13 @@
   },
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }

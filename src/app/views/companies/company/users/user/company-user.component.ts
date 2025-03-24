@@ -1,12 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyMember, HttpError } from '@app/shared/models';
 import { CompanyMemberAccountState, CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions } from '@app/shared/models/components';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { StatusItemComponent } from '@components/status-item/status-item.component';
+import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
+import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
 import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { CompanyUserService } from '@views/companies/company/users/components/user/company-user.service';
+import { CompanyUserService } from '@views/companies/company/users/user/company-user.service';
+import { DxButtonModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
+import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -14,7 +21,20 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   selector: 'app-company-user',
   templateUrl: './company-user.component.html',
   styleUrls: ['./company-user.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    StatusItemComponent,
+    StatusColorPipe,
+    StringValueCapitalizePipe,
+    DxTextBoxModule,
+    DxButtonModule,
+    DxSelectBoxModule,
+    BgSpinnerComponent,
+    QuicklinkModule
+  ]
 })
 export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
   form!: FormGroup;
@@ -41,7 +61,8 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
     private companyUserService: CompanyUserService,
     private fb: FormBuilder,
     private toastService: ToastService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.listenRouteChanges();
@@ -53,10 +74,10 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
     this.ngUnsub.complete();
   }
 
-  navigateBack = () => this.router.navigate(['../'], { relativeTo: this.route });
+  navigateBack = () => this.router.navigate(['../'], {relativeTo: this.route});
 
   onEdit() {
-    this.router.navigate([], { relativeTo: this.route, queryParams: { edit: true } });
+    this.router.navigate([], {relativeTo: this.route, queryParams: {edit: true}});
   }
 
   onCancel() {
@@ -64,7 +85,7 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
       return;
     }
 
-    this.router.navigate([], { relativeTo: this.route, queryParams: null });
+    this.router.navigate([], {relativeTo: this.route, queryParams: null});
   }
 
   onSave() {
@@ -90,7 +111,7 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
         }),
         takeUntil(this.ngUnsub)
       )
-      .subscribe(({ accountState }) => {
+      .subscribe(({accountState}) => {
         this.toastService.showSuccess('Member data has been updated successfully.');
         this.member.accountState = accountState;
         this.form.get('accountState')?.setValue(accountState);
@@ -137,11 +158,11 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
   }
 
   private initFormData(data: CompanyMember): void {
-    this.form = this.fb.group({ accountState: data.accountState });
+    this.form = this.fb.group({accountState: data.accountState});
   }
 
   private restoreForm(): void {
-    const { accountState } = this.member;
-    this.form.reset({ accountState });
+    const {accountState} = this.member;
+    this.form.reset({accountState});
   }
 }
