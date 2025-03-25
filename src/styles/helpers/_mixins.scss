@@ -1,7 +1,7 @@
 @use 'sass:color' as color;
 
 @mixin container-shadow() {
-  box-shadow: 0 8px 16px rgba(111, 113, 129, 24%);
+  box-shadow: 0 8px 16px rgb(111 113 129 / 24%);
   border-radius: 4px;
   border-color: transparent;
 }

@@ -80,14 +80,6 @@
     }
   }
 
-  .dx-dropdownbutton-action{
-    &.dx-button-has-icon:not(.dx-button-has-text) {
-      .dx-button-content {
-        padding-inline: 0;
-      }
-    }
-  }
-
   &.h-34 {
     .dx-button-content {
       display: flex;
@@ -98,6 +90,14 @@
 
     .dx-icon-menu {
       height: auto;
+    }
+  }
+
+  .dx-dropdownbutton-action {
+    &.dx-button-has-icon:not(.dx-button-has-text) {
+      .dx-button-content {
+        padding-inline: 0;
+      }
     }
   }
 }

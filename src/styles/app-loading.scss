@@ -11,15 +11,11 @@
   .app-loading {
     max-width: 20vmin;
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
+    inset: 0;
     margin: auto;
-    align-content: center;
+    place-content: center center;
     display: flex;
     align-items: center;
-    justify-content: center;
     opacity: 0.8;
   }
 
@@ -33,10 +29,7 @@
     animation: rotate 2s linear infinite;
     transform-origin: center center;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    inset: 0;
     margin: auto;
 
     .path {

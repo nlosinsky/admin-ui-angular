@@ -1,7 +1,7 @@
 @use 'variables' as *;
 @use 'sass:color' as color;
 
-$handle-off-bg: rgba(111, 113, 129, 10%);
+$handle-off-bg: rgb(111 113 129 / 10%);
 
 .dx-switch {
   width: 42px;
