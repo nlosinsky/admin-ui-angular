@@ -28,7 +28,6 @@ import {
   DxSwitchModule,
   DxTextBoxModule
 } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, forkJoin, Observable, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 
@@ -47,7 +46,6 @@ import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
         BgSpinnerComponent,
         DxButtonModule,
         DxDropDownButtonModule,
-        QuicklinkModule
     ]
 })
 export class CompanyContractComponent

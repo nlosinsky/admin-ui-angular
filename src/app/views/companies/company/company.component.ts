@@ -8,7 +8,6 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { CompanyHelperService } from '@views/companies/company/company-helper.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import { DxTabsModule } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { first, Observable, Subject } from 'rxjs';
 
 @Component({
@@ -21,7 +20,6 @@ import { first, Observable, Subject } from 'rxjs';
         RouterModule,
         DetailsToolbarComponent,
         DxTabsModule,
-        QuicklinkModule
     ]
 })
 export class CompanyComponent implements OnInit, OnDestroy {

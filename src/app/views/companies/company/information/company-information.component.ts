@@ -35,7 +35,6 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 
@@ -56,7 +55,6 @@ import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
         StringValueCapitalizePipe,
         StatusItemComponent,
         StatusColorPipe,
-        QuicklinkModule
     ]
 })
 export class CompanyInformationComponent

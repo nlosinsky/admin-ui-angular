@@ -33,7 +33,6 @@ import {
   DxTooltipModule,
 } from 'devextreme-angular';
 import { DataGridCell } from 'devextreme/excel_exporter';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { on } from 'devextreme/events';
@@ -51,7 +50,6 @@ import { on } from 'devextreme/events';
         StringValueCapitalizePipe,
         DxButtonModule,
         DxTextBoxModule,
-        QuicklinkModule,
         BooleanYesNoPipe
     ]
 })

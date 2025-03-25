@@ -8,7 +8,6 @@ import { DocumentsService } from '@services/data/documents.service';
 import { DataGridHelperService } from '@services/helpers/data-grid-helper.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxTextBoxModule } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 
@@ -23,7 +22,6 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } f
         DxDataGridModule,
         DxButtonModule,
         DxTextBoxModule,
-        QuicklinkModule,
         BgSpinnerComponent
     ]
 })

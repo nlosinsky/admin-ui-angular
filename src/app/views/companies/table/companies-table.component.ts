@@ -23,7 +23,6 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxTextBoxModule } from 'devextreme-angular';
 import { DataGridCell } from 'devextreme/excel_exporter';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, forkJoin, from, Subject } from 'rxjs';
 import {
   catchError,
@@ -50,7 +49,6 @@ import {
         DxTextBoxModule,
         ContractTypePipe,
         RouterModule,
-        QuicklinkModule,
         BgSpinnerComponent
     ]
 })

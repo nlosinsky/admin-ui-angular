@@ -7,7 +7,6 @@ import { User } from '@app/shared/models/user';
 import { DropdownTypes, NavItem, UserDropdownItem } from '@components/sidenav/sidenav.model';
 import { SidenavService } from '@components/sidenav/sidenav.service';
 import { DxButtonModule, DxDropDownButtonModule } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -20,7 +19,6 @@ import { Observable } from 'rxjs';
         DxButtonModule,
         CommonModule,
         DxDropDownButtonModule,
-        QuicklinkModule
     ]
 })
 export class SidenavComponent implements OnInit {

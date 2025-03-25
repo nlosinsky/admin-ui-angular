@@ -13,7 +13,6 @@ import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyUserService } from '@views/companies/company/users/user/company-user.service';
 import { DxButtonModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -32,7 +31,6 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
         DxButtonModule,
         DxSelectBoxModule,
         BgSpinnerComponent,
-        QuicklinkModule
     ]
 })
 export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {

@@ -21,7 +21,6 @@ import {
   DxValidatorModule
 } from 'devextreme-angular';
 import { DxoButtonOptions } from 'devextreme-angular/ui/nested/base/button-options';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -40,7 +39,6 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
         DxTextAreaModule,
         DxSelectBoxModule,
         DxValidatorModule,
-        QuicklinkModule,
       DxToolbarModule
     ]
 })

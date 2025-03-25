@@ -15,7 +15,6 @@ import { FormHelper } from '@app/shared/utils/form-helper';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AuthService } from '@services/data/auth.service';
 import { DxButtonModule, DxTextBoxModule, DxValidatorComponent, DxValidatorModule } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -31,7 +30,6 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
         DxButtonModule,
         ErrorMessagePipe,
         DxValidatorModule,
-        QuicklinkModule
     ]
 })
 export class LoginComponent implements OnInit, OnDestroy {

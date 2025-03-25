@@ -33,7 +33,6 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { of, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
 
@@ -60,7 +59,6 @@ export interface TransactionsForm {
         GeneralToolbarComponent,
         DxButtonModule,
         DxDropDownButtonModule,
-        QuicklinkModule
     ]
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {

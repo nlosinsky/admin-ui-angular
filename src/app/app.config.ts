@@ -1,6 +1,6 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, inject, provideAppInitializer } from '@angular/core';
-import { PreloadAllModules, provideRouter, withPreloading, withRouterConfig } from '@angular/router';
+import { provideRouter, withRouterConfig } from '@angular/router';
 import { AuthInterceptor } from '@app/interceptors/auth-interceptor';
 import { ConstantDataHelperService } from '@services/helpers/constant-data-helper.service';
 import dxDataGrid from 'devextreme/ui/data_grid';
@@ -18,7 +18,6 @@ dxDataGrid.defaultOptions({
   }
 });
 
-//  todo refactor
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(
@@ -26,8 +25,6 @@ export const appConfig: ApplicationConfig = {
       withRouterConfig({
         paramsInheritanceStrategy: 'always'
       }),
-      // todo change
-      withPreloading(PreloadAllModules)
     ),
     provideNgxWebstorage(
       withNgxWebstorageConfig({prefix: 'angular-dashboard'}),
@@ -37,7 +34,6 @@ export const appConfig: ApplicationConfig = {
       const constantDataService = inject(ConstantDataHelperService);
       return firstValueFrom(constantDataService.load());
       }),
-    // todo
     provideHttpClient(
       withInterceptors([ AuthInterceptor ])
     )

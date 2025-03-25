@@ -20,7 +20,6 @@ import {
   DxDataGridModule,
   DxDropDownButtonModule,
 } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, from, Subject, zip } from 'rxjs';
 import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operators';
 
@@ -39,7 +38,6 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
         BgSpinnerComponent,
         DxDropDownButtonModule,
         StatusColorPipe,
-        QuicklinkModule
     ]
 })
 export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
