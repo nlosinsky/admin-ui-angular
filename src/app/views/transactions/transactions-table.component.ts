@@ -12,8 +12,6 @@ import {
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Company, CompanyMember } from '@app/shared/models';
 import {
-  AggregationIntervalType,
-  TickIntervalType,
   TransactionsCount,
   TransactionsSeries
 } from '@app/shared/models/transactions';
@@ -23,6 +21,7 @@ import { GeneralToolbarComponent } from '@components/general-toolbar/general-too
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { TransactionsTableService } from '@views/transactions/transactions-table.service';
 import { isValid } from 'date-fns';
+import DevExpress from 'devextreme';
 import {
   DxButtonModule,
   DxChartComponent,
@@ -35,6 +34,7 @@ import {
 } from 'devextreme-angular';
 import { of, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
+import { TimeInterval } from 'devextreme/common/charts';
 
 export interface TransactionsForm {
   startDate: string;
@@ -72,8 +72,8 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   form!: FormGroup;
   maxDate = new Date();
-  tickInterval: TickIntervalType = '';
-  aggregationInterval: AggregationIntervalType = 'day';
+  tickInterval!: TimeInterval;
+  aggregationInterval: TimeInterval = 'day';
 
   readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
@@ -103,7 +103,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   onChangeSeries(value: TransactionsSeries) {
     this.selectedSeriesValue = value;
     this.tickInterval = this.transactionsTableService.getTickInterval(value);
-    this.aggregationInterval = this.transactionsTableService.getAggregationInterval(value);
+    this.aggregationInterval = this.transactionsTableService.getTickInterval(value);
   }
 
   onValidateRule(fieldName: string) {

@@ -37,6 +37,7 @@ import {
 } from 'devextreme-angular';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
+import { DxSelectBoxTypes } from "devextreme-angular/ui/select-box"
 
 @Component({
     selector: 'app-company-information',
@@ -208,9 +209,7 @@ export class CompanyInformationComponent
     return { name, website, streetAddress, country, state, city, zipCode, companyState };
   }
 
-  //   todo fix
-  onCountryChange({ value: countryName }: any) {
-  // onCountryChange({ value: countryName }: { value: string }) {
+  onCountryChange({ value: countryName }: DxSelectBoxTypes.ValueChangedEvent) {
     const country = this.countries.find(item => item.name === countryName);
 
     if (!country) {
@@ -224,9 +223,7 @@ export class CompanyInformationComponent
     }
   }
 
-  //   todo fix
-  onStateChange({ value: stateName }: any) {
-  // onStateChange({ value: stateName }: { value: string }) {
+  onStateChange({ value: stateName }: DxSelectBoxTypes.ValueChangedEvent) {
     const state = this.states.find(item => item.name === stateName);
 
     if (!state) {
@@ -246,9 +243,7 @@ export class CompanyInformationComponent
     }
   }
 
-  //   todo fix
-  onCityChange({ value: cityName }: any) {
-  // onCityChange({ value: cityName }: { value: string }) {
+  onCityChange({ value: cityName }: DxSelectBoxTypes.ValueChangedEvent) {
     const city = this.cities.find(item => item.name === cityName);
 
     if (!cityName) {
@@ -268,9 +263,7 @@ export class CompanyInformationComponent
     }
   }
 
-  //   todo fix
-  onAddCustomCity(data: any) {
-  // onAddCustomCity(data: { text: string; customItem: unknown }) {
+  onAddCustomCity(data: DxSelectBoxTypes.CustomItemCreatingEvent) {
     if (!data.text) {
       data.customItem = null;
       return;
@@ -282,9 +275,7 @@ export class CompanyInformationComponent
     this.city.setValue(data.text);
   }
 
-  //   todo fix
-  onAddCustomZipCode(data: any) {
-  // onAddCustomZipCode(data: { text: string; customItem: unknown }) {
+  onAddCustomZipCode(data: DxSelectBoxTypes.CustomItemCreatingEvent) {
     if (!data.text) {
       data.customItem = null;
       return;

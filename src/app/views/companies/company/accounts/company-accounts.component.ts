@@ -36,6 +36,7 @@ import { DataGridCell } from 'devextreme/excel_exporter';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { on } from 'devextreme/events';
+import { DxDataGridTypes } from "devextreme-angular/ui/data-grid"
 
 @Component({
     selector: 'app-company-accounts',
@@ -117,9 +118,11 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
       });
   }
 
-  //   todo fix
-  onCellPrepared(event: any) {
-  // onCellPrepared(event: { rowType: string; column: { dataField: string }; cellElement: HTMLElement; data: Account }) {
+  onCellPrepared(event: DxDataGridTypes.CellPreparedEvent) {
+    if (!event.column.dataField) {
+      return;
+    }
+
     if (event.rowType === 'data' && ['name', 'description', 'subtype'].includes(event.column.dataField)) {
       on(event.cellElement, 'mouseover', (arg: { target: HTMLElement }) => {
         const key = event.column.dataField as keyof Account;
