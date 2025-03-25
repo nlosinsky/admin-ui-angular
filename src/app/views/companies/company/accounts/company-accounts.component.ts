@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -44,7 +44,7 @@ import { DxDataGridTypes } from "devextreme-angular/ui/data-grid"
     styleUrls: ['./company-accounts.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
         DxDataGridModule,
         BgSpinnerComponent,
         DxTooltipModule,

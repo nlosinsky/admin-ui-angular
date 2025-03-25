@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +29,9 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
     styleUrls: ['./company-users.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
+      NgClass,
+      NgForOf,
         AvatarBoxComponent,
         DxDataGridModule,
         DxButtonModule,

@@ -22,9 +22,7 @@
         ],
         "createDefaultProgram": true
       },
-      "plugins": [
-        "rxjs"
-      ],
+      "plugins": [],
       "extends": [
         "eslint:recommended",
         "plugin:import/recommended",

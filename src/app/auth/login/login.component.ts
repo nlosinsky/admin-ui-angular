@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -24,7 +24,8 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
     styleUrls: ['./login.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
+      NgClass,
         DxTextBoxModule,
         ReactiveFormsModule,
         DxButtonModule,

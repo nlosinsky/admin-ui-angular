@@ -1,4 +1,4 @@
-import { CommonModule, formatDate } from '@angular/common';
+import { DatePipe, DecimalPipe, formatDate, NgClass, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -42,7 +42,10 @@ import {
     styleUrls: ['./companies-table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
+      NgClass,
+      DatePipe,
+      DecimalPipe,
         GeneralToolbarComponent,
         DxDataGridModule,
         DxButtonModule,

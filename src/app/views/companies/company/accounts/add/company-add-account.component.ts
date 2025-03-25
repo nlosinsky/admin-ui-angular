@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -30,7 +29,7 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
     styleUrls: ['./company-add-account.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+
         DxTextBoxModule,
         DxPopupModule,
         ReactiveFormsModule,

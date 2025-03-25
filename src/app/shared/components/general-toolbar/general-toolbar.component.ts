@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
@@ -6,9 +5,7 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
     templateUrl: './general-toolbar.component.html',
     styleUrls: ['./general-toolbar.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule
-    ]
+    imports: []
 })
 export class GeneralToolbarComponent {
   @Input() title = '';

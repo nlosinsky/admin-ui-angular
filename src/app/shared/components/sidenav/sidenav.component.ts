@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -15,9 +15,11 @@ import { DxDropDownButtonTypes } from "devextreme-angular/ui/drop-down-button"
     styleUrls: ['./sidenav.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
+      NgForOf,
+      NgIf,
+      AsyncPipe,
         RouterModule,
         DxButtonModule,
-        CommonModule,
         DxDropDownButtonModule,
     ]
 })

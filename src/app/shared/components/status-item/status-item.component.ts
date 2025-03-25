@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input, HostBinding } from '@angular/core';
 import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
 
@@ -8,7 +8,7 @@ import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
     styleUrls: ['./status-item.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule
+      NgClass
     ]
 })
 export class StatusItemComponent {

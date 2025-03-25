@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { DxButtonModule } from 'devextreme-angular';
@@ -9,7 +9,7 @@ import { DxButtonModule } from 'devextreme-angular';
     styleUrls: ['./details-toolbar.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
         DxButtonModule
     ]
 })

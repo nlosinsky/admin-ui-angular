@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -36,7 +36,9 @@ import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
     templateUrl: './company-contract.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
+      NgClass,
+      NgTemplateOutlet,
         DxSwitchModule,
         ContractTypePipe,
         ReactiveFormsModule,

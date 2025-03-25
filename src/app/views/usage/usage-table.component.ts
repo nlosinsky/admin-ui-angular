@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { DocumentsStat, HttpError } from '@app/shared/models';
@@ -17,7 +17,7 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } f
     styleUrls: ['./usage-table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
         GeneralToolbarComponent,
         DxDataGridModule,
         DxButtonModule,

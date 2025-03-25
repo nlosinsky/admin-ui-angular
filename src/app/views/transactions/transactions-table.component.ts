@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -49,7 +49,7 @@ export interface TransactionsForm {
     styleUrls: ['./transactions-table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgClass,
         DxDateBoxModule,
         ReactiveFormsModule,
         DxSelectBoxModule,

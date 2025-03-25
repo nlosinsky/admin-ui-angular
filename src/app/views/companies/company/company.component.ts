@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Company, Tab } from '@app/shared/models';
@@ -16,7 +16,9 @@ import { first, Observable, Subject } from 'rxjs';
     styleUrls: ['./company.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
+      NgTemplateOutlet,
+      AsyncPipe,
         RouterModule,
         DetailsToolbarComponent,
         DxTabsModule,

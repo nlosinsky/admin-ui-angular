@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { DatePipe, NgClass, NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -44,7 +44,9 @@ import { DxSelectBoxTypes } from "devextreme-angular/ui/select-box"
     templateUrl: './company-information.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule,
+      NgIf,
+      NgClass,
+      DatePipe,
         BgSpinnerComponent,
         ReactiveFormsModule,
         DxTextBoxModule,
