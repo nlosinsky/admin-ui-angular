@@ -3,7 +3,7 @@
   [height]="400"
   [showTitle]="true"
   [dragEnabled]="false"
-  [closeOnOutsideClick]="true"
+  [hideOnOutsideClick]="true"
   [showCloseButton]="true"
   [visible]="true"
   title="Add Account"
@@ -158,17 +158,17 @@
     </div>
   </form>
 
-  <dxi-toolbar-item
+  <dxi-popup-toolbar-item
     widget="dxButton"
     toolbar="bottom"
     location="after"
     [options]="cancelButtonOptions"
-  ></dxi-toolbar-item>
+  ></dxi-popup-toolbar-item>
 
-  <dxi-toolbar-item
+  <dxi-popup-toolbar-item
     widget="dxButton"
     toolbar="bottom"
     location="after"
     [options]="saveButtonOptions"
-  ></dxi-toolbar-item>
+  ></dxi-popup-toolbar-item>
 </dx-popup>

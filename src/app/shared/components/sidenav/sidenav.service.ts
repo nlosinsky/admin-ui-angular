@@ -7,7 +7,10 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SidenavService {
-  constructor(private authService: AuthService, private userService: UserService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   getCurrentUser(): Observable<User> {
     return this.userService.currentUser$;

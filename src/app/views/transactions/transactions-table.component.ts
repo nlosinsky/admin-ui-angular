@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -8,21 +9,28 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CompanyMember, Company } from '@app/shared/models';
-import {
-  AggregationIntervalType,
-  TickIntervalType,
-  TransactionsCount,
-  TransactionsSeries
-} from '@app/shared/models/transactions';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Company, CompanyMember } from '@app/shared/models';
+import { TransactionsCount, TransactionsSeries } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
-import { TransactionsTableService } from '@views/transactions/table/transactions-table.service';
-import { DxChartComponent, DxValidatorComponent } from 'devextreme-angular';
+import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
+import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
+import { TransactionsTableService } from '@views/transactions/transactions-table.service';
+import { isValid } from 'date-fns';
+import {
+  DxButtonModule,
+  DxChartComponent,
+  DxChartModule,
+  DxDateBoxModule,
+  DxDropDownButtonModule,
+  DxSelectBoxModule,
+  DxValidatorComponent,
+  DxValidatorModule
+} from 'devextreme-angular';
 import { of, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
-import { isValid } from 'date-fns';
+import { TimeInterval } from 'devextreme/common/charts';
 
 export interface TransactionsForm {
   startDate: string;
@@ -35,7 +43,19 @@ export interface TransactionsForm {
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
   styleUrls: ['./transactions-table.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgClass,
+    DxDateBoxModule,
+    ReactiveFormsModule,
+    DxSelectBoxModule,
+    DxValidatorModule,
+    ErrorMessagePipe,
+    DxChartModule,
+    GeneralToolbarComponent,
+    DxButtonModule,
+    DxDropDownButtonModule
+  ]
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
@@ -48,8 +68,8 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   form!: FormGroup;
   maxDate = new Date();
-  tickInterval: TickIntervalType = '';
-  aggregationInterval: AggregationIntervalType = 'day';
+  tickInterval!: TimeInterval;
+  aggregationInterval: TimeInterval = 'day';
 
   readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
@@ -79,7 +99,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   onChangeSeries(value: TransactionsSeries) {
     this.selectedSeriesValue = value;
     this.tickInterval = this.transactionsTableService.getTickInterval(value);
-    this.aggregationInterval = this.transactionsTableService.getAggregationInterval(value);
+    this.aggregationInterval = this.transactionsTableService.getTickInterval(value);
   }
 
   onValidateRule(fieldName: string) {

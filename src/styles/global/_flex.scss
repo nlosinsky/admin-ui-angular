@@ -1,30 +1,35 @@
+%flex-col {
+  flex-basis: 0;
+
+  &:not(:first-child) {
+    margin-left: 15px;
+  }
+}
+
 .flex-row {
   display: flex;
   flex-wrap: wrap;
 
   .flex-col {
-    flex-basis: 0;
-    flex-grow: 1;
+    @extend %flex-col;
 
-    &:not(:first-child) {
-      margin-left: 15px;
-    }
+    flex-grow: 1;
   }
 
   .flex-col-auto {
-    @extend .flex-col;
+    @extend %flex-col;
 
     flex-grow: 0;
   }
 
   .flex-col-2 {
-    @extend .flex-col;
+    @extend %flex-col;
 
     flex-grow: 2;
   }
 
   .flex-col-3 {
-    @extend .flex-col;
+    @extend %flex-col;
 
     flex-grow: 3;
   }

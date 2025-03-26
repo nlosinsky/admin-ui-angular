@@ -17,7 +17,10 @@ export class UserService {
 
   private loadUserSubj = new Subject<void>();
 
-  constructor(private userApiService: UserApiService, private toastService: ToastService) {
+  constructor(
+    private userApiService: UserApiService,
+    private toastService: ToastService
+  ) {
     this.currentUser$ = this.currentUserSubj.asObservable().pipe(share());
 
     this.loadUserSubj

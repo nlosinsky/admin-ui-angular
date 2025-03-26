@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { SidenavComponent } from '@components/sidenav/sidenav.component';
 import { UserService } from '@services/data/user.service';
 
 @Component({
@@ -8,7 +10,8 @@ import { UserService } from '@services/data/user.service';
       <router-outlet></router-outlet>
     </app-sidenav>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterModule, SidenavComponent]
 })
 export class AppLayoutComponent implements OnInit {
   constructor(private userService: UserService) {}

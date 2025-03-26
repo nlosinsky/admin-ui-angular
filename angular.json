@@ -19,19 +19,19 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "extra-webpack.config.js"
-            },
             "allowedCommonJsDependencies": [
-              "devextreme",
-              "faker",
               "jszip",
               "exceljs",
-              "raf"
+              "raf",
+              "rgbcolor",
+              "devexpress-diagram",
+              "devexpress-gantt",
+              "devextreme-quill",
+              "file-saver"
             ],
-            "outputPath": "dist/admin-ui-angular",
+            "outputPath": "dist/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -54,7 +54,7 @@
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
-            "sourceMap": true,
+            "sourceMap": false,
             "optimization": false,
             "namedChunks": true
           },
@@ -92,32 +92,30 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "admin-ui-angular:build"
+            "buildTarget": "admin-ui-angular:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "admin-ui-angular:build:production"
+              "buildTarget": "admin-ui-angular:build:production"
             }
           }
         },
         "extract-i18n": {
-          "builder": "@angular-builders/custom-webpack:extract-i18n",
+          "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "admin-ui-angular:build"
+            "buildTarget": "admin-ui-angular:build"
           }
         },
         "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "customWebpackConfig": {
-              "path": "extra-webpack.config.js"
-            },
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -149,5 +147,13 @@
   },
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }

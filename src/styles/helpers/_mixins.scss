@@ -1,5 +1,7 @@
+@use 'sass:color' as color;
+
 @mixin container-shadow() {
-  box-shadow: 0 8px 16px rgba(111, 113, 129, 24%);
+  box-shadow: 0 8px 16px rgb(111 113 129 / 24%);
   border-radius: 4px;
   border-color: transparent;
 }
@@ -9,11 +11,11 @@
 
   &.dx-state-hover,
   &.dx-state-focused {
-    background-color: darken($color, 9%);
+    background-color: color.adjust($color, $lightness: -9%);
   }
 
   &.dx-state-active {
-    background-color: darken($color, 15%);
+    background-color: color.adjust($color, $lightness: -15%);
   }
 }
 
@@ -27,20 +29,20 @@
 
   &.dx-state-hover,
   &.dx-state-focused {
-    border-color: darken($borderColor, 9%);
-    background-color: darken($bgColor, 9%);
+    border-color: color.adjust($borderColor, $lightness: -9%);
+    background-color: color.adjust($bgColor, $lightness: -9%);
 
     @if $textColor {
-      color: darken($textColor, 9%);
+      color: color.adjust($textColor, $lightness: -9%);
     }
   }
 
   &.dx-state-active {
-    border-color: darken($borderColor, 15%);
-    background-color: darken($bgColor, 15%);
+    border-color: color.adjust($borderColor, $lightness: -15%);
+    background-color: color.adjust($bgColor, $lightness: -15%);
 
     @if $textColor {
-      color: darken($textColor, 15%);
+      color: color.adjust($textColor, $lightness: -15%);
     }
   }
 }

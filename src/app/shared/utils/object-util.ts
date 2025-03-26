@@ -23,7 +23,7 @@ export class ObjectUtil {
     return isEqualWith(first, second, deepEqualsCustomizer);
   }
 
-  static enumToArray(enumType: { [key: string]: string }): string[] {
+  static enumToArray(enumType: Record<string, string>): string[] {
     if (!enumType) {
       return [];
     }
@@ -43,7 +43,7 @@ export class ObjectUtil {
   }
 
   static isEmptyObject(item: unknown): boolean {
-    return isObject(item) && this.isObjectEmpty(<ObjectLike>item);
+    return isObject(item) && this.isObjectEmpty(item as ObjectLike);
   }
 
   private static isObjectEmpty(obj: Record<string, unknown>) {
@@ -69,7 +69,7 @@ export class ObjectUtil {
       const value = clone[propName];
 
       if (recursive && isObject(value)) {
-        clone[propName] = this.deleteEmptyProperties(<ObjectLike>value, recursive);
+        clone[propName] = this.deleteEmptyProperties(value as ObjectLike, recursive);
       }
 
       const val = clone[propName];

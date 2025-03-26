@@ -1,17 +1,21 @@
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Company, Tab } from '@app/shared/models';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
+import { DetailsToolbarComponent } from '@components/details-toolbar/details-toolbar.component';
 import { DialogService } from '@services/helpers/dialog.service';
 import { CompanyHelperService } from '@views/companies/company/company-helper.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
+import { DxTabsModule } from 'devextreme-angular';
 import { first, Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, NgTemplateOutlet, AsyncPipe, RouterModule, DetailsToolbarComponent, DxTabsModule]
 })
 export class CompanyComponent implements OnInit, OnDestroy {
   tabs: Tab[] = [];

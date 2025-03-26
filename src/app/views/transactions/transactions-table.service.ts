@@ -1,20 +1,15 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { CompanyMember, Company, HttpError } from '@app/shared/models';
-import {
-  AggregationIntervalType,
-  TickIntervalType,
-  TransactionsCount,
-  TransactionsCountDTO,
-  TransactionsSeries
-} from '@app/shared/models/transactions';
+import { TransactionsCount, TransactionsCountDTO, TransactionsSeries } from '@app/shared/models/transactions';
 import { CompaniesService } from '@services/data/companies.service';
 import { TransactionsService } from '@services/data/transactions.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { TransactionsForm } from '@views/transactions/table/transactions-table.component';
+import { TransactionsForm } from '@views/transactions/transactions-table.component';
 import { Canvg } from 'canvg';
 import { addMilliseconds, endOfDay, getQuarter, startOfDay, subMilliseconds } from 'date-fns';
 import { DxChartComponent } from 'devextreme-angular';
+import { TimeInterval } from 'devextreme/common/charts';
 import { exportFromMarkup } from 'devextreme/viz/export';
 import { EMPTY } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -80,23 +75,7 @@ export class TransactionsTableService {
     return [item].concat({ count: 0, date: fakeDate.toISOString(), companyId: '', userId: '' });
   }
 
-  getTickInterval(value: TransactionsSeries): TickIntervalType {
-    switch (value) {
-      case TransactionsSeries.Daily:
-        return '';
-
-      case TransactionsSeries.Monthly:
-        return 'month';
-
-      case TransactionsSeries.Quarterly:
-        return 'quarter';
-
-      case TransactionsSeries.Yearly:
-        return 'year';
-    }
-  }
-
-  getAggregationInterval(value: TransactionsSeries): AggregationIntervalType {
+  getTickInterval(value: TransactionsSeries): TimeInterval {
     switch (value) {
       case TransactionsSeries.Daily:
         return 'day';

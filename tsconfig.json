@@ -10,29 +10,46 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
     "noUnusedLocals": false,
     "resolveJsonModule": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "lib": [
       "es2018",
       "dom"
     ],
     "paths": {
-      "@app/*": ["./app/*"],
-      "@components/*": ["./app/shared/components/*"],
-      "@pipes/*": ["./app/shared/pipes/*"],
-      "@directives/*": ["./app/shared/directives/*"],
-      "@validators/*": ["./app/shared/validators/*"],
-      "@views/*": ["./app/views/*"],
-      "@services/*": ["./app/services/*"],
-      "@env/*": ["./environments/*"]
-    }
+      "@app/*": [
+        "./app/*"
+      ],
+      "@components/*": [
+        "./app/shared/components/*"
+      ],
+      "@pipes/*": [
+        "./app/shared/pipes/*"
+      ],
+      "@directives/*": [
+        "./app/shared/directives/*"
+      ],
+      "@validators/*": [
+        "./app/shared/validators/*"
+      ],
+      "@views/*": [
+        "./app/views/*"
+      ],
+      "@services/*": [
+        "./app/services/*"
+      ],
+      "@env/*": [
+        "./environments/*"
+      ]
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

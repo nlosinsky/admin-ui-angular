@@ -1,13 +1,14 @@
 <app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
 
 <div *ngIf="isDataLoaded" class="container">
-  <app-general-toolbar title="Customer Management" subtitle="We found {{ companies?.length }} results">
+  <app-general-toolbar title="Customer Management" subtitle="We found {{ companies.length }} results">
     <div toolbar-controls class="toolbar-controls">
       <dx-button
         icon="spindown"
         text="Manage columns"
         [rtlEnabled]="true"
         stylingMode="outlined"
+        class="grid-column-chooser-btn"
         (onClick)="openColumnChooserButtonClick()"
       ></dx-button>
       <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>

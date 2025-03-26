@@ -1,7 +1,7 @@
 <app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
 
 <div *ngIf="isDataLoaded" class="container">
-  <app-general-toolbar title="Usage Data" subtitle="We found {{ stats?.length }} results">
+  <app-general-toolbar title="Usage Data" subtitle="We found {{ stats.length }} results">
     <div toolbar-controls class="toolbar-controls">
       <dx-button
         icon="spindown"
@@ -9,6 +9,7 @@
         [rtlEnabled]="true"
         stylingMode="outlined"
         (onClick)="openColumnChooserButtonClick()"
+        class="grid-column-chooser-btn"
       ></dx-button>
       <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
       <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34"></dx-text-box>

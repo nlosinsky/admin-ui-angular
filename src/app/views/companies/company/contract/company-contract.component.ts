@@ -1,3 +1,4 @@
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,21 +10,45 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Company, CompanyContract, CompanyFeatures, HttpError } from '@app/shared/models';
 import { CompanyContractEnum } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
 import { ObjectUtil } from '@app/shared/utils/object-util';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { ContractTypePipe } from '@pipes/contract-type/contract-type.pipe';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
+import {
+  DxButtonModule,
+  DxDropDownButtonModule,
+  DxNumberBoxModule,
+  DxSelectBoxModule,
+  DxSwitchModule,
+  DxTextBoxModule
+} from 'devextreme-angular';
 import { EMPTY, forkJoin, Observable, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-company-contract',
   templateUrl: './company-contract.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgIf,
+    NgClass,
+    NgTemplateOutlet,
+    DxSwitchModule,
+    ContractTypePipe,
+    ReactiveFormsModule,
+    DxSelectBoxModule,
+    DxNumberBoxModule,
+    DxTextBoxModule,
+    BgSpinnerComponent,
+    DxButtonModule,
+    DxDropDownButtonModule
+  ]
 })
 export class CompanyContractComponent
   implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit

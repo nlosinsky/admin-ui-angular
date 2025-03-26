@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PopupBaseComponent } from '@app/shared/base/popup.base';
 import { AccountDTO, ObjectLike } from '@app/shared/models';
@@ -8,9 +8,18 @@ import { AccountNaturalBalanceEnum, AccountTypeEnum } from '@app/shared/models/a
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { TransformHelper } from '@app/shared/utils/transform-helper';
+import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AccountsService } from '@services/data/accounts.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { DxoButtonOptions } from 'devextreme-angular/ui/nested/base/button-options';
+import {
+  DxNumberBoxModule,
+  DxPopupModule,
+  DxSelectBoxModule,
+  DxTextAreaModule,
+  DxTextBoxModule,
+  DxToolbarModule,
+  DxValidatorModule
+} from 'devextreme-angular';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -18,12 +27,23 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   selector: 'app-company-add-account',
   templateUrl: 'company-add-account.component.html',
   styleUrls: ['./company-add-account.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    DxTextBoxModule,
+    DxPopupModule,
+    ReactiveFormsModule,
+    ErrorMessagePipe,
+    DxNumberBoxModule,
+    DxTextAreaModule,
+    DxSelectBoxModule,
+    DxValidatorModule,
+    DxToolbarModule
+  ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   form!: FormGroup;
-  cancelButtonOptions!: Partial<DxoButtonOptions>;
-  saveButtonOptions!: Partial<DxoButtonOptions>;
+  cancelButtonOptions!: unknown;
+  saveButtonOptions!: unknown;
   isSubmitting = false;
 
   readonly accountTypes = ObjectUtil.enumToArray(AccountTypeEnum).map(value => {
@@ -125,7 +145,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
       .addAccount(payload)
       .pipe(
         catchError(({ error }: HttpErrorResponse) => {
-          const errorMessage = (<{ message: string }>error).message;
+          const errorMessage = (error as { message: string }).message;
           const message =
             errorMessage === 'Duplicate entry.'
               ? 'The provided name or number has already been used. Please provide another.'

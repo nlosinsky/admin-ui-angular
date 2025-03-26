@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output, NgModule } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { DxButtonModule } from 'devextreme-angular';
 
@@ -7,7 +7,8 @@ import { DxButtonModule } from 'devextreme-angular';
   selector: 'app-details-toolbar',
   templateUrl: './details-toolbar.component.html',
   styleUrls: ['./details-toolbar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, DxButtonModule]
 })
 export class DetailsToolbarComponent {
   @Input() title = '';
@@ -20,11 +21,3 @@ export class DetailsToolbarComponent {
     this.back.emit();
   }
 }
-
-@NgModule({
-  imports: [CommonModule, DxButtonModule],
-  exports: [DetailsToolbarComponent],
-  declarations: [DetailsToolbarComponent],
-  providers: []
-})
-export class DetailsToolbarModule {}

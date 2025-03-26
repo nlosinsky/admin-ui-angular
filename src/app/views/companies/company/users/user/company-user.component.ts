@@ -1,12 +1,18 @@
+import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyMember, HttpError } from '@app/shared/models';
 import { CompanyMemberAccountState, CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions } from '@app/shared/models/components';
+import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
+import { StatusItemComponent } from '@components/status-item/status-item.component';
+import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
+import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
 import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { CompanyUserService } from '@views/companies/company/users/components/user/company-user.service';
+import { CompanyUserService } from '@views/companies/company/users/user/company-user.service';
+import { DxButtonModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -14,7 +20,19 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   selector: 'app-company-user',
   templateUrl: './company-user.component.html',
   styleUrls: ['./company-user.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgIf,
+    NgClass,
+    ReactiveFormsModule,
+    StatusItemComponent,
+    StatusColorPipe,
+    StringValueCapitalizePipe,
+    DxTextBoxModule,
+    DxButtonModule,
+    DxSelectBoxModule,
+    BgSpinnerComponent
+  ]
 })
 export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
   form!: FormGroup;
@@ -68,7 +86,7 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
   }
 
   onSave() {
-    const newAccountState = (<{ accountState: CompanyMemberAccountStateType }>this.form.value).accountState || null;
+    const newAccountState = (this.form.value as { accountState: CompanyMemberAccountStateType }).accountState || null;
 
     if (this.member.accountState === newAccountState) {
       this.onCancel();

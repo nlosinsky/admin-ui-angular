@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { CompanyContract, CompanyFeatures } from '@app/shared/models';
 import { CompanyMemberAccountStateType, CompanyStateType } from '@app/shared/models/companies/company.enum';
 
