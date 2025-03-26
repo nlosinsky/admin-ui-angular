@@ -1,4 +1,4 @@
-import { DatePipe, DecimalPipe, formatDate, NgClass, NgIf } from '@angular/common';
+import { DatePipe, DecimalPipe, formatDate, NgClass, NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -46,6 +46,7 @@ import {
       NgClass,
       DatePipe,
       DecimalPipe,
+      NgForOf,
         GeneralToolbarComponent,
         DxDataGridModule,
         DxButtonModule,

@@ -31,7 +31,7 @@
               "devextreme-quill",
               "file-saver"
             ],
-            "outputPath": "dist/admin-ui-angular",
+            "outputPath": "dist/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
