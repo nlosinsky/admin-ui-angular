@@ -3,7 +3,3 @@ export interface Tab {
   route: string;
   disabled?: boolean;
 }
-
-export interface ItemClickEvent<T> {
-  itemData: T;
-}

@@ -1,7 +1,7 @@
 <app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
 
 <div *ngIf="isDataLoaded" class="container">
-  <app-general-toolbar title="Usage Data" subtitle="We found {{ stats?.length }} results">
+  <app-general-toolbar title="Usage Data" subtitle="We found {{ stats.length }} results">
     <div toolbar-controls class="toolbar-controls">
       <dx-button
         icon="spindown"

@@ -1,4 +1,4 @@
-import { CommonModule, formatDate } from '@angular/common';
+import { DatePipe, DecimalPipe, formatDate, NgClass, NgForOf, NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,7 +23,6 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxTextBoxModule } from 'devextreme-angular';
 import { DataGridCell } from 'devextreme/excel_exporter';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, forkJoin, from, Subject } from 'rxjs';
 import {
   catchError,
@@ -42,16 +41,18 @@ import {
   templateUrl: './companies-table.component.html',
   styleUrls: ['./companies-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
+    NgClass,
+    DatePipe,
+    DecimalPipe,
+    NgForOf,
     GeneralToolbarComponent,
     DxDataGridModule,
     DxButtonModule,
     DxTextBoxModule,
     ContractTypePipe,
     RouterModule,
-    QuicklinkModule,
     BgSpinnerComponent
   ]
 })

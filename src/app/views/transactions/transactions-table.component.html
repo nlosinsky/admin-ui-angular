@@ -47,7 +47,7 @@
         <dx-select-box
           [dataSource]="companyMembers"
           [dropDownOptions]="{ container: 'dx-select-box' }"
-          [readOnly]="!companies?.length || !companyMembers?.length"
+          [readOnly]="!companies.length || !companyMembers.length"
           formControlName="userId"
           displayExpr="fullName"
           valueExpr="id"

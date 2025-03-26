@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -15,7 +15,6 @@ import { FormHelper } from '@app/shared/utils/form-helper';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AuthService } from '@services/data/auth.service';
 import { DxButtonModule, DxTextBoxModule, DxValidatorComponent, DxValidatorModule } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -24,16 +23,7 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    DxTextBoxModule,
-    ReactiveFormsModule,
-    DxButtonModule,
-    ErrorMessagePipe,
-    DxValidatorModule,
-    QuicklinkModule
-  ]
+  imports: [NgIf, NgClass, DxTextBoxModule, ReactiveFormsModule, DxButtonModule, ErrorMessagePipe, DxValidatorModule]
 })
 export class LoginComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;

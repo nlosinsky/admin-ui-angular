@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { DxButtonModule } from 'devextreme-angular';
@@ -8,11 +8,7 @@ import { DxButtonModule } from 'devextreme-angular';
   templateUrl: './details-toolbar.component.html',
   styleUrls: ['./details-toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    DxButtonModule
-  ]
+  imports: [NgIf, DxButtonModule]
 })
 export class DetailsToolbarComponent {
   @Input() title = '';

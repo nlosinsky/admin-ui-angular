@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,12 +11,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Company, CompanyMember } from '@app/shared/models';
-import {
-  AggregationIntervalType,
-  TickIntervalType,
-  TransactionsCount,
-  TransactionsSeries
-} from '@app/shared/models/transactions';
+import { TransactionsCount, TransactionsSeries } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
@@ -33,9 +28,9 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { of, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
+import { TimeInterval } from 'devextreme/common/charts';
 
 export interface TransactionsForm {
   startDate: string;
@@ -49,9 +44,8 @@ export interface TransactionsForm {
   templateUrl: './transactions-table.component.html',
   styleUrls: ['./transactions-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
-    CommonModule,
+    NgClass,
     DxDateBoxModule,
     ReactiveFormsModule,
     DxSelectBoxModule,
@@ -60,8 +54,7 @@ export interface TransactionsForm {
     DxChartModule,
     GeneralToolbarComponent,
     DxButtonModule,
-    DxDropDownButtonModule,
-    QuicklinkModule
+    DxDropDownButtonModule
   ]
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {
@@ -75,8 +68,8 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   form!: FormGroup;
   maxDate = new Date();
-  tickInterval: TickIntervalType = '';
-  aggregationInterval: AggregationIntervalType = 'day';
+  tickInterval!: TimeInterval;
+  aggregationInterval: TimeInterval = 'day';
 
   readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
@@ -106,7 +99,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   onChangeSeries(value: TransactionsSeries) {
     this.selectedSeriesValue = value;
     this.tickInterval = this.transactionsTableService.getTickInterval(value);
-    this.aggregationInterval = this.transactionsTableService.getAggregationInterval(value);
+    this.aggregationInterval = this.transactionsTableService.getTickInterval(value);
   }
 
   onValidateRule(fieldName: string) {

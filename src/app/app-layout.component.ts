@@ -11,11 +11,7 @@ import { UserService } from '@services/data/user.service';
     </app-sidenav>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    RouterModule,
-    SidenavComponent
-  ]
+  imports: [RouterModule, SidenavComponent]
 })
 export class AppLayoutComponent implements OnInit {
   constructor(private userService: UserService) {}

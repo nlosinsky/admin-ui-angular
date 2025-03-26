@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,12 +15,7 @@ import { CompaniesService } from '@services/data/companies.service';
 import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
-import {
-  DxButtonModule,
-  DxDataGridModule,
-  DxDropDownButtonModule,
-} from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
+import { DxButtonModule, DxDataGridModule, DxDropDownButtonModule } from 'devextreme-angular';
 import { EMPTY, from, Subject, zip } from 'rxjs';
 import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operators';
 
@@ -29,9 +24,10 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
   templateUrl: './company-users.component.html',
   styleUrls: ['./company-users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
+    NgClass,
+    NgForOf,
     AvatarBoxComponent,
     DxDataGridModule,
     DxButtonModule,
@@ -39,8 +35,7 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
     StringValueCapitalizePipe,
     BgSpinnerComponent,
     DxDropDownButtonModule,
-    StatusColorPipe,
-    QuicklinkModule
+    StatusColorPipe
   ]
 })
 export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {

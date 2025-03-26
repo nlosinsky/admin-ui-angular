@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -28,7 +28,6 @@ import {
   DxSwitchModule,
   DxTextBoxModule
 } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, forkJoin, Observable, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 
@@ -36,9 +35,10 @@ import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
   selector: 'app-company-contract',
   templateUrl: './company-contract.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
+    NgClass,
+    NgTemplateOutlet,
     DxSwitchModule,
     ContractTypePipe,
     ReactiveFormsModule,
@@ -47,8 +47,7 @@ import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
     DxTextBoxModule,
     BgSpinnerComponent,
     DxButtonModule,
-    DxDropDownButtonModule,
-    QuicklinkModule
+    DxDropDownButtonModule
   ]
 })
 export class CompanyContractComponent

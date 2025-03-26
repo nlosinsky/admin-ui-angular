@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -18,10 +17,9 @@ import {
   DxSelectBoxModule,
   DxTextAreaModule,
   DxTextBoxModule,
+  DxToolbarModule,
   DxValidatorModule
 } from 'devextreme-angular';
-import { DxoButtonOptions } from 'devextreme-angular/ui/nested/base/button-options';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
@@ -30,9 +28,7 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   templateUrl: 'company-add-account.component.html',
   styleUrls: ['./company-add-account.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
-    CommonModule,
     DxTextBoxModule,
     DxPopupModule,
     ReactiveFormsModule,
@@ -41,13 +37,13 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
     DxTextAreaModule,
     DxSelectBoxModule,
     DxValidatorModule,
-    QuicklinkModule
+    DxToolbarModule
   ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   form!: FormGroup;
-  cancelButtonOptions!: Partial<DxoButtonOptions>;
-  saveButtonOptions!: Partial<DxoButtonOptions>;
+  cancelButtonOptions!: unknown;
+  saveButtonOptions!: unknown;
   isSubmitting = false;
 
   readonly accountTypes = ObjectUtil.enumToArray(AccountTypeEnum).map(value => {
@@ -149,7 +145,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
       .addAccount(payload)
       .pipe(
         catchError(({ error }: HttpErrorResponse) => {
-          const errorMessage = (<{ message: string }>error).message;
+          const errorMessage = (error as { message: string }).message;
           const message =
             errorMessage === 'Duplicate entry.'
               ? 'The provided name or number has already been used. Please provide another.'

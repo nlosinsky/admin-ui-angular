@@ -15,7 +15,10 @@ export class CompanyStateService {
   private currentCompanySubj = new ReplaySubject<Company | null>(1);
   private loadCompanySubj = new Subject<string>();
 
-  constructor(private companiesService: CompaniesService, private toastService: ToastService) {
+  constructor(
+    private companiesService: CompaniesService,
+    private toastService: ToastService
+  ) {
     this.currentCompany$ = this.currentCompanySubj.asObservable();
 
     this.loadCompanySubj

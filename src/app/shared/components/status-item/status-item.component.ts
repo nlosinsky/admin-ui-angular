@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, ChangeDetectionStrategy, Input, HostBinding } from '@angular/core';
 import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
 
@@ -7,10 +7,7 @@ import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
   templateUrl: './status-item.component.html',
   styleUrls: ['./status-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule
-  ]
+  imports: [NgClass]
 })
 export class StatusItemComponent {
   @Input() text = '';

@@ -9,10 +9,8 @@ export interface Submittable {
   loadData(): void;
 }
 
-export declare interface ComponentType<T> extends Function {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  new (...args: any[]): T;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ComponentType<T> = new (...args: any[]) => T;
 
 export interface CommonCustomerComponentActions {
   navigateBack(): void;

@@ -1,5 +1,4 @@
 const dbController = require("../../db");
-const { isDate, isWithinInterval } = require("date-fns");
 
 exports.getCurrentUser = (req, res) => {
   const { users } = dbController.readDB();

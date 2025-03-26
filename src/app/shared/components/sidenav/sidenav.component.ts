@@ -1,28 +1,20 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
-import { ItemClickEvent } from '@app/shared/models';
 import { User } from '@app/shared/models/user';
 import { DropdownTypes, NavItem, UserDropdownItem } from '@components/sidenav/sidenav.model';
 import { SidenavService } from '@components/sidenav/sidenav.service';
 import { DxButtonModule, DxDropDownButtonModule } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { Observable } from 'rxjs';
+import { DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: 'sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    RouterModule,
-    DxButtonModule,
-    CommonModule,
-    DxDropDownButtonModule,
-    QuicklinkModule
-  ]
+  imports: [NgForOf, NgIf, AsyncPipe, RouterModule, DxButtonModule, DxDropDownButtonModule]
 })
 export class SidenavComponent implements OnInit {
   items: NavItem[] = [];
@@ -39,9 +31,7 @@ export class SidenavComponent implements OnInit {
     this.user$ = this.service.getCurrentUser();
   }
 
-  //   todo fix
-  onItemClick(event: any): void {
-  // onItemClick(event: ItemClickEvent<UserDropdownItem>): void {
+  onUserDropdown(event: DxDropDownButtonTypes.ItemClickEvent): void {
     const eventId = event?.itemData?.id;
 
     if (eventId === DropdownTypes.LOGOUT) {

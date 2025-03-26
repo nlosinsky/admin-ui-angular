@@ -20,16 +20,10 @@ export class TransactionsApiService {
   }: TransactionsCountDTO): Observable<TransactionsCount[]> {
     const params = {
       startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString()
+      endDate: endDate?.toISOString(),
+      companyId,
+      userId
     };
-
-    if (companyId) {
-      params['companyId'] = companyId;
-    }
-
-    if (userId) {
-      params['userId'] = userId;
-    }
 
     return this.http.get<TransactionsCount[]>(`${this.basePath}/transactions`, { params });
   }

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -30,29 +30,27 @@ import {
   DxDataGridModule,
   DxTextBoxModule,
   DxTooltipComponent,
-  DxTooltipModule,
+  DxTooltipModule
 } from 'devextreme-angular';
 import { DataGridCell } from 'devextreme/excel_exporter';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { on } from 'devextreme/events';
+import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
 @Component({
   selector: 'app-company-accounts',
   templateUrl: './company-accounts.component.html',
   styleUrls: ['./company-accounts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
-    CommonModule,
+    NgIf,
     DxDataGridModule,
     BgSpinnerComponent,
     DxTooltipModule,
     StringValueCapitalizePipe,
     DxButtonModule,
     DxTextBoxModule,
-    QuicklinkModule,
     BooleanYesNoPipe
   ]
 })
@@ -120,13 +118,15 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
       });
   }
 
-  //   todo fix
-  onCellPrepared(event: any) {
-  // onCellPrepared(event: { rowType: string; column: { dataField: string }; cellElement: HTMLElement; data: Account }) {
+  onCellPrepared(event: DxDataGridTypes.CellPreparedEvent) {
+    if (!event.column.dataField) {
+      return;
+    }
+
     if (event.rowType === 'data' && ['name', 'description', 'subtype'].includes(event.column.dataField)) {
       on(event.cellElement, 'mouseover', (arg: { target: HTMLElement }) => {
         const key = event.column.dataField as keyof Account;
-        const field = <string>event.data[key] || '';
+        const field = (event.data[key] as string) || '';
 
         if (field?.length) {
           this.tooltip.contentTemplate = field;

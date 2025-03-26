@@ -1,5 +1,6 @@
 @use 'variables' as *;
 @use 'mixins' as mixins;
+@use 'sass:color' as color;
 
 .dx-button-mode-outlined {
   &.dx-button-normal {
@@ -54,7 +55,7 @@
 
         &.dx-state-active {
           color: $black;
-          background-color: darken($light-gray, 9%);
+          background-color: color.adjust($light-gray, $lightness: -9%);
         }
       }
     }
@@ -79,14 +80,6 @@
     }
   }
 
-  .dx-dropdownbutton-action{
-    &.dx-button-has-icon:not(.dx-button-has-text) {
-      .dx-button-content {
-        padding-inline: 0;
-      }
-    }
-  }
-
   &.h-34 {
     .dx-button-content {
       display: flex;
@@ -97,6 +90,14 @@
 
     .dx-icon-menu {
       height: auto;
+    }
+  }
+
+  .dx-dropdownbutton-action {
+    &.dx-button-has-icon:not(.dx-button-has-text) {
+      .dx-button-content {
+        padding-inline: 0;
+      }
     }
   }
 }

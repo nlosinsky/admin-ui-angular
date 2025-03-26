@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Company, Tab } from '@app/shared/models';
@@ -8,7 +8,6 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { CompanyHelperService } from '@views/companies/company/company-helper.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import { DxTabsModule } from 'devextreme-angular';
-import { QuicklinkModule } from 'ngx-quicklink';
 import { first, Observable, Subject } from 'rxjs';
 
 @Component({
@@ -16,14 +15,7 @@ import { first, Observable, Subject } from 'rxjs';
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    DetailsToolbarComponent,
-    DxTabsModule,
-    QuicklinkModule
-  ]
+  imports: [NgIf, NgTemplateOutlet, AsyncPipe, RouterModule, DetailsToolbarComponent, DxTabsModule]
 })
 export class CompanyComponent implements OnInit, OnDestroy {
   tabs: Tab[] = [];
