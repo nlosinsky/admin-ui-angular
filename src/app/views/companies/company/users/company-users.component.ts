@@ -15,32 +15,28 @@ import { CompaniesService } from '@services/data/companies.service';
 import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
-import {
-  DxButtonModule,
-  DxDataGridModule,
-  DxDropDownButtonModule,
-} from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxDropDownButtonModule } from 'devextreme-angular';
 import { EMPTY, from, Subject, zip } from 'rxjs';
 import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-company-users',
-    templateUrl: './company-users.component.html',
-    styleUrls: ['./company-users.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      NgClass,
-      NgForOf,
-        AvatarBoxComponent,
-        DxDataGridModule,
-        DxButtonModule,
-        StatusItemComponent,
-        StringValueCapitalizePipe,
-        BgSpinnerComponent,
-        DxDropDownButtonModule,
-        StatusColorPipe,
-    ]
+  selector: 'app-company-users',
+  templateUrl: './company-users.component.html',
+  styleUrls: ['./company-users.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgIf,
+    NgClass,
+    NgForOf,
+    AvatarBoxComponent,
+    DxDataGridModule,
+    DxButtonModule,
+    StatusItemComponent,
+    StringValueCapitalizePipe,
+    BgSpinnerComponent,
+    DxDropDownButtonModule,
+    StatusColorPipe
+  ]
 })
 export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
   company!: Company;

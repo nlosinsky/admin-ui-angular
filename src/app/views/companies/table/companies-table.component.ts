@@ -37,24 +37,24 @@ import {
 } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-companies-table',
-    templateUrl: './companies-table.component.html',
-    styleUrls: ['./companies-table.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      NgClass,
-      DatePipe,
-      DecimalPipe,
-      NgForOf,
-        GeneralToolbarComponent,
-        DxDataGridModule,
-        DxButtonModule,
-        DxTextBoxModule,
-        ContractTypePipe,
-        RouterModule,
-        BgSpinnerComponent
-    ]
+  selector: 'app-companies-table',
+  templateUrl: './companies-table.component.html',
+  styleUrls: ['./companies-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgIf,
+    NgClass,
+    DatePipe,
+    DecimalPipe,
+    NgForOf,
+    GeneralToolbarComponent,
+    DxDataGridModule,
+    DxButtonModule,
+    DxTextBoxModule,
+    ContractTypePipe,
+    RouterModule,
+    BgSpinnerComponent
+  ]
 })
 export class CompaniesTableComponent implements OnInit, OnDestroy {
   @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;

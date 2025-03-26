@@ -11,18 +11,11 @@ import { DxTabsModule } from 'devextreme-angular';
 import { first, Observable, Subject } from 'rxjs';
 
 @Component({
-    selector: 'app-company',
-    templateUrl: './company.component.html',
-    styleUrls: ['./company.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      NgTemplateOutlet,
-      AsyncPipe,
-        RouterModule,
-        DetailsToolbarComponent,
-        DxTabsModule,
-    ]
+  selector: 'app-company',
+  templateUrl: './company.component.html',
+  styleUrls: ['./company.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgIf, NgTemplateOutlet, AsyncPipe, RouterModule, DetailsToolbarComponent, DxTabsModule]
 })
 export class CompanyComponent implements OnInit, OnDestroy {
   tabs: Tab[] = [];

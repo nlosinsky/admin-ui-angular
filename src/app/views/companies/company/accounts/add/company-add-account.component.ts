@@ -16,35 +16,34 @@ import {
   DxPopupModule,
   DxSelectBoxModule,
   DxTextAreaModule,
-  DxTextBoxModule, DxToolbarModule,
+  DxTextBoxModule,
+  DxToolbarModule,
   DxValidatorModule
 } from 'devextreme-angular';
-import { DxoButtonOptions } from 'devextreme-angular/ui/nested/base/button-options';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-company-add-account',
-    templateUrl: 'company-add-account.component.html',
-    styleUrls: ['./company-add-account.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-
-        DxTextBoxModule,
-        DxPopupModule,
-        ReactiveFormsModule,
-        ErrorMessagePipe,
-        DxNumberBoxModule,
-        DxTextAreaModule,
-        DxSelectBoxModule,
-        DxValidatorModule,
-      DxToolbarModule
-    ]
+  selector: 'app-company-add-account',
+  templateUrl: 'company-add-account.component.html',
+  styleUrls: ['./company-add-account.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    DxTextBoxModule,
+    DxPopupModule,
+    ReactiveFormsModule,
+    ErrorMessagePipe,
+    DxNumberBoxModule,
+    DxTextAreaModule,
+    DxSelectBoxModule,
+    DxValidatorModule,
+    DxToolbarModule
+  ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
   form!: FormGroup;
-  cancelButtonOptions!: Partial<DxoButtonOptions>;
-  saveButtonOptions!: Partial<DxoButtonOptions>;
+  cancelButtonOptions!: unknown;
+  saveButtonOptions!: unknown;
   isSubmitting = false;
 
   readonly accountTypes = ObjectUtil.enumToArray(AccountTypeEnum).map(value => {
@@ -146,7 +145,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
       .addAccount(payload)
       .pipe(
         catchError(({ error }: HttpErrorResponse) => {
-          const errorMessage = (<{ message: string }>error).message;
+          const errorMessage = (error as { message: string }).message;
           const message =
             errorMessage === 'Duplicate entry.'
               ? 'The provided name or number has already been used. Please provide another.'

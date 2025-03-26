@@ -7,21 +7,14 @@ import { DropdownTypes, NavItem, UserDropdownItem } from '@components/sidenav/si
 import { SidenavService } from '@components/sidenav/sidenav.service';
 import { DxButtonModule, DxDropDownButtonModule } from 'devextreme-angular';
 import { Observable } from 'rxjs';
-import { DxDropDownButtonTypes } from "devextreme-angular/ui/drop-down-button"
+import { DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 
 @Component({
-    selector: 'app-sidenav',
-    templateUrl: 'sidenav.component.html',
-    styleUrls: ['./sidenav.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgForOf,
-      NgIf,
-      AsyncPipe,
-        RouterModule,
-        DxButtonModule,
-        DxDropDownButtonModule,
-    ]
+  selector: 'app-sidenav',
+  templateUrl: 'sidenav.component.html',
+  styleUrls: ['./sidenav.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgForOf, NgIf, AsyncPipe, RouterModule, DxButtonModule, DxDropDownButtonModule]
 })
 export class SidenavComponent implements OnInit {
   items: NavItem[] = [];

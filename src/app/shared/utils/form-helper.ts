@@ -10,7 +10,7 @@ export class FormHelper {
     return !(field.invalid && (field.dirty || field.touched));
   }
 
-  static setAllControlsDirty(controls: { [key: string]: AbstractControl | UntypedFormGroup }): void {
+  static setAllControlsDirty(controls: Record<string, AbstractControl | UntypedFormGroup>): void {
     Object.keys(controls)
       .map(key => controls[key])
       .forEach((value: AbstractControl) => {

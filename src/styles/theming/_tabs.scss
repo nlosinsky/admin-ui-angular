@@ -52,6 +52,10 @@
       .dx-tab-text {
         padding: 16px;
         color: inherit;
+        appearance: none;
+        background: transparent;
+        border: none;
+        cursor: pointer;
       }
     }
   }

@@ -1,11 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { CompanyMember, Company, HttpError } from '@app/shared/models';
-import {
-  TransactionsCount,
-  TransactionsCountDTO,
-  TransactionsSeries
-} from '@app/shared/models/transactions';
+import { TransactionsCount, TransactionsCountDTO, TransactionsSeries } from '@app/shared/models/transactions';
 import { CompaniesService } from '@services/data/companies.service';
 import { TransactionsService } from '@services/data/transactions.service';
 import { ToastService } from '@services/helpers/toast.service';

@@ -22,7 +22,7 @@ export const ROUTES: Routes = [
         path: 'accounts',
         loadChildren: () => import('./accounts/routes').then(m => m.ROUTES)
       },
-      {path: '', pathMatch: 'full', redirectTo: 'information'},
+      { path: '', pathMatch: 'full', redirectTo: 'information' }
     ]
   }
 ];

@@ -30,29 +30,29 @@ import {
   DxDataGridModule,
   DxTextBoxModule,
   DxTooltipComponent,
-  DxTooltipModule,
+  DxTooltipModule
 } from 'devextreme-angular';
 import { DataGridCell } from 'devextreme/excel_exporter';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { on } from 'devextreme/events';
-import { DxDataGridTypes } from "devextreme-angular/ui/data-grid"
+import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
 @Component({
-    selector: 'app-company-accounts',
-    templateUrl: './company-accounts.component.html',
-    styleUrls: ['./company-accounts.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-        DxDataGridModule,
-        BgSpinnerComponent,
-        DxTooltipModule,
-        StringValueCapitalizePipe,
-        DxButtonModule,
-        DxTextBoxModule,
-        BooleanYesNoPipe
-    ]
+  selector: 'app-company-accounts',
+  templateUrl: './company-accounts.component.html',
+  styleUrls: ['./company-accounts.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgIf,
+    DxDataGridModule,
+    BgSpinnerComponent,
+    DxTooltipModule,
+    StringValueCapitalizePipe,
+    DxButtonModule,
+    DxTextBoxModule,
+    BooleanYesNoPipe
+  ]
 })
 export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewInit, CommonCustomerComponentActions {
   @ViewChild(DxTooltipComponent) tooltip!: DxTooltipComponent;
@@ -126,7 +126,7 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
     if (event.rowType === 'data' && ['name', 'description', 'subtype'].includes(event.column.dataField)) {
       on(event.cellElement, 'mouseover', (arg: { target: HTMLElement }) => {
         const key = event.column.dataField as keyof Account;
-        const field = <string>event.data[key] || '';
+        const field = (event.data[key] as string) || '';
 
         if (field?.length) {
           this.tooltip.contentTemplate = field;

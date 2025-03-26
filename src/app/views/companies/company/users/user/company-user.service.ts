@@ -9,7 +9,10 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CompanyUserService {
-  constructor(private companiesService: CompaniesService, private toastService: ToastService) {}
+  constructor(
+    private companiesService: CompaniesService,
+    private toastService: ToastService
+  ) {}
 
   getData(memberId: string): Observable<CompanyMember | null> {
     if (!memberId) {

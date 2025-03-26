@@ -13,7 +13,7 @@ import {
   ViewChildren
 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { City, Company, CompanyUpdateDTO, Country, HttpError, State } from '@app/shared/models';
 import { CompanyState } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
@@ -30,35 +30,36 @@ import { WebsiteUrlValidator } from '@validators/website-url.validator';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import {
   DxButtonModule,
-  DxDropDownButtonModule, DxSelectBoxModule,
+  DxDropDownButtonModule,
+  DxSelectBoxModule,
   DxTextBoxModule,
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
-import { DxSelectBoxTypes } from "devextreme-angular/ui/select-box"
+import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
 
 @Component({
-    selector: 'app-company-information',
-    templateUrl: './company-information.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgIf,
-      NgClass,
-      DatePipe,
-        BgSpinnerComponent,
-        ReactiveFormsModule,
-        DxTextBoxModule,
-        ErrorMessagePipe,
-        DxButtonModule,
-        DxDropDownButtonModule,
-        DxValidatorModule,
-        DxSelectBoxModule,
-        StringValueCapitalizePipe,
-        StatusItemComponent,
-        StatusColorPipe,
-    ]
+  selector: 'app-company-information',
+  templateUrl: './company-information.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgIf,
+    NgClass,
+    DatePipe,
+    BgSpinnerComponent,
+    ReactiveFormsModule,
+    DxTextBoxModule,
+    ErrorMessagePipe,
+    DxButtonModule,
+    DxDropDownButtonModule,
+    DxValidatorModule,
+    DxSelectBoxModule,
+    StringValueCapitalizePipe,
+    StatusItemComponent,
+    StatusColorPipe
+  ]
 })
 export class CompanyInformationComponent
   implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit

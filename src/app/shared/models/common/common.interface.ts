@@ -1,1 +1,1 @@
-export type ObjectLike = { [key: string | number]: unknown };
+export type ObjectLike = Record<string | number, unknown>;

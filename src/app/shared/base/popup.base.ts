@@ -3,8 +3,7 @@ import { DxPopupComponent, DxValidatorComponent } from 'devextreme-angular';
 import { Observable, Subject } from 'rxjs';
 
 @Component({
-    template: '',
-    standalone: false
+  template: ''
 })
 export abstract class PopupBaseComponent {
   @ViewChild(DxPopupComponent) popupElem!: DxPopupComponent;

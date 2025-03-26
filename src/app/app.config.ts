@@ -24,18 +24,13 @@ export const appConfig: ApplicationConfig = {
       APP_ROUTES,
       withRouterConfig({
         paramsInheritanceStrategy: 'always'
-      }),
+      })
     ),
-    provideNgxWebstorage(
-      withNgxWebstorageConfig({prefix: 'angular-dashboard'}),
-      withLocalStorage()
-    ),
+    provideNgxWebstorage(withNgxWebstorageConfig({ prefix: 'angular-dashboard' }), withLocalStorage()),
     provideAppInitializer(() => {
       const constantDataService = inject(ConstantDataHelperService);
       return firstValueFrom(constantDataService.load());
-      }),
-    provideHttpClient(
-      withInterceptors([ AuthInterceptor ])
-    )
+    }),
+    provideHttpClient(withInterceptors([AuthInterceptor]))
   ]
 };

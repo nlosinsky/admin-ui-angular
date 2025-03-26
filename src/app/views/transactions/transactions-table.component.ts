@@ -11,17 +11,13 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Company, CompanyMember } from '@app/shared/models';
-import {
-  TransactionsCount,
-  TransactionsSeries
-} from '@app/shared/models/transactions';
+import { TransactionsCount, TransactionsSeries } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { TransactionsTableService } from '@views/transactions/transactions-table.service';
 import { isValid } from 'date-fns';
-import DevExpress from 'devextreme';
 import {
   DxButtonModule,
   DxChartComponent,
@@ -44,22 +40,22 @@ export interface TransactionsForm {
 }
 
 @Component({
-    selector: 'app-transactions-table',
-    templateUrl: './transactions-table.component.html',
-    styleUrls: ['./transactions-table.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-      NgClass,
-        DxDateBoxModule,
-        ReactiveFormsModule,
-        DxSelectBoxModule,
-        DxValidatorModule,
-        ErrorMessagePipe,
-        DxChartModule,
-        GeneralToolbarComponent,
-        DxButtonModule,
-        DxDropDownButtonModule,
-    ]
+  selector: 'app-transactions-table',
+  templateUrl: './transactions-table.component.html',
+  styleUrls: ['./transactions-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NgClass,
+    DxDateBoxModule,
+    ReactiveFormsModule,
+    DxSelectBoxModule,
+    DxValidatorModule,
+    ErrorMessagePipe,
+    DxChartModule,
+    GeneralToolbarComponent,
+    DxButtonModule,
+    DxDropDownButtonModule
+  ]
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;

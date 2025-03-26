@@ -13,11 +13,11 @@ export class StatusColorPipe implements PipeTransform {
     param: 'companyMemberAccountState' | 'companyState'
   ): StatusColorsEnum {
     if (param === 'companyMemberAccountState') {
-      return StatusColorHelper.getCompanyMemberAccountStateStatusColor(<CompanyMemberAccountStateType>value);
+      return StatusColorHelper.getCompanyMemberAccountStateStatusColor(value as CompanyMemberAccountStateType);
     }
 
     if (param === 'companyState') {
-      return StatusColorHelper.getCompanyStateStatusColor(<CompanyStateType>value);
+      return StatusColorHelper.getCompanyStateStatusColor(value as CompanyStateType);
     }
 
     return StatusColorsEnum.DEFAULT;
