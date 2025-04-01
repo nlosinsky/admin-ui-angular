@@ -7,7 +7,7 @@
 
   <dx-tabs [dataSource]="tabs" itemTemplate="tabTemplate">
     <div *dxTemplate="let item of 'tabTemplate'" [routerLink]="item.route" routerLinkActive="active">
-	    <button class="dx-tab-text" (click)="onSelectTab($event, item)">{{ item.text }}</button>
+      <button class="dx-tab-text" (click)="onSelectTab($event, item)">{{ item.text }}</button>
     </div>
   </dx-tabs>
 </section>

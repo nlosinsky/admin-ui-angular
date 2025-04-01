@@ -56,7 +56,8 @@
             "buildOptimizer": false,
             "sourceMap": false,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "aot": false
           },
           "configurations": {
             "production": {

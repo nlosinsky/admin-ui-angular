@@ -1,11 +1,10 @@
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { CompanyMember, Company, HttpError } from '@app/shared/models';
-import { TransactionsCount, TransactionsCountDTO, TransactionsSeries } from '@app/shared/models/transactions';
+import { TransactionsCount, TransactionsFormValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { CompaniesService } from '@services/data/companies.service';
 import { TransactionsService } from '@services/data/transactions.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { TransactionsForm } from '@views/transactions/transactions-table.component';
 import { Canvg } from 'canvg';
 import { addMilliseconds, endOfDay, getQuarter, startOfDay, subMilliseconds } from 'date-fns';
 import { DxChartComponent } from 'devextreme-angular';
@@ -43,7 +42,7 @@ export class TransactionsTableService {
     );
   }
 
-  getTransactionsCount(payload: TransactionsCountDTO) {
+  getTransactionsCount(payload: TransactionsFormValue) {
     return this.transactionsService.getTransactionsCount(payload).pipe(
       map(resp => this.formatItemsResp(resp)),
       catchError((error: HttpError) => {
@@ -53,11 +52,11 @@ export class TransactionsTableService {
     );
   }
 
-  getSearchPayload(formValue: TransactionsForm): TransactionsCountDTO {
+  getSearchPayload(formValue: Partial<TransactionsFormValue>): TransactionsFormValue {
     const { startDate, endDate, userId, companyId } = formValue;
     return {
-      startDate: startOfDay(new Date(startDate)),
-      endDate: endOfDay(new Date(endDate)),
+      startDate: startDate ? startOfDay(startDate) : new Date(),
+      endDate: endDate ? endOfDay(endDate) : new Date(),
       userId: userId || '',
       companyId: companyId || ''
     };

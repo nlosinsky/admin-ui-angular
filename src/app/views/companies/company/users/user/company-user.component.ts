@@ -1,6 +1,6 @@
 import { NgClass, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyMember, HttpError } from '@app/shared/models';
 import { CompanyMemberAccountState, CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
@@ -15,6 +15,10 @@ import { CompanyUserService } from '@views/companies/company/users/user/company-
 import { DxButtonModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
+
+interface CompanyUserForm {
+  accountState: FormControl<CompanyMemberAccountStateType>;
+}
 
 @Component({
   selector: 'app-company-user',
@@ -35,7 +39,7 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   ]
 })
 export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
-  form!: FormGroup;
+  form!: FormGroup<CompanyUserForm>;
   isDataLoaded = false;
   member!: CompanyMember;
   isSubmitting = false;
@@ -57,7 +61,7 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
     private companiesService: CompaniesService,
     private cd: ChangeDetectorRef,
     private companyUserService: CompanyUserService,
-    private fb: FormBuilder,
+    private fb: NonNullableFormBuilder,
     private toastService: ToastService
   ) {}
 

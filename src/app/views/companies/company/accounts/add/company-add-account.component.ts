@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PopupBaseComponent } from '@app/shared/base/popup.base';
 import { AccountDTO, ObjectLike } from '@app/shared/models';
@@ -23,6 +23,16 @@ import {
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
 
+interface AccountForm {
+  name: FormControl<string>;
+  number: FormControl<number>;
+  naturalBalance: FormControl<string>;
+  type: FormControl<string>;
+  subtype: FormControl<string>;
+  description: FormControl<string>;
+  archived: FormControl<boolean>;
+}
+
 @Component({
   selector: 'app-company-add-account',
   templateUrl: 'company-add-account.component.html',
@@ -41,7 +51,7 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
   ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
-  form!: FormGroup;
+  form!: FormGroup<AccountForm>;
   cancelButtonOptions!: unknown;
   saveButtonOptions!: unknown;
   isSubmitting = false;
@@ -60,7 +70,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
   private ngUnsub = new Subject<void>();
 
   constructor(
-    private fb: FormBuilder,
+    private fb: NonNullableFormBuilder,
     private route: ActivatedRoute,
     private accountsService: AccountsService,
     private toastService: ToastService
@@ -90,7 +100,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
   private initForm() {
     const config = {
       name: this.fb.control('', [Validators.required, Validators.maxLength(150)]),
-      number: this.fb.control('', [Validators.required, Validators.min(0), Validators.max(100000)]),
+      number: this.fb.control(0, [Validators.required, Validators.min(0), Validators.max(100000)]),
       naturalBalance: this.fb.control('', [Validators.required]),
       type: this.fb.control('', [Validators.required]),
       subtype: this.fb.control('', [Validators.maxLength(200)]),

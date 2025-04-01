@@ -9,7 +9,7 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Company, CompanyMember } from '@app/shared/models';
 import { TransactionsCount, TransactionsSeries } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
@@ -32,11 +32,11 @@ import { of, Subject } from 'rxjs';
 import { finalize, switchMap, takeUntil } from 'rxjs/operators';
 import { TimeInterval } from 'devextreme/common/charts';
 
-export interface TransactionsForm {
-  startDate: string;
-  endDate: string;
-  companyId?: string;
-  userId?: string;
+interface TransactionsForm {
+  startDate: FormControl<Date>;
+  endDate: FormControl<Date>;
+  companyId: FormControl<string>;
+  userId: FormControl<string>;
 }
 
 @Component({
@@ -66,7 +66,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   companies: Company[] = [];
   companyMembers: CompanyMember[] = [{ fullName: 'All', id: '' } as CompanyMember];
   isSubmitting = false;
-  form!: FormGroup;
+  form!: FormGroup<TransactionsForm>;
   maxDate = new Date();
   tickInterval!: TimeInterval;
   aggregationInterval: TimeInterval = 'day';
@@ -76,7 +76,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   private ngUnsub = new Subject<void>();
 
   constructor(
-    private fb: FormBuilder,
+    private fb: NonNullableFormBuilder,
     private cd: ChangeDetectorRef,
     private transactionsTableService: TransactionsTableService
   ) {}
@@ -125,7 +125,8 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
 
     this.isSubmitting = true;
 
-    const payload = this.transactionsTableService.getSearchPayload(this.form.value as TransactionsForm);
+    const formValue = this.form.value;
+    const payload = this.transactionsTableService.getSearchPayload(formValue);
 
     if (!isValid(new Date(payload.startDate)) || !isValid(new Date(payload.endDate))) {
       this.isSubmitting = false;
@@ -147,7 +148,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   }
 
   get maxStartDate() {
-    const endDate = this.form?.get('endDate')?.value as string;
+    const endDate = this.form?.get('endDate')?.value;
 
     if (endDate) {
       return new Date(endDate);
@@ -167,14 +168,12 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   }
 
   private initForm() {
-    const config = {
+    this.form = this.fb.group({
       startDate: [new Date(), Validators.required],
       endDate: [new Date(), Validators.required],
       companyId: [''],
       userId: ['']
-    };
-
-    this.form = this.fb.group(config);
+    });
   }
 
   private handleCountryChange() {
