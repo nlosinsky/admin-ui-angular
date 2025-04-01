@@ -11,6 +11,7 @@ export interface Submittable {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ComponentType<T> = new (...args: any[]) => T;
+// eslint-enable-next-line @typescript-eslint/no-explicit-any
 
 export interface CommonCustomerComponentActions {
   navigateBack(): void;

@@ -7,7 +7,6 @@ import { EMPTY, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 export function AuthInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   if (!request.url.startsWith(environment.apiUrl) || request.url.endsWith('/auth/login')) {
     return next(request);
   }
@@ -31,8 +30,7 @@ export function AuthInterceptor(request: HttpRequest<unknown>, next: HttpHandler
     })
   );
 
-  function addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
+  function addToken(req: HttpRequest<unknown>, token: string): HttpRequest<unknown> {
     return req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
   }
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 }
