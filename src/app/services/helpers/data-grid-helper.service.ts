@@ -10,11 +10,11 @@ import { Workbook } from 'exceljs';
   providedIn: 'root'
 })
 export class DataGridHelperService {
-  /*eslint-disable*/
-
   openTableChooser(dataGrid: DxDataGridComponent): void {
     dataGrid.instance.showColumnChooser();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const columnChooserView = (dataGrid.instance as any).getView('columnChooserView');
+    // eslint-enable-next-line @typescript-eslint/no-explicit-any
 
     if (!columnChooserView._popupContainer) {
       columnChooserView._initializePopupContainer();
@@ -62,6 +62,4 @@ export class DataGridHelperService {
     this.exportToExcel(e.component, fileName, customizeCell);
     e.cancel = true;
   }
-
-  /* eslint-enable */
 }

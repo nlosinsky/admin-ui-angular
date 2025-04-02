@@ -10,10 +10,10 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Company, CompanyContract, CompanyFeatures, HttpError } from '@app/shared/models';
-import { CompanyContractEnum } from '@app/shared/models/companies/company.enum';
+import { CompanyContractEnum, CompanyContractType } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
@@ -30,6 +30,20 @@ import {
 } from 'devextreme-angular';
 import { EMPTY, forkJoin, Observable, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
+
+interface CompanyContractForm {
+  contract: FormGroup<{
+    type: FormControl<CompanyContractType>;
+    basisPoints: FormControl<number>;
+  }>;
+  features: FormGroup<{
+    accounting: FormControl<boolean>;
+    advancedReporting: FormControl<boolean>;
+    marketData: FormControl<boolean>;
+    onlineTransactions: FormControl<boolean>;
+    contractInventory: FormControl<boolean>;
+  }>;
+}
 
 @Component({
   selector: 'app-company-contract',
@@ -58,7 +72,7 @@ export class CompanyContractComponent
   isEditMode = false;
   isDataLoaded = false;
   company!: Company;
-  form!: FormGroup;
+  form!: FormGroup<CompanyContractForm>;
   isSubmitting = false;
   companyContract = CompanyContractEnum;
   companyContractList: string[] = [];
@@ -71,7 +85,7 @@ export class CompanyContractComponent
   constructor(
     private companyStateService: CompanyStateService,
     private cd: ChangeDetectorRef,
-    private fb: FormBuilder,
+    private fb: NonNullableFormBuilder,
     private toastService: ToastService,
     private router: Router
   ) {}

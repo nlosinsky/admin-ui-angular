@@ -12,10 +12,17 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { City, Company, CompanyUpdateDTO, Country, HttpError, State } from '@app/shared/models';
-import { CompanyState } from '@app/shared/models/companies/company.enum';
+import { CompanyState, CompanyStateType } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
@@ -39,6 +46,17 @@ import {
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
+
+interface CompanyInformationForm {
+  name: FormControl<string>;
+  website: FormControl<string>;
+  streetAddress: FormControl<string>;
+  country: FormControl<string>;
+  state: FormControl<string>;
+  city: FormControl<string>;
+  zipCode: FormControl<string>;
+  companyState: FormControl<CompanyStateType>;
+}
 
 @Component({
   selector: 'app-company-information',
@@ -70,7 +88,7 @@ export class CompanyInformationComponent
   isEditMode = false;
   isDataLoaded = false;
   company!: Company;
-  form!: FormGroup;
+  form!: FormGroup<CompanyInformationForm>;
   isSubmitting = false;
   countries: Country[] = [];
   states: State[] = [];
@@ -85,7 +103,7 @@ export class CompanyInformationComponent
   constructor(
     private companyStateService: CompanyStateService,
     private cd: ChangeDetectorRef,
-    private fb: FormBuilder,
+    private fb: NonNullableFormBuilder,
     private toastService: ToastService,
     private router: Router,
     private constantDataHelperService: ConstantDataHelperService

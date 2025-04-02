@@ -8,7 +8,7 @@ import {
   ViewChildren,
   QueryList
 } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginCredentials } from '@app/shared/models';
 import { FormHelper } from '@app/shared/utils/form-helper';
@@ -17,6 +17,11 @@ import { AuthService } from '@services/data/auth.service';
 import { DxButtonModule, DxTextBoxModule, DxValidatorComponent, DxValidatorModule } from 'devextreme-angular';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, finalize, takeUntil } from 'rxjs/operators';
+
+interface LoginForm {
+  email: FormControl<string>;
+  password: FormControl<string>;
+}
 
 @Component({
   selector: 'app-auth-login',
@@ -28,14 +33,14 @@ import { catchError, finalize, takeUntil } from 'rxjs/operators';
 export class LoginComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
 
-  form!: FormGroup;
+  form!: FormGroup<LoginForm>;
   isSubmitting = false;
   errorMessage = '';
 
   private ngUnsub = new Subject<void>();
 
   constructor(
-    private fb: FormBuilder,
+    private fb: NonNullableFormBuilder,
     private authService: AuthService,
     private cd: ChangeDetectorRef,
     private router: Router,

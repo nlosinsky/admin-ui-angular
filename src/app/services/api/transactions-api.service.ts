@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TransactionsCount, TransactionsCountDTO } from '@app/shared/models/transactions';
+import { TransactionsCount, TransactionsFormValue } from '@app/shared/models/transactions';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class TransactionsApiService {
     userId,
     endDate,
     startDate
-  }: TransactionsCountDTO): Observable<TransactionsCount[]> {
+  }: TransactionsFormValue): Observable<TransactionsCount[]> {
     const params = {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),

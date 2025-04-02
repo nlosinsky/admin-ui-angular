@@ -1,4 +1,4 @@
-export interface TransactionsCountDTO {
+export interface TransactionsFormValue {
   startDate: Date;
   endDate: Date;
   companyId: string;
