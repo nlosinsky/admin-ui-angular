@@ -8,4 +8,5 @@ module.exports = (app) => {
   app.use('/accounts', verifyToken, require('./accounts'));
   app.use('/users', verifyToken, require('./users'));
   app.use('/auth', require('./auth'));
+  app.use('/constant-data', require('./constant-data'));
 }
