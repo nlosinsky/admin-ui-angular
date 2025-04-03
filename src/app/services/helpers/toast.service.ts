@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpError } from '@app/shared/models';
+import { PlatformHelperService } from '@services/helpers/platform-helper.service';
 import notify from 'devextreme/ui/notify';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
+  constructor(private platformHelperService: PlatformHelperService) {}
+
   showSuccess(message: string): void {
     this.showToast(message, 'success');
   }
@@ -20,7 +23,7 @@ export class ToastService {
   }
 
   private showToast(message: string, type: string): void {
-    if (!message) {
+    if (!message || this.platformHelperService.isServer()) {
       return;
     }
     const displayTime = Math.min(Math.max(message.length * 50, 2000), 7000);

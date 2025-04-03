@@ -21,7 +21,7 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } f
 export class UsageTableComponent implements OnInit, OnDestroy {
   @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;
 
-  stats!: DocumentsStat[];
+  stats: DocumentsStat[] = [];
 
   isDataLoaded = false;
 

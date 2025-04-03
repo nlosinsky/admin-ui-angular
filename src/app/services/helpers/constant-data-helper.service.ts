@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Country } from '@app/shared/models';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { forkJoin, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConstantDataHelperService {
-  private countries: Country[] = [];
+  private countries: Country[] = [{ name: 'USA' } as Country];
 
   constructor(private httpClient: HttpClient) {}
 
@@ -21,8 +20,11 @@ export class ConstantDataHelperService {
   }
 
   private loadCountries() {
-    return this.httpClient
-      .get<Country[]>('/assets/constant-data/countries.json')
-      .pipe(tap((data: Country[]) => (this.countries = data)));
+    // todo move to server
+    // todo execute in the right place on demand
+    return of([{ name: 'USA' } as Country]);
+    // return this.httpClient
+    //   .get<Country[]>('../assets/data/countries.json')
+    //   .pipe(tap((data: Country[]) => (this.countries = data)));
   }
 }
