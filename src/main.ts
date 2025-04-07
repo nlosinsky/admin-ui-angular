@@ -5,9 +5,6 @@ import { environment } from '@env/environment';
 
 import { appConfig } from './app/app.config';
 
-// todo remove
-console.log(11111, environment.production);
-
 if (environment.production) {
   enableProdMode();
 }

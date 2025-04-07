@@ -59,8 +59,8 @@ import {
 export class CompaniesTableComponent implements OnInit, OnDestroy {
   @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;
 
-  companies!: Company[];
-  temporaryCompanies!: Company[];
+  companies: Company[] = [];
+  temporaryCompanies: Company[] = [];
   approveRequestsSet = new Set<string>();
   declineRequestsSet = new Set<string>();
   isDataLoaded = false;
