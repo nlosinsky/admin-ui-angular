@@ -31,7 +31,7 @@ import { StatusItemComponent } from '@components/status-item/status-item.compone
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { StatusColorPipe } from '@pipes/status-color/status-color.pipe';
 import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string-value-capitalize.pipe';
-import { ConstantDataHelperService } from '@services/helpers/constant-data-helper.service';
+import { ConstantDataApiService } from '@services/api/constant-data-api.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { WebsiteUrlValidator } from '@validators/website-url.validator';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
@@ -106,7 +106,7 @@ export class CompanyInformationComponent
     private fb: NonNullableFormBuilder,
     private toastService: ToastService,
     private router: Router,
-    private constantDataHelperService: ConstantDataHelperService
+    private constantDataApiService: ConstantDataApiService
   ) {}
 
   ngOnInit(): void {
@@ -321,7 +321,7 @@ export class CompanyInformationComponent
   }
 
   private populateLists(data: Company | CompanyUpdateDTO): void {
-    this.countries = this.constantDataHelperService.getCountries();
+    this.countries = this.constantDataApiService.getCountries();
     this.states = [];
     this.cities = [];
     this.zipCodes = [];

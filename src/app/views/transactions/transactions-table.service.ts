@@ -4,6 +4,7 @@ import { CompanyMember, Company, HttpError } from '@app/shared/models';
 import { TransactionsCount, TransactionsFormValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { CompaniesService } from '@services/data/companies.service';
 import { TransactionsService } from '@services/data/transactions.service';
+import { PlatformHelperService } from '@services/helpers/platform-helper.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { Canvg } from 'canvg';
 import { addMilliseconds, endOfDay, getQuarter, startOfDay, subMilliseconds } from 'date-fns';
@@ -23,7 +24,8 @@ export class TransactionsTableService {
     @Inject(LOCALE_ID) private localeId: string,
     private transactionsService: TransactionsService,
     private toastService: ToastService,
-    private companiesService: CompaniesService
+    private companiesService: CompaniesService,
+    private platformHelperService: PlatformHelperService
   ) {}
 
   getMembers(companyId: string) {
@@ -114,6 +116,10 @@ export class TransactionsTableService {
 
   onChartExport = (chart: DxChartComponent, format = 'png') => {
     return () => {
+      if (this.platformHelperService.isServer()) {
+        return;
+      }
+
       const chartElem = document.getElementById('chart') as HTMLElement;
       const width = chartElem.clientWidth + 20;
       const height = chartElem.clientHeight + 20;

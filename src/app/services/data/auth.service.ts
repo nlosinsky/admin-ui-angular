@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginCredentials, Token } from '@app/shared/models/auth';
 import { AuthApiService } from '@services/api/auth-api.service';
-import { StorageHelperService } from '@services/helpers/storage-helper.service';
 import { TokenHelperService } from '@services/helpers/token-helper.service';
+import { SsrCookieService } from 'ngx-cookie-service-ssr';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +14,13 @@ import { catchError, tap } from 'rxjs/operators';
 export class AuthService {
   constructor(
     private authApiService: AuthApiService,
-    private storage: StorageHelperService,
-    private token: TokenHelperService,
-    private router: Router
+    private tokenHelperService: TokenHelperService,
+    private router: Router,
+    private ssrCookieService: SsrCookieService
   ) {}
 
   login(credentials: LoginCredentials): Observable<Token> {
     return this.authApiService.login(credentials).pipe(
-      tap(token => this.storage.setTokenData(token)),
       catchError((error: HttpErrorResponse) => {
         let errorMessage = '';
 
@@ -37,7 +36,7 @@ export class AuthService {
   }
 
   logout(keepCurrentUrl = false): void {
-    this.storage.clear();
+    this.tokenHelperService.clear();
 
     if (keepCurrentUrl) {
       const state = this.router.routerState.snapshot;
@@ -50,6 +49,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.token.isTokenValid;
+    return this.tokenHelperService.hasCookie();
   }
 }
