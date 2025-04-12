@@ -1,16 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Country } from '@app/shared/models';
+import { environment } from '@env/environment';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ConstantDataHelperService {
+export class ConstantDataApiService {
+  private readonly basePath = environment.apiUrl;
   private countries: Country[] = [];
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   load(): Observable<[Country[]]> {
     return forkJoin([this.loadCountries()]);
@@ -21,8 +23,8 @@ export class ConstantDataHelperService {
   }
 
   private loadCountries() {
-    return this.httpClient
-      .get<Country[]>('/assets/constant-data/countries.json')
+    return this.http
+      .get<Country[]>(`${this.basePath}/constant-data/countries`)
       .pipe(tap((data: Country[]) => (this.countries = data)));
   }
 }

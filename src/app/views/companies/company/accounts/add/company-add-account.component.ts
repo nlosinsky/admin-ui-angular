@@ -127,7 +127,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
     };
   }
 
-  protected close(data: boolean | void) {
+  protected override close(data: boolean | void) {
     this.popupElem.instance.hide();
     super.close(data);
   }

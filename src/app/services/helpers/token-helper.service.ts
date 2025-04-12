@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
-import { StorageHelperService } from '@services/helpers/storage-helper.service';
+import { SsrCookieService } from 'ngx-cookie-service-ssr';
+
+const TOKEN_KEY = 'authToken';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenHelperService {
-  constructor(private storage: StorageHelperService) {}
+  constructor(private cookieService: SsrCookieService) {}
 
-  get accessToken(): string {
-    const data = this.storage.getTokenData();
-    return data?.accessToken || '';
+  getAuthCookie() {
+    return this.cookieService.get(TOKEN_KEY);
   }
 
-  get isTokenValid(): boolean {
-    return !!(this.accessToken || '').length;
+  hasCookie() {
+    return this.cookieService.check(TOKEN_KEY);
+  }
+
+  clear() {
+    this.cookieService.delete(TOKEN_KEY, '/');
   }
 }
