@@ -1,4 +1,4 @@
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
@@ -14,7 +14,7 @@ import { DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
   templateUrl: 'sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgForOf, NgIf, AsyncPipe, RouterModule, DxButtonModule, DxDropDownButtonModule]
+  imports: [NgForOf, NgIf, AsyncPipe, RouterModule, DxButtonModule, DxDropDownButtonModule, NgOptimizedImage]
 })
 export class SidenavComponent implements OnInit {
   items: NavItem[] = [];

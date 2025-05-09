@@ -43,7 +43,7 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { EMPTY, Subject } from 'rxjs';
+import { EMPTY, Subject, zip } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
 
@@ -188,22 +188,23 @@ export class CompanyInformationComponent
   }
 
   loadData(): void {
-    this.companyStateService.currentCompany$
+    zip([this.companyStateService.currentCompany$, this.constantDataApiService.getCountries()])
       .pipe(
         catchError(() => EMPTY),
-        filter(resp => !!(resp && resp.id)),
+        filter(([companyResp]) => !!companyResp?.id),
         takeUntil(this.ngUnsub)
       )
-      .subscribe(data => {
+      .subscribe(([company, countries]) => {
         this.isDataLoaded = true;
+        this.countries = countries;
 
-        if (!data) {
+        if (!company) {
           return;
         }
 
-        this.company = data;
+        this.company = company;
         this.populateLists(this.getCompanyDTO(this.company));
-        this.setFormData(data);
+        this.setFormData(company);
         this.cd.markForCheck();
       });
   }
@@ -321,7 +322,6 @@ export class CompanyInformationComponent
   }
 
   private populateLists(data: Company | CompanyUpdateDTO): void {
-    this.countries = this.constantDataApiService.getCountries();
     this.states = [];
     this.cities = [];
     this.zipCodes = [];

@@ -1,6 +1,6 @@
 <div class="auth-container">
   <div class="logo">
-    <img src="/assets/images/logo.svg" alt="Logo" />
+    <img ngSrc="/assets/images/logo.svg" alt="Logo" [width]="50" [height]="50" priority />
   </div>
 
   <h1 class="login-text">Login</h1>
@@ -44,13 +44,12 @@
 
     <p *ngIf="errorMessage" class="error-message mb-0">{{ errorMessage }}</p>
 
-    <div class="text-center">
+    <div class="actions-container">
       <dx-button
         type="default"
         stylingMode="contained"
         text="Login"
-        class="submit-btn"
-        [ngClass]="{ loading: isSubmitting }"
+        [elementAttr]="{ class: 'submit-btn' + (isSubmitting ? ' loading' : '') }"
         [useSubmitBehavior]="true"
       ></dx-button>
     </div>

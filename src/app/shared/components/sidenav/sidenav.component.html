@@ -1,14 +1,14 @@
 <div class="sidenav-container">
   <a href="#" routerLink="/" class="logo">
-    <img src="/assets/images/logo.svg" alt="Dashboard logo" />
+    <img ngSrc="/assets/images/logo.svg" alt="Dashboard logo" [width]="35" [height]="35" />
     <span>Angular Dashboard</span>
   </a>
 
   <div class="sidenav-menu">
     <dx-button
       *ngFor="let item of items; trackBy: trackBy"
-      [stylingMode]="rla.isActive ? 'contained' : 'text'"
       [text]="item.label"
+      stylingMode="contained"
       [type]="rla.isActive ? 'default' : 'normal'"
       [routerLink]="item.route"
       [disabled]="!!item.disabled"

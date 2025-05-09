@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgIf, NgOptimizedImage } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -28,7 +28,15 @@ interface LoginForm {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, NgClass, DxTextBoxModule, ReactiveFormsModule, DxButtonModule, ErrorMessagePipe, DxValidatorModule]
+  imports: [
+    NgIf,
+    DxTextBoxModule,
+    ReactiveFormsModule,
+    DxButtonModule,
+    ErrorMessagePipe,
+    DxValidatorModule,
+    NgOptimizedImage
+  ]
 })
 export class LoginComponent implements OnInit, OnDestroy {
   @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
