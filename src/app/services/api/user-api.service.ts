@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { User } from '@app/shared/models/user';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
@@ -9,9 +9,9 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserApiService {
-  private readonly basePath = environment.apiUrl;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private readonly basePath = environment.apiUrl;
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.basePath}/users/current`).pipe(map(user => new User(user)));

@@ -1,4 +1,3 @@
-import { QueryList } from '@angular/core';
 import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { DxValidatorComponent } from 'devextreme-angular';
 
@@ -32,7 +31,7 @@ export class FormHelper {
     });
   }
 
-  static triggerFormValidation(form: UntypedFormGroup, validators: QueryList<DxValidatorComponent>): void {
+  static triggerFormValidation(form: UntypedFormGroup, validators: readonly DxValidatorComponent[]): void {
     FormHelper.markTouchedAndDirty(form);
     validators.forEach(item => item.instance.validate());
   }

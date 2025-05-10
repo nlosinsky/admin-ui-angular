@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -8,8 +7,9 @@ import {
   OnDestroy,
   OnInit,
   TemplateRef,
-  ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  inject,
+  viewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
@@ -44,7 +44,6 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
   styleUrls: ['./company-accounts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     DxDataGridModule,
     BgSpinnerComponent,
     DxTooltipModule,
@@ -55,10 +54,18 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
   ]
 })
 export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewInit, CommonCustomerComponentActions {
-  @ViewChild(DxTooltipComponent) tooltip!: DxTooltipComponent;
-  @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;
-  @ViewChild('popupContainer', { read: ViewContainerRef }) private popupContainer!: ViewContainerRef;
-  @ViewChild('actionsTpl', { read: TemplateRef }) actionsTpl!: TemplateRef<HTMLElement>;
+  private cd = inject(ChangeDetectorRef);
+  private accountsApiService = inject(AccountsService);
+  private toastService = inject(ToastService);
+  private route = inject(ActivatedRoute);
+  private dataGridHelperService = inject(DataGridHelperService);
+  private dialogService = inject(DialogService);
+  private router = inject(Router);
+
+  readonly tooltip = viewChild.required(DxTooltipComponent);
+  readonly dataGrid = viewChild.required(DxDataGridComponent);
+  readonly popupContainer = viewChild.required('popupContainer', { read: ViewContainerRef });
+  readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
 
   accounts: Account[] = [];
   isDataLoaded = false;
@@ -68,23 +75,13 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
   readonly indicatorSrc = tableIndicatorSrc;
   private ngUnsub = new Subject<void>();
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    private accountsApiService: AccountsService,
-    private toastService: ToastService,
-    private route: ActivatedRoute,
-    private dataGridHelperService: DataGridHelperService,
-    private dialogService: DialogService,
-    private router: Router
-  ) {}
-
   ngOnInit(): void {
     this.handleSearch();
     this.loadData();
   }
 
   ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl);
+    this.actionsTemplateEvent.emit(this.actionsTpl());
   }
 
   ngOnDestroy(): void {
@@ -129,25 +126,27 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
         const field = (event.data[key] as string) || '';
 
         if (field?.length) {
-          this.tooltip.contentTemplate = field;
-          this.tooltip.instance.show(arg.target);
+          const tooltip = this.tooltip();
+          tooltip.contentTemplate = field;
+          tooltip.instance.show(arg.target);
         }
       });
 
       on(event.cellElement, 'mouseout', () => {
-        this.tooltip.contentTemplate = '';
-        this.tooltip.instance.hide();
+        const tooltip = this.tooltip();
+        tooltip.contentTemplate = '';
+        tooltip.instance.hide();
       });
     }
   }
 
   openColumnChooserButtonClick(): void {
-    this.dataGridHelperService.openTableChooser(this.dataGrid);
+    this.dataGridHelperService.openTableChooser(this.dataGrid());
   }
 
   onExport(): void {
     this.dataGridHelperService.exportToExcel(
-      this.dataGrid.instance,
+      this.dataGrid().instance,
       'accounts',
       (gridCell: DataGridCell, excelCell: ExportGridExcelCell) => {
         const columnName = gridCell?.column?.name || '';
@@ -163,7 +162,7 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
 
   onAdd() {
     this.dialogService
-      .openPopup(this.popupContainer, CompanyAddAccountComponent)
+      .openPopup(this.popupContainer(), CompanyAddAccountComponent)
       .pipe(takeUntil(this.ngUnsub))
       .subscribe(refresh => {
         if (refresh) {
@@ -181,7 +180,7 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
       .asObservable()
       .pipe(distinctUntilChanged(), debounceTime(300), takeUntil(this.ngUnsub))
       .subscribe(val => {
-        this.dataGrid.instance.searchByText(val);
+        this.dataGrid().instance.searchByText(val);
       });
   }
 }

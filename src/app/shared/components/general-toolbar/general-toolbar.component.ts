@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 
 @Component({
   selector: 'app-general-toolbar',
@@ -8,7 +8,6 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
   imports: []
 })
 export class GeneralToolbarComponent {
-  @Input() title = '';
-
-  @Input() subtitle = '';
+  readonly title = input('');
+  readonly subtitle = input('');
 }

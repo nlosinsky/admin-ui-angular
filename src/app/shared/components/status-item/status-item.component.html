@@ -1,9 +1,9 @@
 <span
   class="circle"
   [ngClass]="{
-    'circle-success': type === statusColors.SUCCESS,
-    'circle-danger': type === statusColors.DANGER,
-    'circle-warning': type === statusColors.WARNING
+    'circle-success': type() === statusColors.SUCCESS,
+    'circle-danger': type() === statusColors.DANGER,
+    'circle-warning': type() === statusColors.WARNING
   }"
 ></span>
-<span>{{ text }}</span>
+<span>{{ text() }}</span>

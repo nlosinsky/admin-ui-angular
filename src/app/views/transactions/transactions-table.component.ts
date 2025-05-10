@@ -5,9 +5,9 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren
+  inject,
+  viewChildren,
+  viewChild
 } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Company, CompanyMember } from '@app/shared/models';
@@ -58,8 +58,12 @@ interface TransactionsForm {
   ]
 })
 export class TransactionsTableComponent implements OnInit, OnDestroy {
-  @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
-  @ViewChild(DxChartComponent, { static: false }) chart!: DxChartComponent;
+  private fb = inject(NonNullableFormBuilder);
+  private cd = inject(ChangeDetectorRef);
+  private transactionsTableService = inject(TransactionsTableService);
+
+  readonly validators = viewChildren(DxValidatorComponent);
+  readonly chart = viewChild.required(DxChartComponent);
 
   selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
   dataSource: TransactionsCount[] = [];
@@ -74,12 +78,6 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
   private ngUnsub = new Subject<void>();
-
-  constructor(
-    private fb: NonNullableFormBuilder,
-    private cd: ChangeDetectorRef,
-    private transactionsTableService: TransactionsTableService
-  ) {}
 
   ngOnInit(): void {
     this.loadCompanies();
@@ -111,7 +109,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
     return FormHelper.isValidField(field);
   }
 
-  onChartExport = (format = 'png') => this.transactionsTableService.onChartExport(this.chart, format);
+  onChartExport = (format = 'png') => this.transactionsTableService.onChartExport(this.chart(), format);
 
   onSearch() {
     if (this.isSubmitting) {
@@ -119,7 +117,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
     }
 
     if (this.form.invalid) {
-      FormHelper.triggerFormValidation(this.form, this.validators);
+      FormHelper.triggerFormValidation(this.form, this.validators());
       return;
     }
 

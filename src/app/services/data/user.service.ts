@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpError } from '@app/shared/models';
 import { User } from '@app/shared/models/user';
 import { UserApiService } from '@services/api/user-api.service';
@@ -10,6 +10,9 @@ import { catchError, share, switchMap, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
+  private userApiService = inject(UserApiService);
+  private toastService = inject(ToastService);
+
   currentUser$: Observable<User>;
   currentUser!: User;
 
@@ -17,10 +20,10 @@ export class UserService {
 
   private loadUserSubj = new Subject<void>();
 
-  constructor(
-    private userApiService: UserApiService,
-    private toastService: ToastService
-  ) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.currentUser$ = this.currentUserSubj.asObservable().pipe(share());
 
     this.loadUserSubj

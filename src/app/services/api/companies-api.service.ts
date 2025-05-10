@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Company, CompanyContract, CompanyFeatures, CompanyMember, CompanyUpdateDTO, User } from '@app/shared/models';
 import {
   CompanyMemberAccountState,
@@ -14,9 +14,9 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CompaniesApiService {
-  private readonly basePath = environment.apiUrl;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private readonly basePath = environment.apiUrl;
 
   getCompanies(): Observable<Company[]> {
     return this.getCompaniesByState(CompanyState.ACTIVE);

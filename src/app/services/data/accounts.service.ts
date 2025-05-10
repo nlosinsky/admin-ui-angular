@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Account, AccountDTO } from '@app/shared/models';
 import { AccountsApiService } from '@services/api/accounts-api.service';
 import { Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AccountsService {
-  constructor(private accountsApiService: AccountsApiService) {}
+  private accountsApiService = inject(AccountsApiService);
 
   addAccount(payload: AccountDTO): Observable<Account> {
     return this.accountsApiService.addAccount(payload);

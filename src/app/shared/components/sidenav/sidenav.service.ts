@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { User } from '@app/shared/models';
 import { DropdownTypes, NavItem, UserDropdownItem } from '@components/sidenav/sidenav.model';
 import { AuthService } from '@services/data/auth.service';
@@ -7,10 +7,8 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SidenavService {
-  constructor(
-    private authService: AuthService,
-    private userService: UserService
-  ) {}
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
 
   getCurrentUser(): Observable<User> {
     return this.userService.currentUser$;

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginCredentials, Token } from '@app/shared/models/auth';
 import { AuthApiService } from '@services/api/auth-api.service';
@@ -12,12 +12,10 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(
-    private authApiService: AuthApiService,
-    private tokenHelperService: TokenHelperService,
-    private router: Router,
-    private ssrCookieService: SsrCookieService
-  ) {}
+  private authApiService = inject(AuthApiService);
+  private tokenHelperService = inject(TokenHelperService);
+  private router = inject(Router);
+  private ssrCookieService = inject(SsrCookieService);
 
   login(credentials: LoginCredentials): Observable<Token> {
     return this.authApiService.login(credentials).pipe(

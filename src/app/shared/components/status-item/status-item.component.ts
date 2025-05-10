@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, ChangeDetectionStrategy, Input, HostBinding } from '@angular/core';
+import { Component, ChangeDetectionStrategy, HostBinding, input } from '@angular/core';
 import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
 
 @Component({
@@ -10,8 +10,8 @@ import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
   imports: [NgClass]
 })
 export class StatusItemComponent {
-  @Input() text = '';
-  @Input() type!: StatusColorsType;
+  readonly text = input('');
+  readonly type = input.required<StatusColorsType>();
 
   @HostBinding('class') class = 'status-item';
 

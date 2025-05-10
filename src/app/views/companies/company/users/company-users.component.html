@@ -1,45 +1,48 @@
-<app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
+@if (!isDataLoaded) {
+  <app-bg-spinner />
+}
 
-<ng-container *ngIf="isDataLoaded">
+@if (isDataLoaded) {
   <section class="content-section">
     <h5 class="section-title">Pending Approvals</h5>
-
-    <div *ngIf="!pendingMembers.length" class="no-items-placeholder">You don’t have any pending approvals</div>
-
-    <div *ngIf="pendingMembers.length" class="table-list">
-      <div *ngFor="let member of pendingMembers; trackBy: trackByPending" class="table-list-row">
-        <div class="table-list-col">
-          <div class="table-list-label">Email</div>
-          <div class="table-list-content">{{ member.email }}</div>
-          <div class="table-list-actions">
-            <div class="table-list-actions">
-              <dx-button
-                stylingMode="outlined"
-                text="Decline"
-                type="normal"
-                class="button-small grayed"
-                [ngClass]="{ 'loading-blue': declineRequestsSet.has(member.id) }"
-                (onClick)="onDecline(member.id)"
-              ></dx-button>
-
-              <dx-button
-                stylingMode="contained"
-                text="Approve"
-                type="success"
-                class="button-small"
-                [ngClass]="{ loading: approveRequestsSet.has(member.id) }"
-                (onClick)="onApprove(member.id)"
-              ></dx-button>
+    @if (!pendingMembers.length) {
+      <div class="no-items-placeholder">You don’t have any pending approvals</div>
+    }
+    @if (pendingMembers.length) {
+      <div class="table-list">
+        @for (member of pendingMembers; track trackByPending($index, member)) {
+          <div class="table-list-row">
+            <div class="table-list-col">
+              <div class="table-list-label">Email</div>
+              <div class="table-list-content">{{ member.email }}</div>
+              <div class="table-list-actions">
+                <div class="table-list-actions">
+                  <dx-button
+                    stylingMode="outlined"
+                    text="Decline"
+                    type="normal"
+                    class="button-small grayed"
+                    [ngClass]="{ 'loading-blue': declineRequestsSet.has(member.id) }"
+                    (onClick)="onDecline(member.id)"
+                  ></dx-button>
+                  <dx-button
+                    stylingMode="contained"
+                    text="Approve"
+                    type="success"
+                    class="button-small"
+                    [ngClass]="{ loading: approveRequestsSet.has(member.id) }"
+                    (onClick)="onApprove(member.id)"
+                  ></dx-button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        }
       </div>
-    </div>
+    }
   </section>
-
   <section class="content-section">
     <h5 class="section-title">Company Members</h5>
-
     <dx-data-grid
       class="data-grid"
       [dataSource]="members"
@@ -52,7 +55,6 @@
       <dxo-paging [enabled]="false"></dxo-paging>
       <dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
       <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-
       <dxi-column dataField="fullName" caption="Name" cellTemplate="nameTemplate"></dxi-column>
       <div *dxTemplate="let item of 'nameTemplate'">
         <app-avatar-box
@@ -62,9 +64,7 @@
           (itemClicked)="onViewMember(item.data)"
         ></app-avatar-box>
       </div>
-
       <dxi-column dataField="email" caption="User Email" type="string"></dxi-column>
-
       <dxi-column
         dataField="accountState"
         caption="Account State"
@@ -77,7 +77,6 @@
           [text]="item.value | stringValueCapitalize"
         ></app-status-item>
       </div>
-
       <dxi-column
         [allowReordering]="false"
         [allowHiding]="false"
@@ -98,4 +97,4 @@
       </div>
     </dx-data-grid>
   </section>
-</ng-container>
+}

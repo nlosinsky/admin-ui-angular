@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, viewChild, viewChildren } from '@angular/core';
 import { DxPopupComponent, DxValidatorComponent } from 'devextreme-angular';
 import { Observable, Subject } from 'rxjs';
 
@@ -6,8 +6,8 @@ import { Observable, Subject } from 'rxjs';
   template: ''
 })
 export abstract class PopupBaseComponent {
-  @ViewChild(DxPopupComponent) popupElem!: DxPopupComponent;
-  @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
+  readonly popupElem = viewChild.required(DxPopupComponent);
+  readonly validators = viewChildren(DxValidatorComponent);
 
   close$: Observable<unknown>;
   private closeSubj = new Subject<unknown>();

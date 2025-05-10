@@ -1,4 +1,9 @@
 import { Routes } from '@angular/router';
-import { CompanyAccountsComponent } from '@views/companies/company/accounts/company-accounts.component';
 
-export const ROUTES: Routes = [{ path: '', component: CompanyAccountsComponent }];
+export const ROUTES: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('@views/companies/company/accounts/company-accounts.component').then(m => m.CompanyAccountsComponent)
+  }
+];

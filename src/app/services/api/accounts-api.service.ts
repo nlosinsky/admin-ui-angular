@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Account, AccountDTO } from '@app/shared/models';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
@@ -9,9 +9,9 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AccountsApiService {
-  private readonly basePath = environment.apiUrl;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private readonly basePath = environment.apiUrl;
 
   getAccounts(companyId: string, limit = 1000, offset = 0): Observable<Account[]> {
     return this.http

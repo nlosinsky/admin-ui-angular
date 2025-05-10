@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { TransactionsCount, TransactionsFormValue } from '@app/shared/models/transactions';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
@@ -8,9 +8,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TransactionsApiService {
-  private readonly basePath = environment.apiUrl;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private readonly basePath = environment.apiUrl;
 
   getTransactionsCount({
     companyId,
