@@ -175,10 +175,6 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
     this.searchSubj.next((event.target as HTMLInputElement).value);
   }
 
-  trackByTmpCompany(index: number, company: Company): string {
-    return company.id;
-  }
-
   private handleReloadTableData() {
     this.reloadCompaniesSubj
       .asObservable()

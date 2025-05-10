@@ -8,6 +8,6 @@ import { Component, ChangeDetectionStrategy, input } from '@angular/core';
   imports: []
 })
 export class GeneralToolbarComponent {
-  readonly title = input('');
-  readonly subtitle = input('');
+  readonly title = input.required();
+  readonly subtitle = input.required();
 }

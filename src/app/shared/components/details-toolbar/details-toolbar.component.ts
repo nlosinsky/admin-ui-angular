@@ -10,10 +10,7 @@ import { DxButtonModule } from 'devextreme-angular';
   imports: [DxButtonModule]
 })
 export class DetailsToolbarComponent {
-  readonly title = input('');
-
   readonly logo = input('');
-
   readonly back = output<void>();
 
   onBack(): void {

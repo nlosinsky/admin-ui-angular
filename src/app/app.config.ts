@@ -5,7 +5,7 @@ import { authInterceptor } from '@app/interceptors/auth-interceptor';
 import { errorInterceptor } from '@app/interceptors/error-interceptor';
 import dxDataGrid from 'devextreme/ui/data_grid';
 import { APP_ROUTES } from './app.routes';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { provideClientHydration, withIncrementalHydration } from '@angular/platform-browser';
 
 dxDataGrid.defaultOptions({
   options: {
@@ -28,6 +28,6 @@ export const appConfig: ApplicationConfig = {
       withEnabledBlockingInitialNavigation()
     ),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor]), withFetch()),
-    provideClientHydration(withEventReplay())
+    provideClientHydration(withIncrementalHydration())
   ]
 };

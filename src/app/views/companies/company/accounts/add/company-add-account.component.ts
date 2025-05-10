@@ -74,13 +74,6 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
 
   private ngUnsub = new Subject<void>();
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() {
-    super();
-  }
-
   ngOnInit() {
     this.initButtons();
     this.initForm();

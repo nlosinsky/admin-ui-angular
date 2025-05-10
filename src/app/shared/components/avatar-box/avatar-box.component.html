@@ -1,9 +1,9 @@
 <span class="avatar">
   <img [src]="avatar()" alt="" />
 </span>
-@if (!link()) {
-  <span>{{ text() }}</span>
-}
+
 @if (link()) {
   <a href="#" (click)="onClick($event)">{{ text() }}</a>
+} @else {
+	<span>{{ text() }}</span>
 }

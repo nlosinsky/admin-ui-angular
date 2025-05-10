@@ -135,10 +135,6 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
       });
   }
 
-  trackByPending(index: number, member: CompanyMember): string {
-    return member.id;
-  }
-
   private loadData() {
     const companyId = this.route.snapshot.paramMap.get('companyId');
     if (!companyId) {

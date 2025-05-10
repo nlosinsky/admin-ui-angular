@@ -8,10 +8,8 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   imports: []
 })
 export class AvatarBoxComponent {
-  readonly avatar = input('');
-
-  readonly text = input('');
-
+  readonly avatar = input.required();
+  readonly text = input.required();
   readonly link = input(false);
 
   readonly itemClicked = output<void>();

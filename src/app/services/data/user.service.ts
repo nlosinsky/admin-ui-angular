@@ -20,9 +20,6 @@ export class UserService {
 
   private loadUserSubj = new Subject<void>();
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     this.currentUser$ = this.currentUserSubj.asObservable().pipe(share());
 

@@ -1,4 +1,5 @@
 @if (currentCompany$ | async; as company) {
+
   <section class="heading-section">
     <app-details-toolbar [title]="company.name" [logo]="company.logoUrl" (back)="onReturnBack()">
       <div toolbar-controls class="toolbar-controls">

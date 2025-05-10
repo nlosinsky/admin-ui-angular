@@ -18,9 +18,6 @@ export class CompanyStateService {
   private currentCompanySubj = new ReplaySubject<Company | null>(1);
   private loadCompanySubj = new Subject<string>();
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     this.currentCompany$ = this.currentCompanySubj.asObservable();
 

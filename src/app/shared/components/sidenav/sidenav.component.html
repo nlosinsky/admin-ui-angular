@@ -5,7 +5,7 @@
   </a>
 
   <div class="sidenav-menu">
-    @for (item of items; track trackBy($index, item)) {
+    @for (item of items; track item.route) {
       <dx-button
         [text]="item.label"
         stylingMode="contained"

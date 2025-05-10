@@ -1,7 +1,3 @@
-@if (!isDataLoaded) {
-  <app-bg-spinner />
-}
-
 @if (isDataLoaded) {
   <div class="container">
     <app-general-toolbar title="Usage Data" subtitle="We found {{ stats.length }} results">
@@ -36,4 +32,6 @@
       </dx-data-grid>
     </section>
   </div>
+} @else {
+	<app-bg-spinner />
 }

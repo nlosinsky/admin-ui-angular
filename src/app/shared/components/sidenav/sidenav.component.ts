@@ -39,10 +39,6 @@ export class SidenavComponent implements OnInit {
     }
   }
 
-  trackBy(index: number, item: NavItem): string {
-    return item.route;
-  }
-
   private logout(): void {
     this.service.logout();
   }

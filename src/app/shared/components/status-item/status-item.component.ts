@@ -10,7 +10,7 @@ import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
   imports: [NgClass]
 })
 export class StatusItemComponent {
-  readonly text = input('');
+  readonly text = input.required();
   readonly type = input.required<StatusColorsType>();
 
   @HostBinding('class') class = 'status-item';
