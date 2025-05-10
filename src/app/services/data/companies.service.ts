@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Company, CompanyContract, CompanyFeatures, CompanyMember, CompanyUpdateDTO } from '@app/shared/models';
 import { CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
 import { CompaniesApiService } from '@services/api/companies-api.service';
@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CompaniesService {
-  constructor(private companiesApiService: CompaniesApiService) {}
+  private companiesApiService = inject(CompaniesApiService);
 
   getCompanies(): Observable<Company[]> {
     return this.companiesApiService.getCompanies();

@@ -1,107 +1,105 @@
-<app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
+@if (!isDataLoaded) {
+  <app-bg-spinner />
+}
 
-<div *ngIf="isDataLoaded" class="container">
-  <app-general-toolbar title="Customer Management" subtitle="We found {{ companies.length }} results">
-    <div toolbar-controls class="toolbar-controls">
-      <dx-button
-        icon="spindown"
-        text="Manage columns"
-        [rtlEnabled]="true"
-        stylingMode="outlined"
-        class="grid-column-chooser-btn"
-        (onClick)="openColumnChooserButtonClick()"
-      ></dx-button>
-      <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
-      <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34"></dx-text-box>
-    </div>
-  </app-general-toolbar>
-
-  <section class="content-section">
-    <dx-data-grid
-      class="data-grid"
-      [dataSource]="companies"
-      [showBorders]="true"
-      [showColumnLines]="true"
-      [showRowLines]="true"
-      [columnAutoWidth]="true"
-      [remoteOperations]="false"
-    >
-      <dxo-paging [enabled]="false"></dxo-paging>
-      <dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
-      <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-
-      <dxi-column dataField="name" caption="Customer Name" cellTemplate="customerNameTemplate"></dxi-column>
-      <div *dxTemplate="let item of 'customerNameTemplate'">
-        <a href="#" [routerLink]="[item.data.id]">{{ item.value }}</a>
+@if (isDataLoaded) {
+  <div class="container">
+    <app-general-toolbar title="Customer Management" subtitle="We found {{ companies.length }} results">
+      <div toolbar-controls class="toolbar-controls">
+        <dx-button
+          icon="spindown"
+          text="Manage columns"
+          [rtlEnabled]="true"
+          stylingMode="outlined"
+          class="grid-column-chooser-btn"
+          (onClick)="openColumnChooserButtonClick()"
+        ></dx-button>
+        <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
+        <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34"></dx-text-box>
       </div>
-
-      <dxi-column dataField="totals.users" caption="Users" cellTemplate="usersTemplate" alignment="left"></dxi-column>
-      <div *dxTemplate="let item of 'usersTemplate'">{{ item.value | number }}</div>
-
-      <dxi-column
-        dataField="createdAt"
-        caption="Subscription Start Date"
-        cellTemplate="startDateTemplate"
-        alignment="left"
-      ></dxi-column>
-      <div *dxTemplate="let item of 'startDateTemplate'">{{ item.value | date: 'shortDate' }}</div>
-
-      <dxi-column
-        dataField="totals.crmAccounts"
-        caption="Customers"
-        cellTemplate="customersTemplate"
-        alignment="left"
-      ></dxi-column>
-      <div *dxTemplate="let item of 'customersTemplate'">{{ item.value | number }}</div>
-
-      <dxi-column
-        dataField="contract.type"
-        caption="Subscription Type"
-        cellTemplate="subscriptionTypeTemplate"
-      ></dxi-column>
-      <div *dxTemplate="let item of 'subscriptionTypeTemplate'">{{ item.value | contractType }}</div>
-
-      <dxi-column
-        dataField="contract.basisPoints"
-        caption="Transaction Rate"
-        cellTemplate="transactionRateTemplate"
-        alignment="left"
-      ></dxi-column>
-      <div *dxTemplate="let item of 'transactionRateTemplate'">{{ item.value / 100 }}%</div>
-    </dx-data-grid>
-  </section>
-
-  <ng-container *ngIf="temporaryCompanies">
+    </app-general-toolbar>
     <section class="content-section">
-      <h5 class="section-title">Pending Approvals</h5>
-      <div *ngIf="!temporaryCompanies.length" class="no-items-placeholder">You don’t have any pending approvals</div>
-
-      <div *ngFor="let item of temporaryCompanies; trackBy: trackByTmpCompany" class="table-list-row">
-        <div class="table-list-col">
-          <div class="table-list-label">Company</div>
-          <div class="table-list-content">{{ item.name }}</div>
-          <div class="table-list-actions">
-            <dx-button
-              stylingMode="outlined"
-              text="Decline"
-              type="normal"
-              class="button-small grayed"
-              [ngClass]="{ 'loading-blue': declineRequestsSet.has(item.id) }"
-              (onClick)="onDecline(item.id)"
-            ></dx-button>
-
-            <dx-button
-              stylingMode="contained"
-              type="success"
-              class="button-small"
-              text="Approve"
-              [ngClass]="{ loading: approveRequestsSet.has(item.id) }"
-              (onClick)="onApprove(item.id)"
-            >
-            </dx-button>
-          </div>
+      <dx-data-grid
+        class="data-grid"
+        [dataSource]="companies"
+        [showBorders]="true"
+        [showColumnLines]="true"
+        [showRowLines]="true"
+        [columnAutoWidth]="true"
+        [remoteOperations]="false"
+      >
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
+        <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+        <dxi-column dataField="name" caption="Customer Name" cellTemplate="customerNameTemplate"></dxi-column>
+        <div *dxTemplate="let item of 'customerNameTemplate'">
+          <a href="#" [routerLink]="[item.data.id]">{{ item.value }}</a>
         </div>
-      </div>
+        <dxi-column dataField="totals.users" caption="Users" cellTemplate="usersTemplate" alignment="left"></dxi-column>
+        <div *dxTemplate="let item of 'usersTemplate'">{{ item.value | number }}</div>
+        <dxi-column
+          dataField="createdAt"
+          caption="Subscription Start Date"
+          cellTemplate="startDateTemplate"
+          alignment="left"
+        ></dxi-column>
+        <div *dxTemplate="let item of 'startDateTemplate'">{{ item.value | date: 'shortDate' }}</div>
+        <dxi-column
+          dataField="totals.crmAccounts"
+          caption="Customers"
+          cellTemplate="customersTemplate"
+          alignment="left"
+        ></dxi-column>
+        <div *dxTemplate="let item of 'customersTemplate'">{{ item.value | number }}</div>
+        <dxi-column
+          dataField="contract.type"
+          caption="Subscription Type"
+          cellTemplate="subscriptionTypeTemplate"
+        ></dxi-column>
+        <div *dxTemplate="let item of 'subscriptionTypeTemplate'">{{ item.value | contractType }}</div>
+        <dxi-column
+          dataField="contract.basisPoints"
+          caption="Transaction Rate"
+          cellTemplate="transactionRateTemplate"
+          alignment="left"
+        ></dxi-column>
+        <div *dxTemplate="let item of 'transactionRateTemplate'">{{ item.value / 100 }}%</div>
+      </dx-data-grid>
     </section>
-  </ng-container>
-</div>
+    @if (temporaryCompanies) {
+      <section class="content-section">
+        <h5 class="section-title">Pending Approvals</h5>
+        @if (!temporaryCompanies.length) {
+          <div class="no-items-placeholder">You don’t have any pending approvals</div>
+        }
+        @for (item of temporaryCompanies; track trackByTmpCompany($index, item)) {
+          <div class="table-list-row">
+            <div class="table-list-col">
+              <div class="table-list-label">Company</div>
+              <div class="table-list-content">{{ item.name }}</div>
+              <div class="table-list-actions">
+                <dx-button
+                  stylingMode="outlined"
+                  text="Decline"
+                  type="normal"
+                  class="button-small grayed"
+                  [ngClass]="{ 'loading-blue': declineRequestsSet.has(item.id) }"
+                  (onClick)="onDecline(item.id)"
+                ></dx-button>
+                <dx-button
+                  stylingMode="contained"
+                  type="success"
+                  class="button-small"
+                  text="Approve"
+                  [ngClass]="{ loading: approveRequestsSet.has(item.id) }"
+                  (onClick)="onApprove(item.id)"
+                >
+                </dx-button>
+              </div>
+            </div>
+          </div>
+        }
+      </section>
+    }
+  </div>
+}

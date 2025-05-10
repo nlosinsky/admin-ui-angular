@@ -1,5 +1,13 @@
-import { AsyncPipe, NgIf, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  inject
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Company, Tab } from '@app/shared/models';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
@@ -15,9 +23,16 @@ import { first, Observable, Subject } from 'rxjs';
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, NgTemplateOutlet, AsyncPipe, RouterModule, DetailsToolbarComponent, DxTabsModule]
+  imports: [NgTemplateOutlet, AsyncPipe, RouterModule, DetailsToolbarComponent, DxTabsModule]
 })
 export class CompanyComponent implements OnInit, OnDestroy {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private companyHelperService = inject(CompanyHelperService);
+  private companyStateService = inject(CompanyStateService);
+  private cd = inject(ChangeDetectorRef);
+  private dialogService = inject(DialogService);
+
   tabs: Tab[] = [];
   currentCompany$!: Observable<Company | null>;
   activeComponent!: Submittable & CommonCustomerComponentActions;
@@ -25,15 +40,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
   companyId!: string;
 
   private ngUnsub = new Subject<void>();
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private companyHelperService: CompanyHelperService,
-    private companyStateService: CompanyStateService,
-    private cd: ChangeDetectorRef,
-    private dialogService: DialogService
-  ) {}
 
   ngOnInit(): void {
     this.handleCompanyLoad();

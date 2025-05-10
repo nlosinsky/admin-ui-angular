@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Country } from '@app/shared/models';
 import { environment } from '@env/environment';
 import { Observable, of } from 'rxjs';
@@ -9,10 +9,10 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ConstantDataApiService {
+  private http = inject(HttpClient);
+
   private readonly basePath = environment.apiUrl;
   private countries: Country[] = [];
-
-  constructor(private http: HttpClient) {}
 
   getCountries(): Observable<Country[]> {
     if (this.countries.length) {

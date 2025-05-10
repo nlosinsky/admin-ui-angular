@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SsrCookieService } from 'ngx-cookie-service-ssr';
 
 const TOKEN_KEY = 'authToken';
@@ -7,7 +7,7 @@ const TOKEN_KEY = 'authToken';
   providedIn: 'root'
 })
 export class TokenHelperService {
-  constructor(private cookieService: SsrCookieService) {}
+  private cookieService = inject(SsrCookieService);
 
   getAuthCookie() {
     return this.cookieService.get(TOKEN_KEY);

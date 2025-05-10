@@ -1,4 +1,4 @@
-import { DatePipe, NgClass, NgIf } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -7,10 +7,10 @@ import {
   EventEmitter,
   OnDestroy,
   OnInit,
-  QueryList,
   TemplateRef,
-  ViewChild,
-  ViewChildren
+  inject,
+  viewChild,
+  viewChildren
 } from '@angular/core';
 import {
   AbstractControl,
@@ -63,7 +63,6 @@ interface CompanyInformationForm {
   templateUrl: './company-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     NgClass,
     DatePipe,
     BgSpinnerComponent,
@@ -82,8 +81,15 @@ interface CompanyInformationForm {
 export class CompanyInformationComponent
   implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit
 {
-  @ViewChild('actionsTpl', { read: TemplateRef }) actionsTpl!: TemplateRef<HTMLElement>;
-  @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
+  private companyStateService = inject(CompanyStateService);
+  private cd = inject(ChangeDetectorRef);
+  private fb = inject(NonNullableFormBuilder);
+  private toastService = inject(ToastService);
+  private router = inject(Router);
+  private constantDataApiService = inject(ConstantDataApiService);
+
+  readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
+  readonly validators = viewChildren(DxValidatorComponent);
 
   isEditMode = false;
   isDataLoaded = false;
@@ -100,21 +106,12 @@ export class CompanyInformationComponent
 
   private ngUnsub = new Subject<void>();
 
-  constructor(
-    private companyStateService: CompanyStateService,
-    private cd: ChangeDetectorRef,
-    private fb: NonNullableFormBuilder,
-    private toastService: ToastService,
-    private router: Router,
-    private constantDataApiService: ConstantDataApiService
-  ) {}
-
   ngOnInit(): void {
     this.loadData();
   }
 
   ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl);
+    this.actionsTemplateEvent.emit(this.actionsTpl());
   }
 
   ngOnDestroy(): void {
@@ -153,7 +150,7 @@ export class CompanyInformationComponent
     }
 
     if (this.form.invalid) {
-      FormHelper.triggerFormValidation(this.form, this.validators);
+      FormHelper.triggerFormValidation(this.form, this.validators());
       return;
     }
 

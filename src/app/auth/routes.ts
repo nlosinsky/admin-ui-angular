@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from '@app/auth/login/login.component';
 
 export const ROUTES: Routes = [
   {
@@ -7,7 +6,7 @@ export const ROUTES: Routes = [
     children: [
       {
         path: 'login',
-        component: LoginComponent
+        loadComponent: () => import('@app/auth/login/login.component').then(m => m.LoginComponent)
       },
       { path: '', pathMatch: 'full', redirectTo: 'login' }
     ]

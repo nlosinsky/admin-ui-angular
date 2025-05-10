@@ -1,5 +1,12 @@
-import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+  viewChild
+} from '@angular/core';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { DocumentsStat, HttpError } from '@app/shared/models';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
@@ -16,10 +23,15 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } f
   templateUrl: './usage-table.component.html',
   styleUrls: ['./usage-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, GeneralToolbarComponent, DxDataGridModule, DxButtonModule, DxTextBoxModule, BgSpinnerComponent]
+  imports: [GeneralToolbarComponent, DxDataGridModule, DxButtonModule, DxTextBoxModule, BgSpinnerComponent]
 })
 export class UsageTableComponent implements OnInit, OnDestroy {
-  @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;
+  private cd = inject(ChangeDetectorRef);
+  private dataGridHelperService = inject(DataGridHelperService);
+  private toastService = inject(ToastService);
+  private documentsService = inject(DocumentsService);
+
+  readonly dataGrid = viewChild.required(DxDataGridComponent);
 
   stats: DocumentsStat[] = [];
 
@@ -30,13 +42,6 @@ export class UsageTableComponent implements OnInit, OnDestroy {
   private searchSubj = new Subject<string>();
 
   private ngUnsub = new Subject<void>();
-
-  constructor(
-    private cd: ChangeDetectorRef,
-    private dataGridHelperService: DataGridHelperService,
-    private toastService: ToastService,
-    private documentsService: DocumentsService
-  ) {}
 
   ngOnInit(): void {
     this.handleSearch();
@@ -49,11 +54,11 @@ export class UsageTableComponent implements OnInit, OnDestroy {
   }
 
   openColumnChooserButtonClick(): void {
-    this.dataGridHelperService.openTableChooser(this.dataGrid);
+    this.dataGridHelperService.openTableChooser(this.dataGrid());
   }
 
   onExport(): void {
-    this.dataGridHelperService.exportToExcel(this.dataGrid.instance, 'usage_data');
+    this.dataGridHelperService.exportToExcel(this.dataGrid().instance, 'usage_data');
   }
 
   onSearch(event: KeyboardEvent): void {
@@ -65,7 +70,7 @@ export class UsageTableComponent implements OnInit, OnDestroy {
       .asObservable()
       .pipe(distinctUntilChanged(), debounceTime(300), takeUntil(this.ngUnsub))
       .subscribe(val => {
-        this.dataGrid.instance.searchByText(val);
+        this.dataGrid().instance.searchByText(val);
       });
   }
 

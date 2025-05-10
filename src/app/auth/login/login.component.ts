@@ -1,12 +1,12 @@
-import { NgIf, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   OnDestroy,
-  ViewChildren,
-  QueryList
+  inject,
+  viewChildren
 } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,32 +28,22 @@ interface LoginForm {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    NgIf,
-    DxTextBoxModule,
-    ReactiveFormsModule,
-    DxButtonModule,
-    ErrorMessagePipe,
-    DxValidatorModule,
-    NgOptimizedImage
-  ]
+  imports: [DxTextBoxModule, ReactiveFormsModule, DxButtonModule, ErrorMessagePipe, DxValidatorModule, NgOptimizedImage]
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
+  private fb = inject(NonNullableFormBuilder);
+  private authService = inject(AuthService);
+  private cd = inject(ChangeDetectorRef);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  readonly validators = viewChildren(DxValidatorComponent);
 
   form!: FormGroup<LoginForm>;
   isSubmitting = false;
   errorMessage = '';
 
   private ngUnsub = new Subject<void>();
-
-  constructor(
-    private fb: NonNullableFormBuilder,
-    private authService: AuthService,
-    private cd: ChangeDetectorRef,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -77,7 +67,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     event.preventDefault();
 
     if (this.form.invalid) {
-      FormHelper.triggerFormValidation(this.form, this.validators);
+      FormHelper.triggerFormValidation(this.form, this.validators());
       return;
     }
 

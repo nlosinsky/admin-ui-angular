@@ -1,8 +1,14 @@
 import { Routes } from '@angular/router';
-import { CompanyUsersComponent } from '@views/companies/company/users/company-users.component';
-import { CompanyUserComponent } from '@views/companies/company/users/user/company-user.component';
 
 export const ROUTES: Routes = [
-  { path: '', component: CompanyUsersComponent },
-  { path: ':id', component: CompanyUserComponent }
+  {
+    path: '',
+    loadComponent: () =>
+      import('@views/companies/company/users/company-users.component').then(m => m.CompanyUsersComponent)
+  },
+  {
+    path: ':id',
+    loadComponent: () =>
+      import('@views/companies/company/users/user/company-user.component').then(m => m.CompanyUserComponent)
+  }
 ];

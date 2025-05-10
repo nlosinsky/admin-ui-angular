@@ -1,13 +1,13 @@
-import { DatePipe, DecimalPipe, formatDate, NgClass, NgForOf, NgIf } from '@angular/common';
+import { DatePipe, DecimalPipe, formatDate, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  Inject,
   LOCALE_ID,
   OnDestroy,
   OnInit,
-  ViewChild
+  inject,
+  viewChild
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
@@ -42,11 +42,9 @@ import {
   styleUrls: ['./companies-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     NgClass,
     DatePipe,
     DecimalPipe,
-    NgForOf,
     GeneralToolbarComponent,
     DxDataGridModule,
     DxButtonModule,
@@ -57,7 +55,14 @@ import {
   ]
 })
 export class CompaniesTableComponent implements OnInit, OnDestroy {
-  @ViewChild(DxDataGridComponent) dataGrid!: DxDataGridComponent;
+  private cd = inject(ChangeDetectorRef);
+  private dataGridHelperService = inject(DataGridHelperService);
+  private companiesService = inject(CompaniesService);
+  private toastService = inject(ToastService);
+  private dialogService = inject(DialogService);
+  private localeId = inject(LOCALE_ID);
+
+  readonly dataGrid = viewChild.required(DxDataGridComponent);
 
   companies: Company[] = [];
   temporaryCompanies: Company[] = [];
@@ -71,15 +76,6 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
   private ngUnsub = new Subject<void>();
   private reloadCompaniesSubj = new Subject<void>();
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    private dataGridHelperService: DataGridHelperService,
-    private companiesService: CompaniesService,
-    private toastService: ToastService,
-    private dialogService: DialogService,
-    @Inject(LOCALE_ID) private localeId: string
-  ) {}
-
   ngOnInit(): void {
     this.handleSearch();
     this.handleReloadTableData();
@@ -92,7 +88,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
   }
 
   openColumnChooserButtonClick(): void {
-    this.dataGridHelperService.openTableChooser(this.dataGrid);
+    this.dataGridHelperService.openTableChooser(this.dataGrid());
   }
 
   onDecline(id: string): void {
@@ -152,7 +148,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
 
   onExport(): void {
     this.dataGridHelperService.exportToExcel(
-      this.dataGrid.instance,
+      this.dataGrid().instance,
       'customer_management',
       (gridCell: DataGridCell, excelCell: ExportGridExcelCell) => {
         const columnName = gridCell?.column?.name;
@@ -187,10 +183,10 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
     this.reloadCompaniesSubj
       .asObservable()
       .pipe(
-        tap(() => this.dataGrid.instance.beginCustomLoading('')),
+        tap(() => this.dataGrid().instance.beginCustomLoading('')),
         switchMap(() => this.companiesService.getCompanies()),
         catchError((error: HttpError) => {
-          this.dataGrid.instance.endCustomLoading();
+          this.dataGrid().instance.endCustomLoading();
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
@@ -198,7 +194,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
       )
       .subscribe(companies => {
         this.companies = companies;
-        this.dataGrid.instance.endCustomLoading();
+        this.dataGrid().instance.endCustomLoading();
         this.cd.markForCheck();
       });
   }
@@ -208,7 +204,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
       .asObservable()
       .pipe(distinctUntilChanged(), debounceTime(300), takeUntil(this.ngUnsub))
       .subscribe(val => {
-        this.dataGrid.instance.searchByText(val);
+        this.dataGrid().instance.searchByText(val);
       });
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CompanyMember, HttpError } from '@app/shared/models';
 import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
@@ -9,10 +9,8 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CompanyUserService {
-  constructor(
-    private companiesService: CompaniesService,
-    private toastService: ToastService
-  ) {}
+  private companiesService = inject(CompaniesService);
+  private toastService = inject(ToastService);
 
   getData(memberId: string): Observable<CompanyMember | null> {
     if (!memberId) {

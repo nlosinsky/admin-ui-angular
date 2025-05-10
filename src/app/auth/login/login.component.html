@@ -42,7 +42,9 @@
       </div>
     </div>
 
-    <p *ngIf="errorMessage" class="error-message mb-0">{{ errorMessage }}</p>
+    @if (errorMessage) {
+      <p class="error-message mb-0">{{ errorMessage }}</p>
+    }
 
     <div class="actions-container">
       <dx-button

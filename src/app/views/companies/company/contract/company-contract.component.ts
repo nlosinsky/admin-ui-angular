@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -8,7 +8,8 @@ import {
   OnDestroy,
   OnInit,
   TemplateRef,
-  ViewChild
+  inject,
+  viewChild
 } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -50,7 +51,6 @@ interface CompanyContractForm {
   templateUrl: './company-contract.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     NgClass,
     NgTemplateOutlet,
     DxSwitchModule,
@@ -67,7 +67,13 @@ interface CompanyContractForm {
 export class CompanyContractComponent
   implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit
 {
-  @ViewChild('actionsTpl', { read: TemplateRef }) actionsTpl!: TemplateRef<HTMLElement>;
+  private companyStateService = inject(CompanyStateService);
+  private cd = inject(ChangeDetectorRef);
+  private fb = inject(NonNullableFormBuilder);
+  private toastService = inject(ToastService);
+  private router = inject(Router);
+
+  readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
 
   isEditMode = false;
   isDataLoaded = false;
@@ -82,21 +88,13 @@ export class CompanyContractComponent
 
   private ngUnsub = new Subject<void>();
 
-  constructor(
-    private companyStateService: CompanyStateService,
-    private cd: ChangeDetectorRef,
-    private fb: NonNullableFormBuilder,
-    private toastService: ToastService,
-    private router: Router
-  ) {}
-
   ngOnInit(): void {
     this.loadData();
     this.companyContractList = ObjectUtil.enumToArray(CompanyContractEnum);
   }
 
   ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl);
+    this.actionsTemplateEvent.emit(this.actionsTpl());
   }
 
   ngOnDestroy(): void {
