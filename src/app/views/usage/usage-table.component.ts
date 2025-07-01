@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnDestroy,
+  DestroyRef,
   OnInit,
   inject,
   viewChild
@@ -16,7 +16,8 @@ import { DataGridHelperService } from '@services/helpers/data-grid-helper.servic
 import { ToastService } from '@services/helpers/toast.service';
 import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxTextBoxModule } from 'devextreme-angular';
 import { EMPTY, Subject } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-usage-table',
@@ -25,11 +26,12 @@ import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } f
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [GeneralToolbarComponent, DxDataGridModule, DxButtonModule, DxTextBoxModule, BgSpinnerComponent]
 })
-export class UsageTableComponent implements OnInit, OnDestroy {
+export class UsageTableComponent implements OnInit {
   private cd = inject(ChangeDetectorRef);
   private dataGridHelperService = inject(DataGridHelperService);
   private toastService = inject(ToastService);
   private documentsService = inject(DocumentsService);
+  private destroyRef = inject(DestroyRef);
 
   readonly dataGrid = viewChild.required(DxDataGridComponent);
 
@@ -41,16 +43,9 @@ export class UsageTableComponent implements OnInit, OnDestroy {
 
   private searchSubj = new Subject<string>();
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit(): void {
     this.handleSearch();
     this.loadData();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   openColumnChooserButtonClick(): void {
@@ -68,7 +63,7 @@ export class UsageTableComponent implements OnInit, OnDestroy {
   private handleSearch(): void {
     this.searchSubj
       .asObservable()
-      .pipe(distinctUntilChanged(), debounceTime(300), takeUntil(this.ngUnsub))
+      .pipe(distinctUntilChanged(), debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe(val => {
         this.dataGrid().instance.searchByText(val);
       });
@@ -86,7 +81,7 @@ export class UsageTableComponent implements OnInit, OnDestroy {
           this.isDataLoaded = true;
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(stats => {
         this.stats = stats;

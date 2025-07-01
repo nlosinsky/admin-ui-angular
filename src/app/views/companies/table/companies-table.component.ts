@@ -3,8 +3,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   LOCALE_ID,
-  OnDestroy,
   OnInit,
   inject,
   viewChild
@@ -32,9 +32,9 @@ import {
   finalize,
   mergeMap,
   switchMap,
-  takeUntil,
   tap
 } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-companies-table',
@@ -54,13 +54,14 @@ import {
     BgSpinnerComponent
   ]
 })
-export class CompaniesTableComponent implements OnInit, OnDestroy {
+export class CompaniesTableComponent implements OnInit {
   private cd = inject(ChangeDetectorRef);
   private dataGridHelperService = inject(DataGridHelperService);
   private companiesService = inject(CompaniesService);
   private toastService = inject(ToastService);
   private dialogService = inject(DialogService);
   private localeId = inject(LOCALE_ID);
+  private destroyRef = inject(DestroyRef);
 
   readonly dataGrid = viewChild.required(DxDataGridComponent);
 
@@ -73,18 +74,12 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
   readonly indicatorSrc = tableIndicatorSrc;
 
   private searchSubj = new Subject<string>();
-  private ngUnsub = new Subject<void>();
   private reloadCompaniesSubj = new Subject<void>();
 
   ngOnInit(): void {
     this.handleSearch();
     this.handleReloadTableData();
     this.loadData();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   openColumnChooserButtonClick(): void {
@@ -112,7 +107,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
           this.declineRequestsSet.delete(id);
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.temporaryCompanies = this.temporaryCompanies.filter(item => item.id !== id);
@@ -137,7 +132,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
           this.approveRequestsSet.delete(id);
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.reloadCompaniesSubj.next();
@@ -186,7 +181,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(companies => {
         this.companies = companies;
@@ -198,7 +193,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
   private handleSearch(): void {
     this.searchSubj
       .asObservable()
-      .pipe(distinctUntilChanged(), debounceTime(300), takeUntil(this.ngUnsub))
+      .pipe(distinctUntilChanged(), debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe(val => {
         this.dataGrid().instance.searchByText(val);
       });
@@ -215,7 +210,7 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
           this.isDataLoaded = true;
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([companies, temporaryCompanies]) => {
         this.temporaryCompanies = temporaryCompanies;

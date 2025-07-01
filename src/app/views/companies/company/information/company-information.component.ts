@@ -4,8 +4,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
-  OnDestroy,
   OnInit,
   TemplateRef,
   inject,
@@ -43,8 +43,9 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { EMPTY, Subject, zip } from 'rxjs';
-import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
+import { EMPTY, zip } from 'rxjs';
+import { catchError, filter, finalize } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
 
 interface CompanyInformationForm {
@@ -78,15 +79,14 @@ interface CompanyInformationForm {
     StatusColorPipe
   ]
 })
-export class CompanyInformationComponent
-  implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit
-{
+export class CompanyInformationComponent implements OnInit, Submittable, CommonCustomerComponentActions, AfterViewInit {
   private companyStateService = inject(CompanyStateService);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
   private router = inject(Router);
   private constantDataApiService = inject(ConstantDataApiService);
+  private destroyRef = inject(DestroyRef);
 
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
   readonly validators = viewChildren(DxValidatorComponent);
@@ -104,19 +104,12 @@ export class CompanyInformationComponent
 
   readonly companyStates = [CompanyState.ACTIVE, CompanyState.ARCHIVED];
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit(): void {
     this.loadData();
   }
 
   ngAfterViewInit() {
     this.actionsTemplateEvent.emit(this.actionsTpl());
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
@@ -167,7 +160,7 @@ export class CompanyInformationComponent
           this.isSubmitting = false;
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.toastService.showSuccess('Company data has been updated successfully.');
@@ -185,11 +178,11 @@ export class CompanyInformationComponent
   }
 
   loadData(): void {
-    zip([this.companyStateService.currentCompany$, this.constantDataApiService.getCountries()])
+    zip(this.companyStateService.currentCompany$, this.constantDataApiService.getCountries())
       .pipe(
         catchError(() => EMPTY),
         filter(([companyResp]) => !!companyResp?.id),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([company, countries]) => {
         this.isDataLoaded = true;

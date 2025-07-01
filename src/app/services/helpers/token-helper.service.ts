@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
+import { environment } from '@env/environment';
 import { SsrCookieService } from 'ngx-cookie-service-ssr';
 
-const TOKEN_KEY = 'authToken';
+const TOKEN_KEY = environment.authCookieKey;
 
 @Injectable({
   providedIn: 'root'

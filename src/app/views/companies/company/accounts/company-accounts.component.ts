@@ -3,14 +3,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
-  OnDestroy,
   OnInit,
   TemplateRef,
   ViewContainerRef,
   inject,
   viewChild
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { Account, ExportGridExcelCell } from '@app/shared/models';
@@ -34,7 +35,7 @@ import {
 } from 'devextreme-angular';
 import { DataGridCell } from 'devextreme/excel_exporter';
 import { EMPTY, Subject } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { on } from 'devextreme/events';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
@@ -53,8 +54,9 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
     BooleanYesNoPipe
   ]
 })
-export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewInit, CommonCustomerComponentActions {
+export class CompanyAccountsComponent implements OnInit, AfterViewInit, CommonCustomerComponentActions {
   private cd = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
   private accountsApiService = inject(AccountsService);
   private toastService = inject(ToastService);
   private route = inject(ActivatedRoute);
@@ -73,7 +75,6 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
 
   private searchSubj = new Subject<string>();
   readonly indicatorSrc = tableIndicatorSrc;
-  private ngUnsub = new Subject<void>();
 
   ngOnInit(): void {
     this.handleSearch();
@@ -82,11 +83,6 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngAfterViewInit() {
     this.actionsTemplateEvent.emit(this.actionsTpl());
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
@@ -108,7 +104,7 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
           this.isDataLoaded = true;
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(accounts => {
         this.accounts = accounts;
@@ -163,7 +159,7 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
   onAdd() {
     this.dialogService
       .openPopup(this.popupContainer(), CompanyAddAccountComponent)
-      .pipe(takeUntil(this.ngUnsub))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(refresh => {
         if (refresh) {
           this.loadData();
@@ -178,7 +174,7 @@ export class CompanyAccountsComponent implements OnInit, OnDestroy, AfterViewIni
   private handleSearch(): void {
     this.searchSubj
       .asObservable()
-      .pipe(distinctUntilChanged(), debounceTime(300), takeUntil(this.ngUnsub))
+      .pipe(distinctUntilChanged(), debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe(val => {
         this.dataGrid().instance.searchByText(val);
       });

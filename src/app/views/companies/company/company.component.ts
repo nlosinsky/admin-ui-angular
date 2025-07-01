@@ -16,7 +16,7 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { CompanyHelperService } from '@views/companies/company/company-helper.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import { DxTabsModule } from 'devextreme-angular';
-import { first, Observable, Subject } from 'rxjs';
+import { first, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-company',
@@ -39,8 +39,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
   actionsTemplate!: TemplateRef<HTMLElement> | null;
   companyId!: string;
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit(): void {
     this.handleCompanyLoad();
     this.tabs = this.companyHelperService.getTabs();
@@ -48,8 +46,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.companyStateService.resetCurrentCompany();
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   private handleCompanyLoad(): void {

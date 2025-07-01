@@ -4,7 +4,7 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  OnDestroy,
+  DestroyRef,
   inject,
   viewChildren
 } from '@angular/core';
@@ -15,8 +15,9 @@ import { FormHelper } from '@app/shared/utils/form-helper';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AuthService } from '@services/data/auth.service';
 import { DxButtonModule, DxTextBoxModule, DxValidatorComponent, DxValidatorModule } from 'devextreme-angular';
-import { EMPTY, Subject } from 'rxjs';
-import { catchError, finalize, takeUntil } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface LoginForm {
   email: FormControl<string>;
@@ -30,12 +31,13 @@ interface LoginForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DxTextBoxModule, ReactiveFormsModule, DxButtonModule, ErrorMessagePipe, DxValidatorModule, NgOptimizedImage]
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
   private authService = inject(AuthService);
   private cd = inject(ChangeDetectorRef);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
 
   readonly validators = viewChildren(DxValidatorComponent);
 
@@ -43,15 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   errorMessage = '';
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit(): void {
     this.initForm();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   onValidateRule(fieldName: string) {
@@ -80,15 +75,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService
       .login(this.form.value as LoginCredentials)
       .pipe(
-        catchError((errorMessage: string) => {
-          this.errorMessage = errorMessage;
+        catchError(() => {
+          this.errorMessage = 'Something unexpected happened, please try again.';
           return EMPTY;
         }),
         finalize(() => {
           this.isSubmitting = false;
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         const url = this.route.snapshot.queryParamMap.get('returnUrl') || '/companies';
@@ -98,8 +93,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      email: ['admin@example.com', [Validators.required, Validators.email]],
+      password: ['admin', [Validators.required]]
     });
   }
 }

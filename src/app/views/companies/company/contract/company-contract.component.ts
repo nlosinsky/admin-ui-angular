@@ -4,8 +4,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
-  OnDestroy,
   OnInit,
   TemplateRef,
   inject,
@@ -29,8 +29,9 @@ import {
   DxSwitchModule,
   DxTextBoxModule
 } from 'devextreme-angular';
-import { EMPTY, forkJoin, Observable, Subject } from 'rxjs';
-import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { catchError, filter, finalize } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface CompanyContractForm {
   contract: FormGroup<{
@@ -64,14 +65,13 @@ interface CompanyContractForm {
     DxDropDownButtonModule
   ]
 })
-export class CompanyContractComponent
-  implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit
-{
+export class CompanyContractComponent implements OnInit, Submittable, CommonCustomerComponentActions, AfterViewInit {
   private companyStateService = inject(CompanyStateService);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
 
@@ -86,8 +86,6 @@ export class CompanyContractComponent
   minTransactionFeeValue = 0;
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit(): void {
     this.loadData();
     this.companyContractList = ObjectUtil.enumToArray(CompanyContractEnum);
@@ -95,11 +93,6 @@ export class CompanyContractComponent
 
   ngAfterViewInit() {
     this.actionsTemplateEvent.emit(this.actionsTpl());
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
@@ -148,7 +141,7 @@ export class CompanyContractComponent
           this.isSubmitting = false;
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.toastService.showSuccess('Data has been updated successfully.');
@@ -212,7 +205,7 @@ export class CompanyContractComponent
       .pipe(
         catchError(() => EMPTY),
         filter(resp => !!(resp && resp.id)),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(data => {
         this.isDataLoaded = true;

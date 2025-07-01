@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PopupBaseComponent } from '@app/shared/base/popup.base';
@@ -20,8 +21,8 @@ import {
   DxToolbarModule,
   DxValidatorModule
 } from 'devextreme-angular';
-import { EMPTY, Subject } from 'rxjs';
-import { catchError, finalize, takeUntil } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 
 interface AccountForm {
   name: FormControl<string>;
@@ -50,9 +51,10 @@ interface AccountForm {
     DxToolbarModule
   ]
 })
-export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
+export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
   private route = inject(ActivatedRoute);
+  private destroyRef = inject(DestroyRef);
   private accountsService = inject(AccountsService);
   private toastService = inject(ToastService);
 
@@ -72,16 +74,9 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
     { label: 'No', value: false }
   ];
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit() {
     this.initButtons();
     this.initForm();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   isValidField(fieldName: string): boolean {
@@ -161,7 +156,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
           return EMPTY;
         }),
         finalize(() => (this.isSubmitting = false)),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.close(true);

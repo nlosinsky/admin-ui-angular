@@ -1,6 +1,7 @@
 import { NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { Company, CompanyMember, HttpError } from '@app/shared/models';
@@ -16,8 +17,8 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import { DxButtonModule, DxDataGridModule, DxDropDownButtonModule } from 'devextreme-angular';
-import { EMPTY, from, Subject, zip } from 'rxjs';
-import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, from, zip } from 'rxjs';
+import { catchError, filter, finalize, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-company-users',
@@ -36,11 +37,12 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
     StatusColorPipe
   ]
 })
-export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
+export class CompanyUsersComponent implements OnInit, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private companiesService = inject(CompaniesService);
   private route = inject(ActivatedRoute);
   private cd = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
   private toastService = inject(ToastService);
   private dialogService = inject(DialogService);
   private router = inject(Router);
@@ -55,15 +57,8 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
   readonly memberAccountState = CompanyMemberAccountState;
   readonly indicatorSrc = tableIndicatorSrc;
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit(): void {
     this.loadData();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
@@ -100,7 +95,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
           this.declineRequestsSet.delete(memberId);
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.pendingMembers = this.pendingMembers.filter(item => item.id !== memberId);
@@ -126,7 +121,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
           this.approveRequestsSet.delete(memberId);
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(members => {
         this.members = members;
@@ -155,7 +150,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
           this.isDataLoaded = true;
           this.cd.markForCheck();
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([pendingMembers, members, company]) => {
         this.pendingMembers = pendingMembers;
