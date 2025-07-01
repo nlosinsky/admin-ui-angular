@@ -1,5 +1,4 @@
-import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 import { DxButtonModule } from 'devextreme-angular';
 
@@ -8,14 +7,11 @@ import { DxButtonModule } from 'devextreme-angular';
   templateUrl: './details-toolbar.component.html',
   styleUrls: ['./details-toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, DxButtonModule]
+  imports: [DxButtonModule]
 })
 export class DetailsToolbarComponent {
-  @Input() title = '';
-
-  @Input() logo = '';
-
-  @Output() back = new EventEmitter<void>();
+  readonly logo = input('');
+  readonly back = output<void>();
 
   onBack(): void {
     this.back.emit();

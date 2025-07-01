@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PopupBaseComponent } from '@app/shared/base/popup.base';
@@ -51,6 +51,11 @@ interface AccountForm {
   ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit, OnDestroy {
+  private fb = inject(NonNullableFormBuilder);
+  private route = inject(ActivatedRoute);
+  private accountsService = inject(AccountsService);
+  private toastService = inject(ToastService);
+
   form!: FormGroup<AccountForm>;
   cancelButtonOptions!: unknown;
   saveButtonOptions!: unknown;
@@ -68,15 +73,6 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
   ];
 
   private ngUnsub = new Subject<void>();
-
-  constructor(
-    private fb: NonNullableFormBuilder,
-    private route: ActivatedRoute,
-    private accountsService: AccountsService,
-    private toastService: ToastService
-  ) {
-    super();
-  }
 
   ngOnInit() {
     this.initButtons();
@@ -128,7 +124,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
   }
 
   protected override close(data: boolean | void) {
-    this.popupElem.instance.hide();
+    this.popupElem().instance.hide();
     super.close(data);
   }
 
@@ -138,7 +134,7 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
     }
 
     if (this.form.invalid) {
-      FormHelper.triggerFormValidation(this.form, this.validators);
+      FormHelper.triggerFormValidation(this.form, this.validators());
       return;
     }
 

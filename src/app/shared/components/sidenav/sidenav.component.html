@@ -1,37 +1,39 @@
 <div class="sidenav-container">
   <a href="#" routerLink="/" class="logo">
-    <img src="/assets/images/logo.svg" alt="Dashboard logo" />
+    <img ngSrc="/assets/images/logo.svg" alt="Dashboard logo" [width]="35" [height]="35" />
     <span>Angular Dashboard</span>
   </a>
 
   <div class="sidenav-menu">
-    <dx-button
-      *ngFor="let item of items; trackBy: trackBy"
-      [stylingMode]="rla.isActive ? 'contained' : 'text'"
-      [text]="item.label"
-      [type]="rla.isActive ? 'default' : 'normal'"
-      [routerLink]="item.route"
-      [disabled]="!!item.disabled"
-      height="45"
-      width="100%"
-      routerLinkActive
-      #rla="routerLinkActive"
-    ></dx-button>
+    @for (item of items; track item.route) {
+      <dx-button
+        [text]="item.label"
+        stylingMode="contained"
+        [type]="rla.isActive ? 'default' : 'normal'"
+        [routerLink]="item.route"
+        [disabled]="!!item.disabled"
+        height="45"
+        width="100%"
+        routerLinkActive
+        #rla="routerLinkActive"
+      ></dx-button>
+    }
   </div>
 
-  <dx-drop-down-button
-    *ngIf="user$ | async as user"
-    stylingMode="outlined"
-    [text]="user.fullName"
-    [icon]="user.userAvatar"
-    [showArrowIcon]="false"
-    [items]="userDropdownItems"
-    displayExpr="text"
-    (onItemClick)="onUserDropdown($event)"
-    height="48"
-    width="100%"
-    class="sidenav-user-btn"
-  ></dx-drop-down-button>
+  @if (user$ | async; as user) {
+    <dx-drop-down-button
+      stylingMode="outlined"
+      [text]="user.fullName"
+      [icon]="user.userAvatar"
+      [showArrowIcon]="false"
+      [items]="userDropdownItems"
+      displayExpr="text"
+      (onItemClick)="onUserDropdown($event)"
+      height="48"
+      width="100%"
+      class="sidenav-user-btn"
+    ></dx-drop-down-button>
+  }
 </div>
 
 <main class="main">

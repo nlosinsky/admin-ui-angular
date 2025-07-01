@@ -6,17 +6,15 @@
     stylingMode="outlined"
     class="grid-column-chooser-btn"
     (onClick)="openColumnChooserButtonClick()"
-  ></dx-button>
-  <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
-  <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34"></dx-text-box>
-  <dx-button icon="plus" type="success" (onClick)="onAdd()" stylingMode="contained"></dx-button>
+  />
+  <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined" />
+  <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34" />
+  <dx-button icon="plus" type="success" (onClick)="onAdd()" stylingMode="contained" />
 
-  <ng-container #popupContainer></ng-container>
+  <ng-container #popupContainer />
 </ng-template>
 
-<app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
-
-<ng-container *ngIf="isDataLoaded">
+@if (isDataLoaded) {
   <section class="content-section">
     <dx-data-grid
       class="data-grid"
@@ -31,34 +29,27 @@
       <dxo-paging [enabled]="false"></dxo-paging>
       <dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
       <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-
       <dxi-column dataField="name" width="200px" caption="Account Name" cellTemplate="nameTemplate"></dxi-column>
       <div *dxTemplate="let data of 'nameTemplate'">
         <div class="text-ellipsis">{{ data.value }}</div>
       </div>
-
       <dxi-column dataField="number"></dxi-column>
-
       <dxi-column dataField="description" width="300px" cellTemplate="descriptionTemplate"></dxi-column>
       <div *dxTemplate="let data of 'descriptionTemplate'">
         <div class="text-ellipsis">{{ data.value }}</div>
       </div>
-
       <dxi-column dataField="archived" caption="Inactive" cellTemplate="inactiveTemplate"></dxi-column>
       <div *dxTemplate="let data of 'inactiveTemplate'">
         {{ data.value | booleanYesNo }}
       </div>
-
       <dxi-column dataField="type" cellTemplate="typeTemplate"></dxi-column>
       <div *dxTemplate="let data of 'typeTemplate'">
         {{ data.value | stringValueCapitalize }}
       </div>
-
       <dxi-column dataField="subtype" width="300px" caption="Sub-Type" cellTemplate="subtypeTemplate"></dxi-column>
       <div *dxTemplate="let data of 'subtypeTemplate'">
         <div class="text-ellipsis">{{ data.value }}</div>
       </div>
-
       <dxi-column dataField="naturalBalance" cellTemplate="naturalBalanceTemplate"></dxi-column>
       <div *dxTemplate="let data of 'naturalBalanceTemplate'">
         {{ data.value | stringValueCapitalize }}
@@ -66,4 +57,6 @@
     </dx-data-grid>
     <dx-tooltip></dx-tooltip>
   </section>
-</ng-container>
+} @else {
+  <app-bg-spinner />
+}

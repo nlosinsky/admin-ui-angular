@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DocumentsStat } from '@app/shared/models';
 import { DocumentsApiService } from '@services/api/documents-api.service';
 import { Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DocumentsService {
-  constructor(private documentsApiService: DocumentsApiService) {}
+  private documentsApiService = inject(DocumentsApiService);
 
   getDocumentsStats(): Observable<DocumentsStat[]> {
     return this.documentsApiService.getDocumentsStats();

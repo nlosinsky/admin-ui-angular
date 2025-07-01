@@ -1,14 +1,14 @@
 <ng-template #actionsTpl>
-  <ng-container *ngIf="isEditMode">
-    <dx-button stylingMode="outlined" text="Cancel" class="grayed" (onClick)="onCancelEdit()"></dx-button>
+  @if (isEditMode) {
+    <dx-button stylingMode="outlined" text="Cancel" class="grayed" (onClick)="onCancelEdit()" />
     <dx-button
       stylingMode="contained"
       type="default"
       text="Save changes"
       [ngClass]="{ loading: isSubmitting }"
       (onClick)="onSaveChanges()"
-    ></dx-button>
-  </ng-container>
+    />
+  }
 
   <dx-drop-down-button
     icon="/assets/images/icons/overflow.svg"
@@ -21,222 +21,216 @@
   </dx-drop-down-button>
 </ng-template>
 
-<app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
-
-<form *ngIf="isDataLoaded && company" [formGroup]="form" novalidate>
-  <fieldset [disabled]="isSubmitting" class="content-section">
-    <h5 class="section-title">Company Details</h5>
-
-    <div class="table-list-row">
-      <div class="table-list-col">
-        <div class="table-list-label">Company Name</div>
-        <div class="table-list-content">
-          <dx-text-box
-            formControlName="name"
-            validationMessageMode="always"
-            valueChangeEvent="keyup"
-            [readOnly]="!isEditMode"
-          >
-            <dx-validator>
-              <dxi-validation-rule
-                type="custom"
-                [validationCallback]="onValidateRule('name')"
-                [message]="form.get('name')?.errors | errorMessage"
+@if (isDataLoaded) {
+  @if (company) {
+    <form [formGroup]="form" novalidate>
+      <fieldset [disabled]="isSubmitting" class="content-section">
+        <h5 class="section-title">Company Details</h5>
+        <div class="table-list-row">
+          <div class="table-list-col">
+            <div class="table-list-label">Company Name</div>
+            <div class="table-list-content">
+              <dx-text-box
+                formControlName="name"
+                validationMessageMode="always"
+                valueChangeEvent="keyup"
+                [readOnly]="!isEditMode"
               >
-              </dxi-validation-rule>
-            </dx-validator>
-          </dx-text-box>
-        </div>
-      </div>
-
-      <div class="table-list-col">
-        <div class="table-list-label">Company State</div>
-        <div class="table-list-content">
-          <dx-select-box
-            [dataSource]="companyStates"
-            [dropDownOptions]="{ container: 'dx-select-box' }"
-            [readOnly]="!isEditMode"
-            formControlName="companyState"
-            itemTemplate="item"
-            fieldTemplate="field"
-          >
-            <div *dxTemplate="let item of 'item'">
-              <app-status-item
-                [type]="item | statusColor: 'companyState'"
-                [text]="item | stringValueCapitalize"
-              ></app-status-item>
+                <dx-validator>
+                  <dxi-validation-rule
+                    type="custom"
+                    [validationCallback]="onValidateRule('name')"
+                    [message]="form.get('name')?.errors | errorMessage"
+                  >
+                  </dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
             </div>
-
-            <div *dxTemplate="let elem of 'field'">
-              <app-status-item
-                [type]="elem | statusColor: 'companyState'"
-                [text]="elem | stringValueCapitalize"
-              ></app-status-item>
-              <dx-text-box [visible]="false"></dx-text-box>
+          </div>
+          <div class="table-list-col">
+            <div class="table-list-label">Company State</div>
+            <div class="table-list-content">
+              <dx-select-box
+                [dataSource]="companyStates"
+                [dropDownOptions]="{ container: 'dx-select-box' }"
+                [readOnly]="!isEditMode"
+                formControlName="companyState"
+                itemTemplate="item"
+                fieldTemplate="field"
+              >
+                <div *dxTemplate="let item of 'item'">
+                  <app-status-item
+                    [type]="item | statusColor: 'companyState'"
+                    [text]="item | stringValueCapitalize"
+                  ></app-status-item>
+                </div>
+                <div *dxTemplate="let elem of 'field'">
+                  <app-status-item
+                    [type]="elem | statusColor: 'companyState'"
+                    [text]="elem | stringValueCapitalize"
+                  ></app-status-item>
+                  <dx-text-box [visible]="false"></dx-text-box>
+                </div>
+              </dx-select-box>
             </div>
-          </dx-select-box>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="table-list-row">
-      <div class="table-list-col">
-        <div class="table-list-label">Website</div>
-        <div class="table-list-content">
-          <dx-text-box
-            formControlName="website"
-            validationMessageMode="always"
-            valueChangeEvent="keyup"
-            [readOnly]="!isEditMode"
-          >
-            <dx-validator>
-              <dxi-validation-rule
-                type="custom"
-                [validationCallback]="onValidateRule('website')"
-                [message]="form.get('website')?.errors | errorMessage"
+        <div class="table-list-row">
+          <div class="table-list-col">
+            <div class="table-list-label">Website</div>
+            <div class="table-list-content">
+              <dx-text-box
+                formControlName="website"
+                validationMessageMode="always"
+                valueChangeEvent="keyup"
+                [readOnly]="!isEditMode"
               >
-              </dxi-validation-rule>
-            </dx-validator>
-          </dx-text-box>
+                <dx-validator>
+                  <dxi-validation-rule
+                    type="custom"
+                    [validationCallback]="onValidateRule('website')"
+                    [message]="form.get('website')?.errors | errorMessage"
+                  >
+                  </dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
+            </div>
+          </div>
+          <div class="table-list-col">
+            <div class="table-list-label">Customer Since</div>
+            <div class="table-list-content">{{ company.createdAt | date: 'shortDate' }}</div>
+          </div>
         </div>
-      </div>
-
-      <div class="table-list-col">
-        <div class="table-list-label">Customer Since</div>
-        <div class="table-list-content">{{ company.createdAt | date: 'shortDate' }}</div>
-      </div>
-    </div>
-
-    <div class="table-list-row">
-      <div class="table-list-col">
-        <div class="table-list-label">Address</div>
-        <div class="table-list-content">
-          <dx-text-box
-            formControlName="streetAddress"
-            validationMessageMode="always"
-            valueChangeEvent="keyup"
-            [readOnly]="!isEditMode"
-          >
-            <dx-validator>
-              <dxi-validation-rule
-                type="custom"
-                [validationCallback]="onValidateRule('streetAddress')"
-                [message]="form.get('streetAddress')?.errors | errorMessage"
+        <div class="table-list-row">
+          <div class="table-list-col">
+            <div class="table-list-label">Address</div>
+            <div class="table-list-content">
+              <dx-text-box
+                formControlName="streetAddress"
+                validationMessageMode="always"
+                valueChangeEvent="keyup"
+                [readOnly]="!isEditMode"
               >
-              </dxi-validation-rule>
-            </dx-validator>
-          </dx-text-box>
+                <dx-validator>
+                  <dxi-validation-rule
+                    type="custom"
+                    [validationCallback]="onValidateRule('streetAddress')"
+                    [message]="form.get('streetAddress')?.errors | errorMessage"
+                  >
+                  </dxi-validation-rule>
+                </dx-validator>
+              </dx-text-box>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="table-list-row">
-      <div class="table-list-col width-50">
-        <div class="table-list-label">Country</div>
-        <div class="table-list-content">
-          <dx-select-box
-            [dataSource]="countries"
-            [dropDownOptions]="{ container: 'dx-select-box' }"
-            [readOnly]="!isEditMode"
-            (onValueChanged)="onCountryChange($event)"
-            formControlName="country"
-            validationMessageMode="always"
-            displayExpr="name"
-            valueExpr="name"
-          >
-            <dx-validator>
-              <dxi-validation-rule
-                type="custom"
-                [validationCallback]="onValidateRule('country')"
-                [message]="form.get('country')?.errors | errorMessage"
+        <div class="table-list-row">
+          <div class="table-list-col width-50">
+            <div class="table-list-label">Country</div>
+            <div class="table-list-content">
+              <dx-select-box
+                [dataSource]="countries"
+                [dropDownOptions]="{ container: 'dx-select-box' }"
+                [readOnly]="!isEditMode"
+                (onValueChanged)="onCountryChange($event)"
+                formControlName="country"
+                validationMessageMode="always"
+                displayExpr="name"
+                valueExpr="name"
               >
-              </dxi-validation-rule>
-            </dx-validator>
-          </dx-select-box>
+                <dx-validator>
+                  <dxi-validation-rule
+                    type="custom"
+                    [validationCallback]="onValidateRule('country')"
+                    [message]="form.get('country')?.errors | errorMessage"
+                  >
+                  </dxi-validation-rule>
+                </dx-validator>
+              </dx-select-box>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="table-list-row">
-      <div class="table-list-col">
-        <div class="table-list-label">State</div>
-        <div class="table-list-content">
-          <dx-select-box
-            [dataSource]="states"
-            [dropDownOptions]="{ container: 'dx-select-box' }"
-            [readOnly]="!isEditMode"
-            (onValueChanged)="onStateChange($event)"
-            formControlName="state"
-            validationMessageMode="always"
-            displayExpr="name"
-            valueExpr="name"
-          >
-            <dx-validator>
-              <dxi-validation-rule
-                type="custom"
-                [validationCallback]="onValidateRule('state')"
-                [message]="form.get('state')?.errors | errorMessage"
+        <div class="table-list-row">
+          <div class="table-list-col">
+            <div class="table-list-label">State</div>
+            <div class="table-list-content">
+              <dx-select-box
+                [dataSource]="states"
+                [dropDownOptions]="{ container: 'dx-select-box' }"
+                [readOnly]="!isEditMode"
+                (onValueChanged)="onStateChange($event)"
+                formControlName="state"
+                validationMessageMode="always"
+                displayExpr="name"
+                valueExpr="name"
               >
-              </dxi-validation-rule>
-            </dx-validator>
-          </dx-select-box>
+                <dx-validator>
+                  <dxi-validation-rule
+                    type="custom"
+                    [validationCallback]="onValidateRule('state')"
+                    [message]="form.get('state')?.errors | errorMessage"
+                  >
+                  </dxi-validation-rule>
+                </dx-validator>
+              </dx-select-box>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="table-list-row">
-      <div class="table-list-col width-50">
-        <div class="table-list-label">City</div>
-        <div class="table-list-content">
-          <dx-select-box
-            [dataSource]="cities"
-            [dropDownOptions]="{ container: 'dx-select-box' }"
-            [readOnly]="!isEditMode"
-            [acceptCustomValue]="true"
-            (onValueChanged)="onCityChange($event)"
-            (onCustomItemCreating)="onAddCustomCity($event)"
-            formControlName="city"
-            validationMessageMode="always"
-            displayExpr="name"
-            valueExpr="name"
-          >
-            <dx-validator>
-              <dxi-validation-rule
-                type="custom"
-                [validationCallback]="onValidateRule('city')"
-                [message]="form.get('city')?.errors | errorMessage"
+        <div class="table-list-row">
+          <div class="table-list-col width-50">
+            <div class="table-list-label">City</div>
+            <div class="table-list-content">
+              <dx-select-box
+                [dataSource]="cities"
+                [dropDownOptions]="{ container: 'dx-select-box' }"
+                [readOnly]="!isEditMode"
+                [acceptCustomValue]="true"
+                (onValueChanged)="onCityChange($event)"
+                (onCustomItemCreating)="onAddCustomCity($event)"
+                formControlName="city"
+                validationMessageMode="always"
+                displayExpr="name"
+                valueExpr="name"
               >
-              </dxi-validation-rule>
-            </dx-validator>
-          </dx-select-box>
+                <dx-validator>
+                  <dxi-validation-rule
+                    type="custom"
+                    [validationCallback]="onValidateRule('city')"
+                    [message]="form.get('city')?.errors | errorMessage"
+                  >
+                  </dxi-validation-rule>
+                </dx-validator>
+              </dx-select-box>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="table-list-row">
-      <div class="table-list-col width-50">
-        <div class="table-list-label">ZIP Code</div>
-        <div class="table-list-content">
-          <dx-select-box
-            [dataSource]="zipCodes"
-            [dropDownOptions]="{ container: 'dx-select-box' }"
-            [readOnly]="!isEditMode"
-            [acceptCustomValue]="true"
-            (onCustomItemCreating)="onAddCustomZipCode($event)"
-            formControlName="zipCode"
-            validationMessageMode="always"
-          >
-            <dx-validator>
-              <dxi-validation-rule
-                type="custom"
-                [validationCallback]="onValidateRule('zipCode')"
-                [message]="form.get('zipCode')?.errors | errorMessage"
+        <div class="table-list-row">
+          <div class="table-list-col width-50">
+            <div class="table-list-label">ZIP Code</div>
+            <div class="table-list-content">
+              <dx-select-box
+                [dataSource]="zipCodes"
+                [dropDownOptions]="{ container: 'dx-select-box' }"
+                [readOnly]="!isEditMode"
+                [acceptCustomValue]="true"
+                (onCustomItemCreating)="onAddCustomZipCode($event)"
+                formControlName="zipCode"
+                validationMessageMode="always"
               >
-              </dxi-validation-rule>
-            </dx-validator>
-          </dx-select-box>
+                <dx-validator>
+                  <dxi-validation-rule
+                    type="custom"
+                    [validationCallback]="onValidateRule('zipCode')"
+                    [message]="form.get('zipCode')?.errors | errorMessage"
+                  >
+                  </dxi-validation-rule>
+                </dx-validator>
+              </dx-select-box>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </fieldset>
-</form>
+      </fieldset>
+    </form>
+  }
+} @else {
+  <app-bg-spinner />
+}

@@ -1,5 +1,5 @@
-import { NgClass, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyMember, HttpError } from '@app/shared/models';
@@ -26,7 +26,6 @@ interface CompanyUserForm {
   styleUrls: ['./company-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     NgClass,
     ReactiveFormsModule,
     StatusItemComponent,
@@ -39,6 +38,14 @@ interface CompanyUserForm {
   ]
 })
 export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private companiesService = inject(CompaniesService);
+  private cd = inject(ChangeDetectorRef);
+  private companyUserService = inject(CompanyUserService);
+  private fb = inject(NonNullableFormBuilder);
+  private toastService = inject(ToastService);
+
   form!: FormGroup<CompanyUserForm>;
   isDataLoaded = false;
   member!: CompanyMember;
@@ -54,16 +61,6 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
   ];
 
   private ngUnsub = new Subject<void>();
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private companiesService: CompaniesService,
-    private cd: ChangeDetectorRef,
-    private companyUserService: CompanyUserService,
-    private fb: NonNullableFormBuilder,
-    private toastService: ToastService
-  ) {}
 
   ngOnInit(): void {
     this.listenRouteChanges();

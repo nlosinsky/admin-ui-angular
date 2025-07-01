@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Injectable, LOCALE_ID, inject } from '@angular/core';
 import { CompanyMember, Company, HttpError } from '@app/shared/models';
 import { TransactionsCount, TransactionsFormValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { CompaniesService } from '@services/data/companies.service';
@@ -20,13 +20,11 @@ const yearQuarters = ['January - March', 'April - June', 'July - September', 'Oc
   providedIn: 'root'
 })
 export class TransactionsTableService {
-  constructor(
-    @Inject(LOCALE_ID) private localeId: string,
-    private transactionsService: TransactionsService,
-    private toastService: ToastService,
-    private companiesService: CompaniesService,
-    private platformHelperService: PlatformHelperService
-  ) {}
+  private localeId = inject(LOCALE_ID);
+  private transactionsService = inject(TransactionsService);
+  private toastService = inject(ToastService);
+  private companiesService = inject(CompaniesService);
+  private platformHelperService = inject(PlatformHelperService);
 
   getMembers(companyId: string) {
     return this.companiesService.getMembers(companyId).pipe(

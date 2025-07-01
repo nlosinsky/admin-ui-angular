@@ -1,4 +1,4 @@
-import { DatePipe, NgClass, NgIf } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -7,10 +7,10 @@ import {
   EventEmitter,
   OnDestroy,
   OnInit,
-  QueryList,
   TemplateRef,
-  ViewChild,
-  ViewChildren
+  inject,
+  viewChild,
+  viewChildren
 } from '@angular/core';
 import {
   AbstractControl,
@@ -43,7 +43,7 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { EMPTY, Subject } from 'rxjs';
+import { EMPTY, Subject, zip } from 'rxjs';
 import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
 
@@ -63,7 +63,6 @@ interface CompanyInformationForm {
   templateUrl: './company-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     NgClass,
     DatePipe,
     BgSpinnerComponent,
@@ -82,8 +81,15 @@ interface CompanyInformationForm {
 export class CompanyInformationComponent
   implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit
 {
-  @ViewChild('actionsTpl', { read: TemplateRef }) actionsTpl!: TemplateRef<HTMLElement>;
-  @ViewChildren(DxValidatorComponent) validators!: QueryList<DxValidatorComponent>;
+  private companyStateService = inject(CompanyStateService);
+  private cd = inject(ChangeDetectorRef);
+  private fb = inject(NonNullableFormBuilder);
+  private toastService = inject(ToastService);
+  private router = inject(Router);
+  private constantDataApiService = inject(ConstantDataApiService);
+
+  readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
+  readonly validators = viewChildren(DxValidatorComponent);
 
   isEditMode = false;
   isDataLoaded = false;
@@ -100,21 +106,12 @@ export class CompanyInformationComponent
 
   private ngUnsub = new Subject<void>();
 
-  constructor(
-    private companyStateService: CompanyStateService,
-    private cd: ChangeDetectorRef,
-    private fb: NonNullableFormBuilder,
-    private toastService: ToastService,
-    private router: Router,
-    private constantDataApiService: ConstantDataApiService
-  ) {}
-
   ngOnInit(): void {
     this.loadData();
   }
 
   ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl);
+    this.actionsTemplateEvent.emit(this.actionsTpl());
   }
 
   ngOnDestroy(): void {
@@ -153,7 +150,7 @@ export class CompanyInformationComponent
     }
 
     if (this.form.invalid) {
-      FormHelper.triggerFormValidation(this.form, this.validators);
+      FormHelper.triggerFormValidation(this.form, this.validators());
       return;
     }
 
@@ -188,22 +185,23 @@ export class CompanyInformationComponent
   }
 
   loadData(): void {
-    this.companyStateService.currentCompany$
+    zip([this.companyStateService.currentCompany$, this.constantDataApiService.getCountries()])
       .pipe(
         catchError(() => EMPTY),
-        filter(resp => !!(resp && resp.id)),
+        filter(([companyResp]) => !!companyResp?.id),
         takeUntil(this.ngUnsub)
       )
-      .subscribe(data => {
+      .subscribe(([company, countries]) => {
         this.isDataLoaded = true;
+        this.countries = countries;
 
-        if (!data) {
+        if (!company) {
           return;
         }
 
-        this.company = data;
+        this.company = company;
         this.populateLists(this.getCompanyDTO(this.company));
-        this.setFormData(data);
+        this.setFormData(company);
         this.cd.markForCheck();
       });
   }
@@ -321,7 +319,6 @@ export class CompanyInformationComponent
   }
 
   private populateLists(data: Company | CompanyUpdateDTO): void {
-    this.countries = this.constantDataApiService.getCountries();
     this.states = [];
     this.cities = [];
     this.zipCodes = [];

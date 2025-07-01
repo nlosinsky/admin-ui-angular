@@ -1,37 +1,37 @@
-<app-bg-spinner *ngIf="!isDataLoaded"></app-bg-spinner>
-
-<div *ngIf="isDataLoaded" class="container">
-  <app-general-toolbar title="Usage Data" subtitle="We found {{ stats.length }} results">
-    <div toolbar-controls class="toolbar-controls">
-      <dx-button
-        icon="spindown"
-        text="Manage columns"
-        [rtlEnabled]="true"
-        stylingMode="outlined"
-        (onClick)="openColumnChooserButtonClick()"
-        class="grid-column-chooser-btn"
-      ></dx-button>
-      <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
-      <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34"></dx-text-box>
-    </div>
-  </app-general-toolbar>
-
-  <section class="content-section">
-    <dx-data-grid
-      class="data-grid"
-      [dataSource]="stats"
-      [showBorders]="true"
-      [showColumnLines]="true"
-      [showRowLines]="true"
-      [columnAutoWidth]="true"
-      [remoteOperations]="false"
-    >
-      <dxo-paging [enabled]="false"></dxo-paging>
-      <dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
-      <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-
-      <dxi-column dataField="company.name" caption="Customer Name"></dxi-column>
-      <dxi-column dataField="sizeMb" caption="Storage Utilization (MB)" alignment="left"></dxi-column>
-    </dx-data-grid>
-  </section>
-</div>
+@if (isDataLoaded) {
+  <div class="container">
+    <app-general-toolbar title="Usage Data" subtitle="We found {{ stats.length }} results">
+      <div toolbar-controls class="toolbar-controls">
+        <dx-button
+          icon="spindown"
+          text="Manage columns"
+          [rtlEnabled]="true"
+          stylingMode="outlined"
+          (onClick)="openColumnChooserButtonClick()"
+          class="grid-column-chooser-btn"
+        ></dx-button>
+        <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
+        <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34"></dx-text-box>
+      </div>
+    </app-general-toolbar>
+    <section class="content-section">
+      <dx-data-grid
+        class="data-grid"
+        [dataSource]="stats"
+        [showBorders]="true"
+        [showColumnLines]="true"
+        [showRowLines]="true"
+        [columnAutoWidth]="true"
+        [remoteOperations]="false"
+      >
+        <dxo-paging [enabled]="false"></dxo-paging>
+        <dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
+        <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+        <dxi-column dataField="company.name" caption="Customer Name"></dxi-column>
+        <dxi-column dataField="sizeMb" caption="Storage Utilization (MB)" alignment="left"></dxi-column>
+      </dx-data-grid>
+    </section>
+  </div>
+} @else {
+  <app-bg-spinner />
+}

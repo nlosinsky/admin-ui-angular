@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Company, HttpError, CompanyUpdateDTO, CompanyFeatures, CompanyContract } from '@app/shared/models';
 import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
@@ -9,16 +9,16 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CompanyStateService {
+  private companiesService = inject(CompaniesService);
+  private toastService = inject(ToastService);
+
   currentCompany$: Observable<Company | null>;
   currentCompany!: Company | null;
 
   private currentCompanySubj = new ReplaySubject<Company | null>(1);
   private loadCompanySubj = new Subject<string>();
 
-  constructor(
-    private companiesService: CompaniesService,
-    private toastService: ToastService
-  ) {
+  constructor() {
     this.currentCompany$ = this.currentCompanySubj.asObservable();
 
     this.loadCompanySubj

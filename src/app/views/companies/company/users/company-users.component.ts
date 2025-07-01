@@ -1,6 +1,6 @@
-import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { Company, CompanyMember, HttpError } from '@app/shared/models';
@@ -25,9 +25,7 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
   styleUrls: ['./company-users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     NgClass,
-    NgForOf,
     AvatarBoxComponent,
     DxDataGridModule,
     DxButtonModule,
@@ -39,6 +37,14 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
   ]
 })
 export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
+  private companyStateService = inject(CompanyStateService);
+  private companiesService = inject(CompaniesService);
+  private route = inject(ActivatedRoute);
+  private cd = inject(ChangeDetectorRef);
+  private toastService = inject(ToastService);
+  private dialogService = inject(DialogService);
+  private router = inject(Router);
+
   company!: Company;
   isDataLoaded = false;
   pendingMembers: CompanyMember[] = [];
@@ -50,16 +56,6 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
   readonly indicatorSrc = tableIndicatorSrc;
 
   private ngUnsub = new Subject<void>();
-
-  constructor(
-    private companyStateService: CompanyStateService,
-    private companiesService: CompaniesService,
-    private route: ActivatedRoute,
-    private cd: ChangeDetectorRef,
-    private toastService: ToastService,
-    private dialogService: DialogService,
-    private router: Router
-  ) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -137,10 +133,6 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
         this.pendingMembers = this.pendingMembers.filter(item => item.id !== memberId);
         this.toastService.showSuccess('User has been successfully Approved.');
       });
-  }
-
-  trackByPending(index: number, member: CompanyMember): string {
-    return member.id;
   }
 
   private loadData() {

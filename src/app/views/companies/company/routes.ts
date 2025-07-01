@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { CompanyComponent } from '@views/companies/company/company.component';
 
 export const ROUTES: Routes = [
   {
     path: '',
-    component: CompanyComponent,
+    loadComponent: () => import('@views/companies/company/company.component').then(m => m.CompanyComponent),
     children: [
       {
         path: 'information',

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpError } from '@app/shared/models';
 import { PlatformHelperService } from '@services/helpers/platform-helper.service';
 import notify from 'devextreme/ui/notify';
@@ -7,7 +7,7 @@ import notify from 'devextreme/ui/notify';
   providedIn: 'root'
 })
 export class ToastService {
-  constructor(private platformHelperService: PlatformHelperService) {}
+  private platformHelperService = inject(PlatformHelperService);
 
   showSuccess(message: string): void {
     this.showToast(message, 'success');

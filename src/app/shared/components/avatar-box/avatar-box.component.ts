@@ -1,21 +1,18 @@
-import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-avatar-box',
   templateUrl: './avatar-box.component.html',
   styleUrls: ['./avatar-box.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf]
+  imports: []
 })
 export class AvatarBoxComponent {
-  @Input() avatar = '';
+  readonly avatar = input.required();
+  readonly text = input.required();
+  readonly link = input(false);
 
-  @Input() text = '';
-
-  @Input() link = false;
-
-  @Output() itemClicked = new EventEmitter<void>();
+  readonly itemClicked = output<void>();
 
   onClick(event: MouseEvent): void {
     event.preventDefault();

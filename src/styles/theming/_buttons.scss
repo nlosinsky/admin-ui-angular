@@ -13,9 +13,7 @@
 }
 
 .dx-button-mode-contained {
-  &.dx-button-default {
-    @include mixins.container-button-states($default);
-  }
+  border: none;
 
   &.dx-button-success {
     @include mixins.container-button-states($green);

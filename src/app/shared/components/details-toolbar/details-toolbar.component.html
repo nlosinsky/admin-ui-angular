@@ -4,13 +4,15 @@
   icon="/assets/images/icons/back-arrow.svg"
   stylingMode="text"
   class="back-btn"
-></dx-button>
+/>
 
 <div class="details-toolbar-content">
   <div class="details-toolbar-info">
-    <div *ngIf="logo" class="details-toolbar-logo">
-      <img [src]="logo" alt="" />
-    </div>
+    @if (logo()) {
+      <div class="details-toolbar-logo">
+        <img [src]="logo()" alt="Company's Logo" [height]="48" />
+      </div>
+    }
   </div>
 
   <ng-content select="[toolbar-controls]"></ng-content>

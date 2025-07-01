@@ -1,5 +1,5 @@
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { User } from '@app/shared/models/user';
@@ -14,16 +14,16 @@ import { DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
   templateUrl: 'sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgForOf, NgIf, AsyncPipe, RouterModule, DxButtonModule, DxDropDownButtonModule]
+  imports: [AsyncPipe, RouterModule, DxButtonModule, DxDropDownButtonModule, NgOptimizedImage]
 })
 export class SidenavComponent implements OnInit {
+  private service = inject(SidenavService);
+
   items: NavItem[] = [];
 
   userDropdownItems: UserDropdownItem[] = [];
 
   user$!: Observable<User>;
-
-  constructor(private service: SidenavService) {}
 
   ngOnInit(): void {
     this.items = this.service.getNavItems();
@@ -37,10 +37,6 @@ export class SidenavComponent implements OnInit {
     if (eventId === DropdownTypes.LOGOUT) {
       this.logout();
     }
-  }
-
-  trackBy(index: number, item: NavItem): string {
-    return item.route;
   }
 
   private logout(): void {
