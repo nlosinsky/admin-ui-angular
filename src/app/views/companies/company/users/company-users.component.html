@@ -1,97 +1,97 @@
 @if (isDataLoaded) {
-	<section class="content-section">
-		<h5 class="section-title">Pending Approvals</h5>
-		@if (pendingMembers.length) {
-			<div class="table-list">
-				@for (member of pendingMembers; track member.id) {
-					<div class="table-list-row">
-						<div class="table-list-col">
-							<div class="table-list-label">Email</div>
-							<div class="table-list-content">{{ member.email }}</div>
-							<div class="table-list-actions">
-								<div class="table-list-actions">
-									<dx-button
-											stylingMode="outlined"
-											text="Decline"
-											type="normal"
-											class="button-small grayed"
-											[ngClass]="{ 'loading-blue': declineRequestsSet.has(member.id) }"
-											(onClick)="onDecline(member.id)"
-									></dx-button>
-									<dx-button
-											stylingMode="contained"
-											text="Approve"
-											type="success"
-											class="button-small"
-											[ngClass]="{ loading: approveRequestsSet.has(member.id) }"
-											(onClick)="onApprove(member.id)"
-									></dx-button>
-								</div>
-							</div>
-						</div>
-					</div>
-				}
-			</div>
-		} @else {
-			<div class="no-items-placeholder">You don’t have any pending approvals</div>
-		}
-	</section>
-	<section class="content-section">
-		<h5 class="section-title">Company Members</h5>
-		<dx-data-grid
-				class="data-grid"
-				[dataSource]="members"
-				[showBorders]="true"
-				[showColumnLines]="true"
-				[showRowLines]="true"
-				[columnAutoWidth]="true"
-				[remoteOperations]="false"
-		>
-			<dxo-paging [enabled]="false"></dxo-paging>
-			<dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
-			<dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-			<dxi-column dataField="fullName" caption="Name" cellTemplate="nameTemplate"></dxi-column>
-			<div *dxTemplate="let item of 'nameTemplate'">
-				<app-avatar-box
-						[link]="true"
-						[text]="item.value"
-						[avatar]="item.data.userAvatar"
-						(itemClicked)="onViewMember(item.data)"
-				></app-avatar-box>
-			</div>
-			<dxi-column dataField="email" caption="User Email" type="string"></dxi-column>
-			<dxi-column
-					dataField="accountState"
-					caption="Account State"
-					cellTemplate="accountStateTemplate"
-					[width]="135"
-			></dxi-column>
-			<div *dxTemplate="let item of 'accountStateTemplate'">
-				<app-status-item
-						[type]="item.value | statusColor: 'companyMemberAccountState'"
-						[text]="item.value | stringValueCapitalize"
-				></app-status-item>
-			</div>
-			<dxi-column
-					[allowReordering]="false"
-					[allowHiding]="false"
-					[allowGrouping]="false"
-					[width]="48"
-					cssClass="actions-column"
-					cellTemplate="actionsTemplate"
-			></dxi-column>
-			<div *dxTemplate="let item of 'actionsTemplate'">
-				<dx-drop-down-button
-						icon="/assets/images/icons/overflow.svg"
-						[showArrowIcon]="false"
-						class="actions-dropdown-btn"
-						[dropDownOptions]="{ container: '.actions-dropdown-btn', width: 150 }"
-				>
-					<dxi-item (click)="onEditMember(item.data)">Edit information</dxi-item>
-				</dx-drop-down-button>
-			</div>
-		</dx-data-grid>
-	</section>
+  <section class="content-section">
+    <h5 class="section-title">Pending Approvals</h5>
+    @if (pendingMembers.length) {
+      <div class="table-list">
+        @for (member of pendingMembers; track member.id) {
+          <div class="table-list-row">
+            <div class="table-list-col">
+              <div class="table-list-label">Email</div>
+              <div class="table-list-content">{{ member.email }}</div>
+              <div class="table-list-actions">
+                <div class="table-list-actions">
+                  <dx-button
+                    stylingMode="outlined"
+                    text="Decline"
+                    type="normal"
+                    class="button-small grayed"
+                    [ngClass]="{ 'loading-blue': declineRequestsSet.has(member.id) }"
+                    (onClick)="onDecline(member.id)"
+                  ></dx-button>
+                  <dx-button
+                    stylingMode="contained"
+                    text="Approve"
+                    type="success"
+                    class="button-small"
+                    [ngClass]="{ loading: approveRequestsSet.has(member.id) }"
+                    (onClick)="onApprove(member.id)"
+                  ></dx-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="no-items-placeholder">You don’t have any pending approvals</div>
+    }
+  </section>
+  <section class="content-section">
+    <h5 class="section-title">Company Members</h5>
+    <dx-data-grid
+      class="data-grid"
+      [dataSource]="members"
+      [showBorders]="true"
+      [showColumnLines]="true"
+      [showRowLines]="true"
+      [columnAutoWidth]="true"
+      [remoteOperations]="false"
+    >
+      <dxo-paging [enabled]="false"></dxo-paging>
+      <dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
+      <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+      <dxi-column dataField="fullName" caption="Name" cellTemplate="nameTemplate"></dxi-column>
+      <div *dxTemplate="let item of 'nameTemplate'">
+        <app-avatar-box
+          [link]="true"
+          [text]="item.value"
+          [avatar]="item.data.userAvatar"
+          (itemClicked)="onViewMember(item.data)"
+        ></app-avatar-box>
+      </div>
+      <dxi-column dataField="email" caption="User Email" type="string"></dxi-column>
+      <dxi-column
+        dataField="accountState"
+        caption="Account State"
+        cellTemplate="accountStateTemplate"
+        [width]="135"
+      ></dxi-column>
+      <div *dxTemplate="let item of 'accountStateTemplate'">
+        <app-status-item
+          [type]="item.value | statusColor: 'companyMemberAccountState'"
+          [text]="item.value | stringValueCapitalize"
+        ></app-status-item>
+      </div>
+      <dxi-column
+        [allowReordering]="false"
+        [allowHiding]="false"
+        [allowGrouping]="false"
+        [width]="48"
+        cssClass="actions-column"
+        cellTemplate="actionsTemplate"
+      ></dxi-column>
+      <div *dxTemplate="let item of 'actionsTemplate'">
+        <dx-drop-down-button
+          icon="/assets/images/icons/overflow.svg"
+          [showArrowIcon]="false"
+          class="actions-dropdown-btn"
+          [dropDownOptions]="{ container: '.actions-dropdown-btn', width: 150 }"
+        >
+          <dxi-item (click)="onEditMember(item.data)">Edit information</dxi-item>
+        </dx-drop-down-button>
+      </div>
+    </dx-data-grid>
+  </section>
 } @else {
-	<app-bg-spinner/>
+  <app-bg-spinner />
 }

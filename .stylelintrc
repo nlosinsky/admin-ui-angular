@@ -4,8 +4,7 @@
     "stylelint-prettier/recommended"
   ],
   "plugins": [
-    "stylelint-prettier",
-    "stylelint-scss"
+    "stylelint-prettier"
   ],
   "customSyntax": "postcss-scss",
   "rules": {
