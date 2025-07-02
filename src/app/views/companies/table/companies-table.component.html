@@ -77,7 +77,7 @@
                   text="Decline"
                   type="normal"
                   class="button-small grayed"
-                  [ngClass]="{ 'loading-blue': declineRequestsSet.has(item.id) }"
+                  [class]="{ 'loading-blue': declineRequestsSet.has(item.id) }"
                   (onClick)="onDecline(item.id)"
                 ></dx-button>
                 <dx-button
@@ -85,7 +85,7 @@
                   type="success"
                   class="button-small"
                   text="Approve"
-                  [ngClass]="{ loading: approveRequestsSet.has(item.id) }"
+                  [class]="{ loading: approveRequestsSet.has(item.id) }"
                   (onClick)="onApprove(item.id)"
                 >
                 </dx-button>
