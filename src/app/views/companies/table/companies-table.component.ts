@@ -1,4 +1,4 @@
-import { DatePipe, DecimalPipe, formatDate, NgClass } from '@angular/common';
+import { DatePipe, DecimalPipe, formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -42,7 +42,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrls: ['./companies-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     DatePipe,
     DecimalPipe,
     GeneralToolbarComponent,
@@ -82,8 +81,8 @@ export class CompaniesTableComponent implements OnInit {
     this.loadData();
   }
 
-  openColumnChooserButtonClick(): void {
-    this.dataGridHelperService.openTableChooser(this.dataGrid());
+  onShowColumnChooser(): void {
+    this.dataGridHelperService.showColumnChooser(this.dataGrid());
   }
 
   onDecline(id: string): void {

@@ -136,8 +136,8 @@ export class CompanyAccountsComponent implements OnInit, AfterViewInit, CommonCu
     }
   }
 
-  openColumnChooserButtonClick(): void {
-    this.dataGridHelperService.openTableChooser(this.dataGrid());
+  onShowColumnChooser(): void {
+    this.dataGridHelperService.showColumnChooser(this.dataGrid());
   }
 
   onExport(): void {

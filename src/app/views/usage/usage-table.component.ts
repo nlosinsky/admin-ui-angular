@@ -48,8 +48,8 @@ export class UsageTableComponent implements OnInit {
     this.loadData();
   }
 
-  openColumnChooserButtonClick(): void {
-    this.dataGridHelperService.openTableChooser(this.dataGrid());
+  onShowColumnChooser(): void {
+    this.dataGridHelperService.showColumnChooser(this.dataGrid());
   }
 
   onExport(): void {

@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
     return FormHelper.isValidField(field);
   }
 
-  onFormSubmit(event: Event): void {
+  onLogin(event: Event): void {
     event.preventDefault();
 
     if (this.form.invalid) {

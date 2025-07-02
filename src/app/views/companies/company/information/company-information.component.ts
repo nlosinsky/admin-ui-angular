@@ -1,4 +1,4 @@
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -64,7 +64,6 @@ interface CompanyInformationForm {
   templateUrl: './company-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     DatePipe,
     BgSpinnerComponent,
     ReactiveFormsModule,

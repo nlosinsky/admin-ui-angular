@@ -1,4 +1,4 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -52,7 +52,6 @@ interface CompanyContractForm {
   templateUrl: './company-contract.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     NgTemplateOutlet,
     DxSwitchModule,
     ContractTypePipe,

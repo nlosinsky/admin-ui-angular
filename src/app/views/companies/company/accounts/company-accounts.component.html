@@ -5,7 +5,7 @@
     [rtlEnabled]="true"
     stylingMode="outlined"
     class="grid-column-chooser-btn"
-    (onClick)="openColumnChooserButtonClick()"
+    (onClick)="onShowColumnChooser()"
   />
   <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined" />
   <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34" />
