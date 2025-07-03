@@ -20,7 +20,7 @@
     }
   </div>
 
-  @if (user$ | async; as user) {
+  @if (currentUser(); as user) {
     <dx-drop-down-button
       stylingMode="outlined"
       [text]="user.fullName"
