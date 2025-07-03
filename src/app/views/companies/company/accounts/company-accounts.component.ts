@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -9,7 +8,8 @@ import {
   TemplateRef,
   ViewContainerRef,
   inject,
-  viewChild
+  viewChild,
+  effect
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -54,7 +54,7 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
     BooleanYesNoPipe
   ]
 })
-export class CompanyAccountsComponent implements OnInit, AfterViewInit, CommonCustomerComponentActions {
+export class CompanyAccountsComponent implements OnInit, CommonCustomerComponentActions {
   private cd = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
   private accountsApiService = inject(AccountsService);
@@ -76,13 +76,18 @@ export class CompanyAccountsComponent implements OnInit, AfterViewInit, CommonCu
   private searchSubj = new Subject<string>();
   readonly indicatorSrc = tableIndicatorSrc;
 
+  constructor() {
+    effect(() => {
+      this.actionsTemplateEvent.emit(this.actionsTpl());
+      return () => {
+        this.actionsTemplateEvent.emit(undefined);
+      };
+    });
+  }
+
   ngOnInit(): void {
     this.handleSearch();
     this.loadData();
-  }
-
-  ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl());
   }
 
   navigateBack = () => this.router.navigate(['/companies']);

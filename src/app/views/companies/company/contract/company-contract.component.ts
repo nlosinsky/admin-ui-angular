@@ -1,6 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -9,7 +8,8 @@ import {
   OnInit,
   TemplateRef,
   inject,
-  viewChild
+  viewChild,
+  effect
 } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -64,7 +64,7 @@ interface CompanyContractForm {
     DxDropDownButtonModule
   ]
 })
-export class CompanyContractComponent implements OnInit, Submittable, CommonCustomerComponentActions, AfterViewInit {
+export class CompanyContractComponent implements OnInit, Submittable, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
@@ -85,13 +85,18 @@ export class CompanyContractComponent implements OnInit, Submittable, CommonCust
   minTransactionFeeValue = 0;
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
+  constructor() {
+    effect(() => {
+      this.actionsTemplateEvent.emit(this.actionsTpl());
+      return () => {
+        this.actionsTemplateEvent.emit(undefined);
+      };
+    });
+  }
+
   ngOnInit(): void {
     this.loadData();
     this.companyContractList = ObjectUtil.enumToArray(CompanyContractEnum);
-  }
-
-  ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl());
   }
 
   navigateBack = () => this.router.navigate(['/companies']);

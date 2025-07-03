@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -10,7 +9,8 @@ import {
   TemplateRef,
   inject,
   viewChild,
-  viewChildren
+  viewChildren,
+  effect
 } from '@angular/core';
 import {
   AbstractControl,
@@ -78,7 +78,7 @@ interface CompanyInformationForm {
     StatusColorPipe
   ]
 })
-export class CompanyInformationComponent implements OnInit, Submittable, CommonCustomerComponentActions, AfterViewInit {
+export class CompanyInformationComponent implements OnInit, Submittable, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
@@ -103,12 +103,17 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
 
   readonly companyStates = [CompanyState.ACTIVE, CompanyState.ARCHIVED];
 
-  ngOnInit(): void {
-    this.loadData();
+  constructor() {
+    effect(() => {
+      this.actionsTemplateEvent.emit(this.actionsTpl());
+      return () => {
+        this.actionsTemplateEvent.emit(undefined);
+      };
+    });
   }
 
-  ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl());
+  ngOnInit(): void {
+    this.loadData();
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
