@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnIn
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
-import { Company, CompanyMember, HttpError } from '@app/shared/models';
+import { CompanyMember, HttpError } from '@app/shared/models';
 import { CompanyMemberAccountState } from '@app/shared/models/companies/company.enum';
 import { CommonCustomerComponentActions } from '@app/shared/models/components';
 import { AvatarBoxComponent } from '@components/avatar-box/avatar-box.component';
@@ -45,7 +45,8 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
   private dialogService = inject(DialogService);
   private router = inject(Router);
 
-  company!: Company;
+  companyId = this.companyStateService.currentCompanyId;
+
   isDataLoaded = false;
   pendingMembers: CompanyMember[] = [];
   members: CompanyMember[] = [];
@@ -102,7 +103,9 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
   }
 
   onApprove(memberId: string): void {
-    if (this.approveRequestsSet.has(memberId)) {
+    const companyId = this.companyId();
+
+    if (this.approveRequestsSet.has(memberId) || !companyId) {
       return;
     }
 
@@ -110,7 +113,7 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
     this.companiesService
       .approvePendingMember(memberId)
       .pipe(
-        mergeMap(() => this.companiesService.getMembers(this.company.id)),
+        mergeMap(() => this.companiesService.getMembers(companyId)),
         catchError((error: HttpErrorResponse) => {
           this.toastService.showHttpError(error);
           return EMPTY;
@@ -129,16 +132,12 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
   }
 
   private loadData() {
-    const companyId = this.route.snapshot.paramMap.get('companyId');
+    const companyId = this.companyId();
     if (!companyId) {
       return;
     }
 
-    zip(
-      this.companiesService.getPendingMembers(companyId),
-      this.companiesService.getMembers(companyId),
-      this.companyStateService.currentCompany$
-    )
+    zip(this.companiesService.getPendingMembers(companyId), this.companiesService.getMembers(companyId))
       .pipe(
         catchError((error: HttpError) => {
           this.toastService.showHttpError(error);
@@ -150,14 +149,9 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
         }),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(([pendingMembers, members, company]) => {
+      .subscribe(([pendingMembers, members]) => {
         this.pendingMembers = pendingMembers;
         this.members = members;
-
-        if (!company) {
-          return;
-        }
-        this.company = company;
       });
   }
 }

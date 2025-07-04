@@ -43,8 +43,8 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { EMPTY, zip } from 'rxjs';
-import { catchError, filter, finalize } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
 
@@ -90,9 +90,11 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
   readonly validators = viewChildren(DxValidatorComponent);
 
+  currentCompany = this.companyStateService.currentCompany;
+  currentCompanyId = this.companyStateService.currentCompanyId;
+
   isEditMode = false;
   isDataLoaded = false;
-  company!: Company;
   form!: FormGroup<CompanyInformationForm>;
   isSubmitting = false;
   countries: Country[] = [];
@@ -109,6 +111,10 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
       return () => {
         this.actionsTemplateEvent.emit(undefined);
       };
+    });
+
+    effect(() => {
+      this.setFormData(this.currentCompany());
     });
   }
 
@@ -141,6 +147,12 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   };
 
   onSaveChanges() {
+    const companyId = this.currentCompanyId();
+
+    if (!companyId) {
+      return;
+    }
+
     if (!this.hasChangedData() && this.form.valid) {
       this.isEditMode = false;
       return;
@@ -154,7 +166,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     this.isSubmitting = true;
 
     this.companyStateService
-      .updateCompany(this.company.id, this.getPreparedData())
+      .updateCompany(companyId, this.getPreparedData())
       .pipe(
         catchError((error: HttpError) => {
           this.toastService.showHttpError(error);
@@ -178,36 +190,33 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   }
 
   hasChangedData(): boolean {
-    return !ObjectUtil.isDeepEquals(this.getPreparedData(), this.getCompanyDTO(this.company));
+    return !ObjectUtil.isDeepEquals(this.getPreparedData(), this.getCompanyDTO(this.currentCompany()));
   }
 
   loadData(): void {
-    zip(this.companyStateService.currentCompany$, this.constantDataApiService.getCountries())
+    this.constantDataApiService
+      .getCountries()
       .pipe(
         catchError(() => EMPTY),
-        filter(([companyResp]) => !!companyResp?.id),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(([company, countries]) => {
+      .subscribe((countries: Country[]) => {
         this.isDataLoaded = true;
         this.countries = countries;
-
-        if (!company) {
-          return;
-        }
-
-        this.company = company;
-        this.populateLists(this.getCompanyDTO(this.company));
-        this.setFormData(company);
+        this.populateLists(this.getCompanyDTO(this.currentCompany()));
         this.cd.markForCheck();
       });
   }
 
   restoreForm(): void {
-    this.form.reset(this.getCompanyDTO(this.company));
+    this.form.reset(this.getCompanyDTO(this.currentCompany()));
   }
 
-  setFormData(data: Company): void {
+  setFormData(data: Company | null): void {
+    if (!data) {
+      return;
+    }
+
     this.form = this.fb.group({
       name: [data.name, [Validators.required, Validators.maxLength(30)]],
       website: [data.website, [Validators.required, WebsiteUrlValidator(), Validators.maxLength(500)]],
@@ -220,7 +229,20 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     });
   }
 
-  private getCompanyDTO(company: Company | CompanyUpdateDTO): CompanyUpdateDTO {
+  private getCompanyDTO(company: Company | CompanyUpdateDTO | null): CompanyUpdateDTO {
+    if (!company) {
+      return {
+        name: '',
+        website: '',
+        streetAddress: '',
+        country: '',
+        state: '',
+        city: '',
+        zipCode: '',
+        companyState: CompanyState.ACTIVE
+      };
+    }
+
     const { name, website, streetAddress, country, state, city, zipCode, companyState } = company;
     return { name, website, streetAddress, country, state, city, zipCode, companyState };
   }

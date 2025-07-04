@@ -6,7 +6,7 @@ export interface Submittable {
   hasChangedData(): boolean;
   restoreForm(): void;
   setFormData(data: Company): void;
-  loadData(): void;
+  loadData?(): void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

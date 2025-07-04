@@ -1,4 +1,4 @@
-import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,21 +9,21 @@ import {
   inject
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Company, Tab } from '@app/shared/models';
+import { Tab } from '@app/shared/models';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
 import { DetailsToolbarComponent } from '@components/details-toolbar/details-toolbar.component';
 import { DialogService } from '@services/helpers/dialog.service';
 import { CompanyHelperService } from '@views/companies/company/company-helper.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import { DxTabsModule } from 'devextreme-angular';
-import { first, Observable } from 'rxjs';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgTemplateOutlet, AsyncPipe, RouterModule, DetailsToolbarComponent, DxTabsModule]
+  imports: [NgTemplateOutlet, RouterModule, DetailsToolbarComponent, DxTabsModule]
 })
 export class CompanyComponent implements OnInit, OnDestroy {
   private router = inject(Router);
@@ -33,8 +33,9 @@ export class CompanyComponent implements OnInit, OnDestroy {
   private cd = inject(ChangeDetectorRef);
   private dialogService = inject(DialogService);
 
+  currentCompany = this.companyStateService.currentCompany;
+
   tabs: Tab[] = [];
-  currentCompany$!: Observable<Company | null>;
   activeComponent!: Submittable & CommonCustomerComponentActions;
   actionsTemplate!: TemplateRef<HTMLElement> | null;
   companyId!: string;
@@ -51,7 +52,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
   private handleCompanyLoad(): void {
     this.companyId = this.route.snapshot.paramMap.get('companyId') || '';
     this.companyStateService.runCompanyLoad(this.companyId);
-    this.currentCompany$ = this.companyStateService.currentCompany$;
   }
 
   onReturnBack(): void {

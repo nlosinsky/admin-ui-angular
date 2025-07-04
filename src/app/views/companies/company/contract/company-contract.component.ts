@@ -5,7 +5,6 @@ import {
   Component,
   DestroyRef,
   EventEmitter,
-  OnInit,
   TemplateRef,
   inject,
   viewChild,
@@ -30,7 +29,7 @@ import {
   DxTextBoxModule
 } from 'devextreme-angular';
 import { EMPTY, forkJoin, Observable } from 'rxjs';
-import { catchError, filter, finalize } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface CompanyContractForm {
@@ -64,7 +63,7 @@ interface CompanyContractForm {
     DxDropDownButtonModule
   ]
 })
-export class CompanyContractComponent implements OnInit, Submittable, CommonCustomerComponentActions {
+export class CompanyContractComponent implements Submittable, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
@@ -74,13 +73,15 @@ export class CompanyContractComponent implements OnInit, Submittable, CommonCust
 
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
 
+  currentCompany = this.companyStateService.currentCompany;
+  currentCompanyId = this.companyStateService.currentCompanyId;
+
   isEditMode = false;
   isDataLoaded = false;
-  company!: Company;
   form!: FormGroup<CompanyContractForm>;
   isSubmitting = false;
   companyContract = CompanyContractEnum;
-  companyContractList: string[] = [];
+  companyContractList: string[] = ObjectUtil.enumToArray(CompanyContractEnum);
   isReadonlyTransactionFee = false;
   minTransactionFeeValue = 0;
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
@@ -92,11 +93,11 @@ export class CompanyContractComponent implements OnInit, Submittable, CommonCust
         this.actionsTemplateEvent.emit(undefined);
       };
     });
-  }
 
-  ngOnInit(): void {
-    this.loadData();
-    this.companyContractList = ObjectUtil.enumToArray(CompanyContractEnum);
+    effect(() => {
+      this.setFormData(this.currentCompany());
+      this.verifyTransactionFeeConstraints();
+    });
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
@@ -114,6 +115,12 @@ export class CompanyContractComponent implements OnInit, Submittable, CommonCust
   };
 
   onSaveChanges() {
+    const companyId = this.currentCompanyId();
+
+    if (!companyId) {
+      return;
+    }
+
     if (!this.hasChangedData() && this.form.valid) {
       this.isEditMode = false;
       return;
@@ -126,11 +133,11 @@ export class CompanyContractComponent implements OnInit, Submittable, CommonCust
     const obsArr: Observable<Company>[] = [];
 
     if (this.isFeaturesChanged) {
-      obsArr.push(this.companyStateService.updateCompanyFeatures(this.company.id, this.features));
+      obsArr.push(this.companyStateService.updateCompanyFeatures(companyId, this.features));
     }
 
     if (this.isContractChanged) {
-      obsArr.push(this.companyStateService.updateCompanyContract(this.company.id, this.contract));
+      obsArr.push(this.companyStateService.updateCompanyContract(companyId, this.contract));
     }
 
     this.isSubmitting = true;
@@ -159,11 +166,11 @@ export class CompanyContractComponent implements OnInit, Submittable, CommonCust
   }
 
   private get isFeaturesChanged(): boolean {
-    return !ObjectUtil.isDeepEquals(this.company.features, this.features);
+    return !ObjectUtil.isDeepEquals(this.currentCompany()?.features, this.features);
   }
 
   private get isContractChanged(): boolean {
-    return !ObjectUtil.isDeepEquals(this.company.contract, this.contract);
+    return !ObjectUtil.isDeepEquals(this.currentCompany()?.contract, this.contract);
   }
 
   get features(): CompanyFeatures | null {
@@ -204,28 +211,11 @@ export class CompanyContractComponent implements OnInit, Submittable, CommonCust
     }
   }
 
-  loadData(): void {
-    this.companyStateService.currentCompany$
-      .pipe(
-        catchError(() => EMPTY),
-        filter(resp => !!(resp && resp.id)),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(data => {
-        this.isDataLoaded = true;
+  setFormData(data: Company | null): void {
+    if (!data) {
+      return;
+    }
 
-        if (!data) {
-          return;
-        }
-
-        this.company = data;
-        this.setFormData(data);
-        this.verifyTransactionFeeConstraints();
-        this.cd.markForCheck();
-      });
-  }
-
-  setFormData(data: Company): void {
     const { accounting, advancedReporting, marketData, onlineTransactions, contractInventory } = data.features;
     const { type, basisPoints } = data.contract;
 
@@ -245,7 +235,7 @@ export class CompanyContractComponent implements OnInit, Submittable, CommonCust
   }
 
   restoreForm(): void {
-    const { features, contract } = this.company;
+    const { features, contract } = this.currentCompany() || {};
     this.form.reset({ features, contract });
   }
 }
