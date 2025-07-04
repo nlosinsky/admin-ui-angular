@@ -97,6 +97,12 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
     });
 
     effect(() => {
+      if (this.currentCompany() && !this.isDataLoaded()) {
+        this.isDataLoaded.set(true);
+      }
+    });
+
+    effect(() => {
       this.setFormData(this.currentCompany());
       this.verifyTransactionFeeConstraints();
     });
