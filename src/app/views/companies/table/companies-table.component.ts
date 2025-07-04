@@ -1,13 +1,13 @@
 import { DatePipe, DecimalPipe, formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   LOCALE_ID,
   OnInit,
   inject,
-  viewChild
+  viewChild,
+  signal
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
@@ -54,7 +54,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   ]
 })
 export class CompaniesTableComponent implements OnInit {
-  private cd = inject(ChangeDetectorRef);
   private dataGridHelperService = inject(DataGridHelperService);
   private companiesService = inject(CompaniesService);
   private toastService = inject(ToastService);
@@ -64,11 +63,11 @@ export class CompaniesTableComponent implements OnInit {
 
   readonly dataGrid = viewChild.required(DxDataGridComponent);
 
-  companies: Company[] = [];
-  temporaryCompanies: Company[] = [];
-  approveRequestsSet = new Set<string>();
-  declineRequestsSet = new Set<string>();
-  isDataLoaded = false;
+  isDataLoaded = signal(false);
+  companies = signal<Company[]>([]);
+  temporaryCompanies = signal<Company[]>([]);
+  approveRequestsSet = signal(new Set<string>());
+  declineRequestsSet = signal(new Set<string>());
 
   readonly indicatorSrc = tableIndicatorSrc;
 
@@ -86,7 +85,7 @@ export class CompaniesTableComponent implements OnInit {
   }
 
   onDecline(id: string): void {
-    if (this.declineRequestsSet.has(id)) {
+    if (this.declineRequestsSet().has(id)) {
       return;
     }
 
@@ -94,8 +93,11 @@ export class CompaniesTableComponent implements OnInit {
       .pipe(
         filter(confirm => confirm),
         mergeMap(() => {
-          this.declineRequestsSet.add(id);
-          this.cd.markForCheck();
+          this.declineRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.add(id);
+            return newSet;
+          });
           return this.companiesService.disapproveTemporaryCompany(id);
         }),
         catchError((error: HttpError) => {
@@ -103,23 +105,30 @@ export class CompaniesTableComponent implements OnInit {
           return EMPTY;
         }),
         finalize(() => {
-          this.declineRequestsSet.delete(id);
-          this.cd.markForCheck();
+          this.declineRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.delete(id);
+            return newSet;
+          });
         }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        this.temporaryCompanies = this.temporaryCompanies.filter(item => item.id !== id);
         this.toastService.showSuccess('The company has been Declined successfully.');
+        this.temporaryCompanies.update(temporaryCompanies => temporaryCompanies.filter(item => item.id !== id));
       });
   }
 
   onApprove(id: string): void {
-    if (this.approveRequestsSet.has(id)) {
+    if (this.approveRequestsSet().has(id)) {
       return;
     }
 
-    this.approveRequestsSet.add(id);
+    this.approveRequestsSet.update(set => {
+      const newSet = new Set(set);
+      newSet.add(id);
+      return newSet;
+    });
     this.companiesService
       .approveTemporaryCompany(id)
       .pipe(
@@ -128,15 +137,18 @@ export class CompaniesTableComponent implements OnInit {
           return EMPTY;
         }),
         finalize(() => {
-          this.approveRequestsSet.delete(id);
-          this.cd.markForCheck();
+          this.approveRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.delete(id);
+            return newSet;
+          });
         }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.reloadCompaniesSubj.next();
-        this.temporaryCompanies = this.temporaryCompanies.filter(item => item.id !== id);
         this.toastService.showSuccess('The company has been Approved successfully.');
+        this.temporaryCompanies.update(temporaryCompanies => temporaryCompanies.filter(item => item.id !== id));
       });
   }
 
@@ -183,9 +195,8 @@ export class CompaniesTableComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(companies => {
-        this.companies = companies;
         this.dataGrid().instance.endCustomLoading();
-        this.cd.markForCheck();
+        this.companies.set(companies);
       });
   }
 
@@ -205,15 +216,12 @@ export class CompaniesTableComponent implements OnInit {
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
-        finalize(() => {
-          this.isDataLoaded = true;
-          this.cd.markForCheck();
-        }),
+        finalize(() => this.isDataLoaded.set(true)),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([companies, temporaryCompanies]) => {
-        this.temporaryCompanies = temporaryCompanies;
-        this.companies = companies;
+        this.temporaryCompanies.set(temporaryCompanies);
+        this.companies.set(companies);
       });
   }
 }

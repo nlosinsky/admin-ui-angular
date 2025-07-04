@@ -1,12 +1,12 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   OnInit,
   inject,
   viewChildren,
-  viewChild
+  viewChild,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -58,18 +58,18 @@ interface TransactionsForm {
 })
 export class TransactionsTableComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
-  private cd = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
   private transactionsTableService = inject(TransactionsTableService);
 
   readonly validators = viewChildren(DxValidatorComponent);
   readonly chart = viewChild.required(DxChartComponent);
 
+  dataSource = signal<TransactionsCount[]>([]);
+  isSubmitting = signal(false);
+  companies = signal<Company[]>([]);
+  companyMembers = signal<CompanyMember[]>([{ fullName: 'All', id: '' } as CompanyMember]);
+
   selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
-  dataSource: TransactionsCount[] = [];
-  companies: Company[] = [];
-  companyMembers: CompanyMember[] = [{ fullName: 'All', id: '' } as CompanyMember];
-  isSubmitting = false;
   form!: FormGroup<TransactionsForm>;
   maxDate = new Date();
   tickInterval!: TimeInterval;
@@ -105,7 +105,7 @@ export class TransactionsTableComponent implements OnInit {
   onChartExport = (format = 'png') => this.transactionsTableService.onChartExport(this.chart(), format);
 
   onSearch() {
-    if (this.isSubmitting) {
+    if (this.isSubmitting()) {
       return;
     }
 
@@ -114,13 +114,13 @@ export class TransactionsTableComponent implements OnInit {
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     const formValue = this.form.value;
     const payload = this.transactionsTableService.getSearchPayload(formValue);
 
     if (!isValid(new Date(payload.startDate)) || !isValid(new Date(payload.endDate))) {
-      this.isSubmitting = false;
+      this.isSubmitting.set(false);
       return;
     }
 
@@ -128,13 +128,12 @@ export class TransactionsTableComponent implements OnInit {
       .getTransactionsCount(payload)
       .pipe(
         finalize(() => {
-          this.isSubmitting = false;
-          this.cd.markForCheck();
+          this.isSubmitting.set(false);
         }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(items => {
-        this.dataSource = items;
+        this.dataSource.set(items);
       });
   }
 
@@ -153,8 +152,7 @@ export class TransactionsTableComponent implements OnInit {
       .getCompanies()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(companies => {
-        this.companies = companies;
-        this.cd.markForCheck();
+        this.companies.set(companies);
       });
   }
 
@@ -182,8 +180,7 @@ export class TransactionsTableComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(members => {
-        this.companyMembers = members;
-        this.cd.markForCheck();
+        this.companyMembers.set(members);
       });
   }
 }

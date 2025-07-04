@@ -1,11 +1,11 @@
 <ng-template #actionsTpl>
-  @if (isEditMode) {
+  @if (isEditMode()) {
     <dx-button stylingMode="outlined" text="Cancel" class="grayed" (onClick)="onCancelEdit()" />
     <dx-button
       stylingMode="contained"
       type="default"
       text="Save changes"
-      [class]="{ loading: isSubmitting }"
+      [class]="{ loading: isSubmitting() }"
       (onClick)="onSaveChanges()"
     />
   }
@@ -15,13 +15,13 @@
     [showArrowIcon]="false"
     class="actions-dropdown-btn"
     [dropDownOptions]="{ container: '.actions-dropdown-btn', width: 150 }"
-    [disabled]="isEditMode"
+    [disabled]="isEditMode()"
   >
     <dxi-item [onClick]="onEdit">Edit information</dxi-item>
   </dx-drop-down-button>
 </ng-template>
 
-@if (isDataLoaded && currentCompany()) {
+@if (isDataLoaded() && currentCompany()) {
   @if (currentCompany()) {
     <form [formGroup]="form" novalidate>
       <div class="content-section" formGroupName="contract">
@@ -33,7 +33,7 @@
               <dx-select-box
                 [dataSource]="companyContractList"
                 [dropDownOptions]="{ container: 'dx-select-box' }"
-                [readOnly]="isDisabled"
+                [readOnly]="isDisabled()"
                 (valueChange)="onChangeType()"
                 formControlName="type"
                 itemTemplate="item"
@@ -54,8 +54,8 @@
             <div class="table-list-label">Transaction Fee</div>
             <div class="table-list-content">
               <dx-number-box
-                [readOnly]="isReadonlyTransactionFee"
-                [min]="minTransactionFeeValue"
+                [readOnly]="isReadonlyTransactionFee()"
+                [min]="minTransactionFeeValue()"
                 formControlName="basisPoints"
                 format="#0 BP"
               ></dx-number-box>
@@ -73,8 +73,8 @@
           <div class="table-list-col">
             <div class="table-list-label">Status</div>
             <div class="table-list-content">
-              @if (isEditMode) {
-                <dx-switch [readOnly]="isSubmitting" formControlName="accounting"></dx-switch>
+              @if (isEditMode()) {
+                <dx-switch [readOnly]="isSubmitting()" formControlName="accounting"></dx-switch>
               } @else {
                 <ng-container
                   [ngTemplateOutlet]="featureReadonlyText"
@@ -92,8 +92,8 @@
           <div class="table-list-col">
             <div class="table-list-label">Status</div>
             <div class="table-list-content">
-              @if (isEditMode) {
-                <dx-switch [readOnly]="isSubmitting" formControlName="onlineTransactions"></dx-switch>
+              @if (isEditMode()) {
+                <dx-switch [readOnly]="isSubmitting()" formControlName="onlineTransactions"></dx-switch>
               } @else {
                 <ng-container
                   [ngTemplateOutlet]="featureReadonlyText"
@@ -111,8 +111,8 @@
           <div class="table-list-col">
             <div class="table-list-label">Status</div>
             <div class="table-list-content">
-              @if (isEditMode) {
-                <dx-switch [readOnly]="isSubmitting" formControlName="advancedReporting"></dx-switch>
+              @if (isEditMode()) {
+                <dx-switch [readOnly]="isSubmitting()" formControlName="advancedReporting"></dx-switch>
               } @else {
                 <ng-container
                   [ngTemplateOutlet]="featureReadonlyText"
@@ -130,8 +130,8 @@
           <div class="table-list-col">
             <div class="table-list-label">Status</div>
             <div class="table-list-content">
-              @if (isEditMode) {
-                <dx-switch [readOnly]="isSubmitting" formControlName="marketData"></dx-switch>
+              @if (isEditMode()) {
+                <dx-switch [readOnly]="isSubmitting()" formControlName="marketData"></dx-switch>
               } @else {
                 <ng-container
                   [ngTemplateOutlet]="featureReadonlyText"
@@ -149,8 +149,8 @@
           <div class="table-list-col">
             <div class="table-list-label">Status</div>
             <div class="table-list-content">
-              @if (isEditMode) {
-                <dx-switch [readOnly]="isSubmitting" formControlName="contractInventory"></dx-switch>
+              @if (isEditMode()) {
+                <dx-switch [readOnly]="isSubmitting()" formControlName="contractInventory"></dx-switch>
               } @else {
                 <ng-container
                   [ngTemplateOutlet]="featureReadonlyText"

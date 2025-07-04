@@ -1,14 +1,15 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   EventEmitter,
   TemplateRef,
   inject,
   viewChild,
-  effect
+  effect,
+  signal,
+  computed
 } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -65,7 +66,6 @@ interface CompanyContractForm {
 })
 export class CompanyContractComponent implements Submittable, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
-  private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
   private router = inject(Router);
@@ -76,14 +76,16 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
   currentCompany = this.companyStateService.currentCompany;
   currentCompanyId = this.companyStateService.currentCompanyId;
 
-  isEditMode = false;
-  isDataLoaded = false;
+  isEditMode = signal(false);
+  isDataLoaded = signal(false);
+  isSubmitting = signal(false);
+  isReadonlyTransactionFee = signal(false);
+  minTransactionFeeValue = signal(0);
+  isDisabled = computed(() => this.isSubmitting() || !this.isEditMode());
+
   form!: FormGroup<CompanyContractForm>;
-  isSubmitting = false;
   companyContract = CompanyContractEnum;
   companyContractList: string[] = ObjectUtil.enumToArray(CompanyContractEnum);
-  isReadonlyTransactionFee = false;
-  minTransactionFeeValue = 0;
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   constructor() {
@@ -104,14 +106,13 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
 
   onCancelEdit() {
     this.restoreForm();
-    this.isEditMode = false;
+    this.isEditMode.set(false);
     this.verifyTransactionFeeConstraints();
   }
 
   onEdit = () => {
-    this.isEditMode = true;
+    this.isEditMode.set(true);
     this.verifyTransactionFeeConstraints();
-    this.cd.markForCheck();
   };
 
   onSaveChanges() {
@@ -122,7 +123,7 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
     }
 
     if (!this.hasChangedData() && this.form.valid) {
-      this.isEditMode = false;
+      this.isEditMode.set(false);
       return;
     }
 
@@ -140,7 +141,7 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
       obsArr.push(this.companyStateService.updateCompanyContract(companyId, this.contract));
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     forkJoin(obsArr)
       .pipe(
@@ -149,15 +150,14 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
           return EMPTY;
         }),
         finalize(() => {
-          this.isSubmitting = false;
-          this.cd.markForCheck();
+          this.isSubmitting.set(false);
         }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.toastService.showSuccess('Data has been updated successfully.');
         this.form.markAsPristine();
-        this.isEditMode = false;
+        this.isEditMode.set(false);
       });
   }
 
@@ -181,10 +181,6 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
     return this.form.get('contract')?.value as CompanyContract;
   }
 
-  get isDisabled(): boolean {
-    return this.isSubmitting || !this.isEditMode;
-  }
-
   onChangeType(): void {
     this.verifyTransactionFeeConstraints();
   }
@@ -195,8 +191,8 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
     }
     const type = this.contract?.type;
 
-    this.isReadonlyTransactionFee = this.isDisabled || type === this.companyContract.FREE;
-    this.minTransactionFeeValue = type === this.companyContract.BP_ONLY ? 1 : 0;
+    this.isReadonlyTransactionFee.set(this.isDisabled() || type === this.companyContract.FREE);
+    this.minTransactionFeeValue.set(type === this.companyContract.BP_ONLY ? 1 : 0);
 
     const basisPoints = this.form.get('contract.basisPoints');
 
@@ -206,8 +202,8 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
 
     if (type === CompanyContractEnum.FREE) {
       basisPoints.setValue(0);
-    } else if (type === CompanyContractEnum.BP_ONLY && +basisPoints.value < this.minTransactionFeeValue) {
-      basisPoints.setValue(this.minTransactionFeeValue);
+    } else if (type === CompanyContractEnum.BP_ONLY && +basisPoints.value < this.minTransactionFeeValue()) {
+      basisPoints.setValue(this.minTransactionFeeValue());
     }
   }
 

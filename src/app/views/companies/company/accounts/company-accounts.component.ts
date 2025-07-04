@@ -9,7 +9,8 @@ import {
   ViewContainerRef,
   inject,
   viewChild,
-  effect
+  effect,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -69,8 +70,8 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
   readonly popupContainer = viewChild.required('popupContainer', { read: ViewContainerRef });
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
 
-  accounts: Account[] = [];
-  isDataLoaded = false;
+  accounts = signal<Account[]>([]);
+  isDataLoaded = signal(false);
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   private searchSubj = new Subject<string>();
@@ -98,6 +99,8 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
       return;
     }
 
+    this.isDataLoaded.set(false);
+
     this.accountsApiService
       .getAccounts(companyId)
       .pipe(
@@ -105,14 +108,11 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
           this.toastService.showError();
           return EMPTY;
         }),
-        finalize(() => {
-          this.isDataLoaded = true;
-          this.cd.markForCheck();
-        }),
+        finalize(() => this.isDataLoaded.set(true)),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(accounts => {
-        this.accounts = accounts;
+        this.accounts.set(accounts);
       });
   }
 

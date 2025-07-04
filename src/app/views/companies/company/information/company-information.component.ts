@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   EventEmitter,
@@ -10,7 +9,8 @@ import {
   inject,
   viewChild,
   viewChildren,
-  effect
+  effect,
+  signal
 } from '@angular/core';
 import {
   AbstractControl,
@@ -80,7 +80,6 @@ interface CompanyInformationForm {
 })
 export class CompanyInformationComponent implements OnInit, Submittable, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
-  private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
   private router = inject(Router);
@@ -93,14 +92,15 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   currentCompany = this.companyStateService.currentCompany;
   currentCompanyId = this.companyStateService.currentCompanyId;
 
-  isEditMode = false;
-  isDataLoaded = false;
+  isEditMode = signal(false);
+  isDataLoaded = signal(false);
+  isSubmitting = signal(false);
+  countries = signal<Country[]>([]);
+  states = signal<State[]>([]);
+  cities = signal<City[]>([]);
+  zipCodes = signal<string[]>([]);
+
   form!: FormGroup<CompanyInformationForm>;
-  isSubmitting = false;
-  countries: Country[] = [];
-  states: State[] = [];
-  cities: City[] = [];
-  zipCodes: string[] = [];
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   readonly companyStates = [CompanyState.ACTIVE, CompanyState.ARCHIVED];
@@ -129,7 +129,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   }
 
   isValidField(fieldName: string): boolean {
-    if (!this.isEditMode) {
+    if (!this.isEditMode()) {
       return true;
     }
     const field = this.form.get(fieldName);
@@ -138,12 +138,11 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
 
   onCancelEdit() {
     this.restoreForm();
-    this.isEditMode = false;
+    this.isEditMode.set(false);
   }
 
   onEdit = () => {
-    this.isEditMode = true;
-    this.cd.markForCheck();
+    this.isEditMode.set(true);
   };
 
   onSaveChanges() {
@@ -154,7 +153,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     }
 
     if (!this.hasChangedData() && this.form.valid) {
-      this.isEditMode = false;
+      this.isEditMode.set(false);
       return;
     }
 
@@ -163,7 +162,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     this.companyStateService
       .updateCompany(companyId, this.getPreparedData())
@@ -172,16 +171,13 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
-        finalize(() => {
-          this.isSubmitting = false;
-          this.cd.markForCheck();
-        }),
+        finalize(() => this.isSubmitting.set(false)),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.toastService.showSuccess('Company data has been updated successfully.');
         this.form.markAsPristine();
-        this.isEditMode = false;
+        this.isEditMode.set(false);
       });
   }
 
@@ -201,10 +197,9 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe((countries: Country[]) => {
-        this.isDataLoaded = true;
-        this.countries = countries;
+        this.isDataLoaded.set(true);
+        this.countries.set(countries);
         this.populateLists(this.getCompanyDTO(this.currentCompany()));
-        this.cd.markForCheck();
       });
   }
 
@@ -248,7 +243,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   }
 
   onCountryChange({ value: countryName }: DxSelectBoxTypes.ValueChangedEvent) {
-    const country = this.countries.find(item => item.name === countryName);
+    const country = this.countries().find(item => item.name === countryName);
 
     if (!country) {
       this.state.setValue('');
@@ -256,13 +251,12 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     } else if (country.states) {
       this.state.enable();
       this.state.setValue('');
-      this.states = country.states;
-      this.cd.markForCheck();
+      this.states.set(country.states);
     }
   }
 
   onStateChange({ value: stateName }: DxSelectBoxTypes.ValueChangedEvent) {
-    const state = this.states.find(item => item.name === stateName);
+    const state = this.states().find(item => item.name === stateName);
 
     if (!state) {
       this.city.setValue('');
@@ -274,15 +268,14 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
 
     if (state?.cities) {
       this.city.setValue('');
-      this.cities = state.cities;
-      this.cd.markForCheck();
+      this.cities.set(state.cities);
     } else {
-      this.cities = [];
+      this.cities.set([]);
     }
   }
 
   onCityChange({ value: cityName }: DxSelectBoxTypes.ValueChangedEvent) {
-    const city = this.cities.find(item => item.name === cityName);
+    const city = this.cities().find(item => item.name === cityName);
 
     if (!cityName) {
       this.zipCode.setValue('');
@@ -294,10 +287,9 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
 
     if (city?.zipCodes) {
       this.zipCode.setValue('');
-      this.zipCodes = city.zipCodes;
-      this.cd.markForCheck();
+      this.zipCodes.set(city.zipCodes);
     } else {
-      this.zipCodes = [];
+      this.zipCodes.set([]);
     }
   }
 
@@ -308,7 +300,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     }
 
     const newItem = { name: data.text } as City;
-    this.cities = [newItem].concat(this.cities);
+    this.cities.update(cities => [newItem].concat(cities));
     data.customItem = newItem;
     this.city.setValue(data.text);
   }
@@ -320,7 +312,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     }
 
     const newItem = data.text;
-    this.zipCodes = [newItem].concat(this.zipCodes);
+    this.zipCodes.update(zipCodes => [newItem].concat(zipCodes));
     data.customItem = newItem;
     this.zipCode.setValue(data.text);
   }
@@ -338,20 +330,23 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   }
 
   private populateLists(data: Company | CompanyUpdateDTO): void {
-    this.states = [];
-    this.cities = [];
-    this.zipCodes = [];
+    this.states.set([]);
+    this.cities.set([]);
+    this.zipCodes.set([]);
 
     if (data.country) {
-      this.states = this.countries.find(c => c.name === data.country)?.states || [];
+      const states = this.countries().find(c => c.name === data.country)?.states || [];
+      this.states.set(states);
     }
 
     if (data.state) {
-      this.cities = this.states.find(s => s.name === data.state)?.cities || [];
+      const cities = this.states().find(s => s.name === data.state)?.cities || [];
+      this.cities.set(cities);
     }
 
     if (data.city) {
-      this.zipCodes = this.cities.find(s => s.name === data.city)?.zipCodes || [];
+      const zipCodes = this.cities().find(s => s.name === data.city)?.zipCodes || [];
+      this.zipCodes.set(zipCodes);
     }
   }
 }

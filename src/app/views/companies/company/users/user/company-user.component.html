@@ -1,113 +1,115 @@
-@if (isDataLoaded) {
+@if (isDataLoaded()) {
   <form [formGroup]="form" novalidate>
-    <fieldset [disabled]="isSubmitting" class="content-section">
+    <fieldset [disabled]="isSubmitting()" class="content-section">
       <h5 class="section-title">Company Member</h5>
-      <div class="flex-row">
-        <div class="flex-col">
-          <div class="flex-row">
-            <span class="flex-col member-avatar">
-              <img [src]="member.userAvatar" alt="{{ member.firstName }}'s avatar" />
-            </span>
-            <div class="flex-col"></div>
-          </div>
-        </div>
-        <div class="flex-col">
-          <div class="table-list-row">
-            <div class="table-list-col">
-              <div class="table-list-label">First Name</div>
-              <div class="table-list-content">{{ member.firstName }}</div>
+      @if (member(); as member) {
+        <div class="flex-row">
+          <div class="flex-col">
+            <div class="flex-row">
+              <span class="flex-col member-avatar">
+                <img [src]="member.userAvatar" alt="{{ member.firstName }}'s avatar" />
+              </span>
+              <div class="flex-col"></div>
             </div>
           </div>
-          <div class="table-list-row">
-            <div class="table-list-col">
-              <div class="table-list-label">Last Name</div>
-              <div class="table-list-content">{{ member.lastName }}</div>
-            </div>
-          </div>
-          <div class="table-list-row">
-            <div class="table-list-col">
-              <div class="table-list-label">Email</div>
-              <div class="table-list-content">{{ member.email }}</div>
-            </div>
-          </div>
-          <div class="table-list-row">
-            <div class="table-list-col">
-              <div class="table-list-label">Title</div>
-              <div class="table-list-content">{{ member.title }}</div>
-            </div>
-          </div>
-          <div class="phone-number-row">
+          <div class="flex-col">
             <div class="table-list-row">
               <div class="table-list-col">
-                <div class="table-list-label">Area Code</div>
-                <div class="table-list-content">{{ member.callingCode }}</div>
+                <div class="table-list-label">First Name</div>
+                <div class="table-list-content">{{ member.firstName }}</div>
               </div>
             </div>
             <div class="table-list-row">
               <div class="table-list-col">
-                <div class="table-list-label">Phone</div>
-                <div class="table-list-content">{{ member.workPhone }}</div>
+                <div class="table-list-label">Last Name</div>
+                <div class="table-list-content">{{ member.lastName }}</div>
+              </div>
+            </div>
+            <div class="table-list-row">
+              <div class="table-list-col">
+                <div class="table-list-label">Email</div>
+                <div class="table-list-content">{{ member.email }}</div>
+              </div>
+            </div>
+            <div class="table-list-row">
+              <div class="table-list-col">
+                <div class="table-list-label">Title</div>
+                <div class="table-list-content">{{ member.title }}</div>
+              </div>
+            </div>
+            <div class="phone-number-row">
+              <div class="table-list-row">
+                <div class="table-list-col">
+                  <div class="table-list-label">Area Code</div>
+                  <div class="table-list-content">{{ member.callingCode }}</div>
+                </div>
+              </div>
+              <div class="table-list-row">
+                <div class="table-list-col">
+                  <div class="table-list-label">Phone</div>
+                  <div class="table-list-content">{{ member.workPhone }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="table-list-row">
+              <div class="table-list-col">
+                <div class="table-list-label">Account State</div>
+                <div class="table-list-content">
+                  <dx-select-box
+                    [dataSource]="accountStateList"
+                    [dropDownOptions]="{ container: 'dx-select-box' }"
+                    [readOnly]="isDisabled()"
+                    formControlName="accountState"
+                    itemTemplate="item"
+                    fieldTemplate="field"
+                  >
+                    <div *dxTemplate="let item of 'item'">
+                      <app-status-item
+                        [type]="item | statusColor: 'companyMemberAccountState'"
+                        [text]="item | stringValueCapitalize"
+                      ></app-status-item>
+                    </div>
+                    <div *dxTemplate="let elem of 'field'">
+                      <app-status-item
+                        [type]="elem | statusColor: 'companyMemberAccountState'"
+                        [text]="elem | stringValueCapitalize"
+                      ></app-status-item>
+                      <dx-text-box [visible]="false"></dx-text-box>
+                    </div>
+                  </dx-select-box>
+                </div>
               </div>
             </div>
           </div>
-          <div class="table-list-row">
-            <div class="table-list-col">
-              <div class="table-list-label">Account State</div>
-              <div class="table-list-content">
-                <dx-select-box
-                  [dataSource]="accountStateList"
-                  [dropDownOptions]="{ container: 'dx-select-box' }"
-                  [readOnly]="isDisabled"
-                  formControlName="accountState"
-                  itemTemplate="item"
-                  fieldTemplate="field"
-                >
-                  <div *dxTemplate="let item of 'item'">
-                    <app-status-item
-                      [type]="item | statusColor: 'companyMemberAccountState'"
-                      [text]="item | stringValueCapitalize"
-                    ></app-status-item>
-                  </div>
-                  <div *dxTemplate="let elem of 'field'">
-                    <app-status-item
-                      [type]="elem | statusColor: 'companyMemberAccountState'"
-                      [text]="elem | stringValueCapitalize"
-                    ></app-status-item>
-                    <dx-text-box [visible]="false"></dx-text-box>
-                  </div>
-                </dx-select-box>
-              </div>
-            </div>
+          <div class="flex-col text-right">
+            @if (isEditMode()) {
+              <dx-button
+                stylingMode="outlined"
+                text="Cancel"
+                type="normal"
+                class="button-small grayed"
+                (onClick)="onCancel()"
+              ></dx-button>
+              <dx-button
+                stylingMode="contained"
+                text="Save"
+                type="success"
+                class="button-small ml-15"
+                [class]="{ loading: isSubmitting() }"
+                (onClick)="onSave()"
+              ></dx-button>
+            } @else {
+              <dx-button
+                stylingMode="contained"
+                text="Edit"
+                type="success"
+                class="button-small"
+                (onClick)="onEdit()"
+              ></dx-button>
+            }
           </div>
         </div>
-        <div class="flex-col text-right">
-          @if (isEditMode) {
-            <dx-button
-              stylingMode="outlined"
-              text="Cancel"
-              type="normal"
-              class="button-small grayed"
-              (onClick)="onCancel()"
-            ></dx-button>
-            <dx-button
-              stylingMode="contained"
-              text="Save"
-              type="success"
-              class="button-small ml-15"
-              [class]="{ loading: isSubmitting }"
-              (onClick)="onSave()"
-            ></dx-button>
-          } @else {
-            <dx-button
-              stylingMode="contained"
-              text="Edit"
-              type="success"
-              class="button-small"
-              (onClick)="onEdit()"
-            ></dx-button>
-          }
-        </div>
-      </div>
+      }
     </fieldset>
   </form>
 } @else {

@@ -1,13 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  DestroyRef,
-  inject,
-  viewChildren
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, DestroyRef, inject, viewChildren, signal } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginCredentials } from '@app/shared/models';
@@ -34,7 +26,6 @@ interface LoginForm {
 export class LoginComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
   private authService = inject(AuthService);
-  private cd = inject(ChangeDetectorRef);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
@@ -42,8 +33,8 @@ export class LoginComponent implements OnInit {
   readonly validators = viewChildren(DxValidatorComponent);
 
   form!: FormGroup<LoginForm>;
-  isSubmitting = false;
-  errorMessage = '';
+  isSubmitting = signal(false);
+  errorMessage = signal('');
 
   ngOnInit(): void {
     this.initForm();
@@ -66,22 +57,21 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    if (this.isSubmitting) {
+    if (this.isSubmitting()) {
       return;
     }
 
-    this.isSubmitting = true;
-    this.errorMessage = '';
+    this.isSubmitting.set(true);
+    this.errorMessage.set('');
     this.authService
       .login(this.form.value as LoginCredentials)
       .pipe(
         catchError(() => {
-          this.errorMessage = 'Something unexpected happened, please try again.';
+          this.errorMessage.set('Something unexpected happened, please try again.');
           return EMPTY;
         }),
         finalize(() => {
-          this.isSubmitting = false;
-          this.cd.markForCheck();
+          this.isSubmitting.set(false);
         }),
         takeUntilDestroyed(this.destroyRef)
       )

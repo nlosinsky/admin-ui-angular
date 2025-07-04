@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  OnInit,
-  inject,
-  viewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, viewChild, signal } from '@angular/core';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { DocumentsStat, HttpError } from '@app/shared/models';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
@@ -27,7 +19,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   imports: [GeneralToolbarComponent, DxDataGridModule, DxButtonModule, DxTextBoxModule, BgSpinnerComponent]
 })
 export class UsageTableComponent implements OnInit {
-  private cd = inject(ChangeDetectorRef);
   private dataGridHelperService = inject(DataGridHelperService);
   private toastService = inject(ToastService);
   private documentsService = inject(DocumentsService);
@@ -35,9 +26,8 @@ export class UsageTableComponent implements OnInit {
 
   readonly dataGrid = viewChild.required(DxDataGridComponent);
 
-  stats: DocumentsStat[] = [];
-
-  isDataLoaded = false;
+  stats = signal<DocumentsStat[]>([]);
+  isDataLoaded = signal(false);
 
   readonly indicatorSrc = tableIndicatorSrc;
 
@@ -70,6 +60,7 @@ export class UsageTableComponent implements OnInit {
   }
 
   private loadData() {
+    this.isDataLoaded.set(false);
     this.documentsService
       .getDocumentsStats()
       .pipe(
@@ -78,13 +69,12 @@ export class UsageTableComponent implements OnInit {
           return EMPTY;
         }),
         finalize(() => {
-          this.isDataLoaded = true;
-          this.cd.markForCheck();
+          this.isDataLoaded.set(true);
         }),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(stats => {
-        this.stats = stats;
+        this.stats.set(stats);
       });
   }
 }

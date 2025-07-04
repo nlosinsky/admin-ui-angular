@@ -1,13 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-  TemplateRef,
-  inject
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, TemplateRef, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Tab } from '@app/shared/models';
 import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
@@ -30,14 +22,13 @@ export class CompanyComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private companyHelperService = inject(CompanyHelperService);
   private companyStateService = inject(CompanyStateService);
-  private cd = inject(ChangeDetectorRef);
   private dialogService = inject(DialogService);
 
   currentCompany = this.companyStateService.currentCompany;
 
   tabs: Tab[] = [];
   activeComponent!: Submittable & CommonCustomerComponentActions;
-  actionsTemplate!: TemplateRef<HTMLElement> | null;
+  actionsTemplate = signal<TemplateRef<HTMLElement> | null>(null);
   companyId!: string;
 
   ngOnInit(): void {
@@ -60,13 +51,13 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   onActivateRoute(component: Submittable & CommonCustomerComponentActions): void {
     this.activeComponent = component;
-    this.actionsTemplate = null;
 
     if (this.activeComponent.actionsTemplateEvent) {
       this.activeComponent.actionsTemplateEvent.pipe(first()).subscribe(template => {
-        this.actionsTemplate = template;
-        this.cd.detectChanges();
+        this.actionsTemplate.set(template);
       });
+    } else {
+      this.actionsTemplate.set(null);
     }
   }
 
