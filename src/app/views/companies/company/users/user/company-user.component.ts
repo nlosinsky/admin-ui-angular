@@ -1,5 +1,5 @@
-import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal, computed } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CompanyMember, HttpError } from '@app/shared/models';
@@ -13,8 +13,8 @@ import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyUserService } from '@views/companies/company/users/user/company-user.service';
 import { DxButtonModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
-import { EMPTY, Subject } from 'rxjs';
-import { catchError, finalize, takeUntil } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 
 interface CompanyUserForm {
   accountState: FormControl<CompanyMemberAccountStateType>;
@@ -26,7 +26,6 @@ interface CompanyUserForm {
   styleUrls: ['./company-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     ReactiveFormsModule,
     StatusItemComponent,
     StatusColorPipe,
@@ -37,20 +36,21 @@ interface CompanyUserForm {
     BgSpinnerComponent
   ]
 })
-export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
+export class CompanyUserComponent implements OnInit, CommonCustomerComponentActions {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private companiesService = inject(CompaniesService);
-  private cd = inject(ChangeDetectorRef);
   private companyUserService = inject(CompanyUserService);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
+  private destroyRef = inject(DestroyRef);
 
   form!: FormGroup<CompanyUserForm>;
-  isDataLoaded = false;
-  member!: CompanyMember;
-  isSubmitting = false;
-  isEditMode = false;
+  isDataLoaded = signal(false);
+  isSubmitting = signal(false);
+  isEditMode = signal(false);
+  isDisabled = computed(() => this.isSubmitting() || !this.isEditMode());
+  member = signal<CompanyMember | null>(null);
 
   private memberId!: string;
 
@@ -60,16 +60,9 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
     CompanyMemberAccountState.UPDATE_REQUIRED
   ];
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit(): void {
     this.listenRouteChanges();
     this.loadData();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   navigateBack = () => this.router.navigate(['../'], { relativeTo: this.route });
@@ -79,7 +72,7 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
   }
 
   onCancel() {
-    if (this.isSubmitting) {
+    if (this.isSubmitting()) {
       return;
     }
 
@@ -89,12 +82,12 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
   onSave() {
     const newAccountState = (this.form.value as { accountState: CompanyMemberAccountStateType }).accountState || null;
 
-    if (this.member.accountState === newAccountState) {
+    if (this.member()?.accountState === newAccountState) {
       this.onCancel();
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     this.companiesService
       .updateCompanyMemberAccountState(this.memberId, newAccountState)
@@ -103,33 +96,25 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
-        finalize(() => {
-          this.isSubmitting = false;
-          this.cd.markForCheck();
-        }),
-        takeUntil(this.ngUnsub)
+        finalize(() => this.isSubmitting.set(false)),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(({ accountState }) => {
         this.toastService.showSuccess('Member data has been updated successfully.');
-        this.member.accountState = accountState;
         this.form.get('accountState')?.setValue(accountState);
-        this.isSubmitting = false;
+        this.member.update(member => new CompanyMember({ ...member, accountState }));
+        this.isSubmitting.set(false);
         this.onCancel();
       });
   }
 
-  get isDisabled(): boolean {
-    return this.isSubmitting || !this.isEditMode;
-  }
-
   private listenRouteChanges() {
-    this.route.queryParamMap.pipe(takeUntil(this.ngUnsub)).subscribe(paramsMap => {
-      this.isEditMode = paramsMap.has('edit');
+    this.route.queryParamMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(paramsMap => {
+      this.isEditMode.set(paramsMap.has('edit'));
 
-      if (this.form && this.form.dirty) {
+      if (this.form?.dirty) {
         this.restoreForm();
       }
-      this.cd.markForCheck();
     });
   }
 
@@ -139,19 +124,16 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
     this.companyUserService
       .getData(this.memberId)
       .pipe(
-        finalize(() => {
-          this.isDataLoaded = true;
-          this.cd.markForCheck();
-        }),
-        takeUntil(this.ngUnsub)
+        finalize(() => this.isDataLoaded.set(true)),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(member => {
         if (!member) {
           return;
         }
 
-        this.member = member;
         this.initFormData(member);
+        this.member.set(member);
       });
   }
 
@@ -160,7 +142,7 @@ export class CompanyUserComponent implements OnInit, OnDestroy, CommonCustomerCo
   }
 
   private restoreForm(): void {
-    const { accountState } = this.member;
+    const { accountState } = this.member() || {};
     this.form.reset({ accountState });
   }
 }

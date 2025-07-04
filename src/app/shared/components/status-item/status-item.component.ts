@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import { Component, ChangeDetectionStrategy, HostBinding, input } from '@angular/core';
 import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
 
@@ -7,7 +6,7 @@ import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
   templateUrl: './status-item.component.html',
   styleUrls: ['./status-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgClass]
+  imports: []
 })
 export class StatusItemComponent {
   readonly text = input.required();

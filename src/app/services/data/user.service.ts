@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpError } from '@app/shared/models';
 import { User } from '@app/shared/models/user';
 import { UserApiService } from '@services/api/user-api.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { BehaviorSubject, EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, share, switchMap, tap } from 'rxjs/operators';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +12,17 @@ import { catchError, share, switchMap, tap } from 'rxjs/operators';
 export class UserService {
   private userApiService = inject(UserApiService);
   private toastService = inject(ToastService);
-
-  currentUser$: Observable<User>;
-  currentUser!: User;
-
-  private currentUserSubj = new BehaviorSubject<User>(new User());
-
+  private _currentUser = signal<User | null>(null);
   private loadUserSubj = new Subject<void>();
 
-  constructor() {
-    this.currentUser$ = this.currentUserSubj.asObservable().pipe(share());
+  currentUser = this._currentUser.asReadonly();
 
+  constructor() {
     this.loadUserSubj
       .asObservable()
       .pipe(
         switchMap(() => this.getCurrentUser()),
-        catchError((error: HttpError) => {
-          this.toastService.showHttpError(error);
-          return EMPTY;
-        })
+        tap((user: User) => this._currentUser.set(user))
       )
       .subscribe();
   }
@@ -39,11 +31,11 @@ export class UserService {
     this.loadUserSubj.next();
   }
 
-  getCurrentUser(): Observable<User> {
+  private getCurrentUser(): Observable<User> {
     return this.userApiService.getCurrentUser().pipe(
-      tap(user => {
-        this.currentUser = user;
-        this.currentUserSubj.next(user);
+      catchError((error: HttpError) => {
+        this.toastService.showHttpError(error);
+        return EMPTY;
       })
     );
   }

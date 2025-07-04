@@ -1,16 +1,16 @@
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
-  OnDestroy,
   OnInit,
   TemplateRef,
   inject,
   viewChild,
-  viewChildren
+  viewChildren,
+  effect,
+  signal
 } from '@angular/core';
 import {
   AbstractControl,
@@ -43,8 +43,9 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { EMPTY, Subject, zip } from 'rxjs';
-import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
 
 interface CompanyInformationForm {
@@ -63,7 +64,6 @@ interface CompanyInformationForm {
   templateUrl: './company-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     DatePipe,
     BgSpinnerComponent,
     ReactiveFormsModule,
@@ -78,45 +78,48 @@ interface CompanyInformationForm {
     StatusColorPipe
   ]
 })
-export class CompanyInformationComponent
-  implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit
-{
+export class CompanyInformationComponent implements OnInit, Submittable, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
-  private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
   private router = inject(Router);
   private constantDataApiService = inject(ConstantDataApiService);
+  private destroyRef = inject(DestroyRef);
 
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
   readonly validators = viewChildren(DxValidatorComponent);
 
-  isEditMode = false;
-  isDataLoaded = false;
-  company!: Company;
+  currentCompany = this.companyStateService.currentCompany;
+  currentCompanyId = this.companyStateService.currentCompanyId;
+
+  isEditMode = signal(false);
+  isDataLoaded = signal(false);
+  isSubmitting = signal(false);
+  countries = signal<Country[]>([]);
+  states = signal<State[]>([]);
+  cities = signal<City[]>([]);
+  zipCodes = signal<string[]>([]);
+
   form!: FormGroup<CompanyInformationForm>;
-  isSubmitting = false;
-  countries: Country[] = [];
-  states: State[] = [];
-  cities: City[] = [];
-  zipCodes: string[] = [];
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   readonly companyStates = [CompanyState.ACTIVE, CompanyState.ARCHIVED];
 
-  private ngUnsub = new Subject<void>();
+  constructor() {
+    effect(() => {
+      this.actionsTemplateEvent.emit(this.actionsTpl());
+      return () => {
+        this.actionsTemplateEvent.emit(undefined);
+      };
+    });
+
+    effect(() => {
+      this.setFormData(this.currentCompany());
+    });
+  }
 
   ngOnInit(): void {
     this.loadData();
-  }
-
-  ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl());
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
@@ -126,7 +129,7 @@ export class CompanyInformationComponent
   }
 
   isValidField(fieldName: string): boolean {
-    if (!this.isEditMode) {
+    if (!this.isEditMode()) {
       return true;
     }
     const field = this.form.get(fieldName);
@@ -135,17 +138,22 @@ export class CompanyInformationComponent
 
   onCancelEdit() {
     this.restoreForm();
-    this.isEditMode = false;
+    this.isEditMode.set(false);
   }
 
   onEdit = () => {
-    this.isEditMode = true;
-    this.cd.markForCheck();
+    this.isEditMode.set(true);
   };
 
   onSaveChanges() {
+    const companyId = this.currentCompanyId();
+
+    if (!companyId) {
+      return;
+    }
+
     if (!this.hasChangedData() && this.form.valid) {
-      this.isEditMode = false;
+      this.isEditMode.set(false);
       return;
     }
 
@@ -154,25 +162,22 @@ export class CompanyInformationComponent
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     this.companyStateService
-      .updateCompany(this.company.id, this.getPreparedData())
+      .updateCompany(companyId, this.getPreparedData())
       .pipe(
         catchError((error: HttpError) => {
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
-        finalize(() => {
-          this.isSubmitting = false;
-          this.cd.markForCheck();
-        }),
-        takeUntil(this.ngUnsub)
+        finalize(() => this.isSubmitting.set(false)),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.toastService.showSuccess('Company data has been updated successfully.');
         this.form.markAsPristine();
-        this.isEditMode = false;
+        this.isEditMode.set(false);
       });
   }
 
@@ -181,36 +186,32 @@ export class CompanyInformationComponent
   }
 
   hasChangedData(): boolean {
-    return !ObjectUtil.isDeepEquals(this.getPreparedData(), this.getCompanyDTO(this.company));
+    return !ObjectUtil.isDeepEquals(this.getPreparedData(), this.getCompanyDTO(this.currentCompany()));
   }
 
   loadData(): void {
-    zip([this.companyStateService.currentCompany$, this.constantDataApiService.getCountries()])
+    this.constantDataApiService
+      .getCountries()
       .pipe(
         catchError(() => EMPTY),
-        filter(([companyResp]) => !!companyResp?.id),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(([company, countries]) => {
-        this.isDataLoaded = true;
-        this.countries = countries;
-
-        if (!company) {
-          return;
-        }
-
-        this.company = company;
-        this.populateLists(this.getCompanyDTO(this.company));
-        this.setFormData(company);
-        this.cd.markForCheck();
+      .subscribe((countries: Country[]) => {
+        this.isDataLoaded.set(true);
+        this.countries.set(countries);
+        this.populateLists(this.getCompanyDTO(this.currentCompany()));
       });
   }
 
   restoreForm(): void {
-    this.form.reset(this.getCompanyDTO(this.company));
+    this.form.reset(this.getCompanyDTO(this.currentCompany()));
   }
 
-  setFormData(data: Company): void {
+  setFormData(data: Company | null): void {
+    if (!data) {
+      return;
+    }
+
     this.form = this.fb.group({
       name: [data.name, [Validators.required, Validators.maxLength(30)]],
       website: [data.website, [Validators.required, WebsiteUrlValidator(), Validators.maxLength(500)]],
@@ -223,13 +224,26 @@ export class CompanyInformationComponent
     });
   }
 
-  private getCompanyDTO(company: Company | CompanyUpdateDTO): CompanyUpdateDTO {
+  private getCompanyDTO(company: Company | CompanyUpdateDTO | null): CompanyUpdateDTO {
+    if (!company) {
+      return {
+        name: '',
+        website: '',
+        streetAddress: '',
+        country: '',
+        state: '',
+        city: '',
+        zipCode: '',
+        companyState: CompanyState.ACTIVE
+      };
+    }
+
     const { name, website, streetAddress, country, state, city, zipCode, companyState } = company;
     return { name, website, streetAddress, country, state, city, zipCode, companyState };
   }
 
   onCountryChange({ value: countryName }: DxSelectBoxTypes.ValueChangedEvent) {
-    const country = this.countries.find(item => item.name === countryName);
+    const country = this.countries().find(item => item.name === countryName);
 
     if (!country) {
       this.state.setValue('');
@@ -237,13 +251,12 @@ export class CompanyInformationComponent
     } else if (country.states) {
       this.state.enable();
       this.state.setValue('');
-      this.states = country.states;
-      this.cd.markForCheck();
+      this.states.set(country.states);
     }
   }
 
   onStateChange({ value: stateName }: DxSelectBoxTypes.ValueChangedEvent) {
-    const state = this.states.find(item => item.name === stateName);
+    const state = this.states().find(item => item.name === stateName);
 
     if (!state) {
       this.city.setValue('');
@@ -255,15 +268,14 @@ export class CompanyInformationComponent
 
     if (state?.cities) {
       this.city.setValue('');
-      this.cities = state.cities;
-      this.cd.markForCheck();
+      this.cities.set(state.cities);
     } else {
-      this.cities = [];
+      this.cities.set([]);
     }
   }
 
   onCityChange({ value: cityName }: DxSelectBoxTypes.ValueChangedEvent) {
-    const city = this.cities.find(item => item.name === cityName);
+    const city = this.cities().find(item => item.name === cityName);
 
     if (!cityName) {
       this.zipCode.setValue('');
@@ -275,10 +287,9 @@ export class CompanyInformationComponent
 
     if (city?.zipCodes) {
       this.zipCode.setValue('');
-      this.zipCodes = city.zipCodes;
-      this.cd.markForCheck();
+      this.zipCodes.set(city.zipCodes);
     } else {
-      this.zipCodes = [];
+      this.zipCodes.set([]);
     }
   }
 
@@ -289,7 +300,7 @@ export class CompanyInformationComponent
     }
 
     const newItem = { name: data.text } as City;
-    this.cities = [newItem].concat(this.cities);
+    this.cities.update(cities => [newItem].concat(cities));
     data.customItem = newItem;
     this.city.setValue(data.text);
   }
@@ -301,7 +312,7 @@ export class CompanyInformationComponent
     }
 
     const newItem = data.text;
-    this.zipCodes = [newItem].concat(this.zipCodes);
+    this.zipCodes.update(zipCodes => [newItem].concat(zipCodes));
     data.customItem = newItem;
     this.zipCode.setValue(data.text);
   }
@@ -319,20 +330,23 @@ export class CompanyInformationComponent
   }
 
   private populateLists(data: Company | CompanyUpdateDTO): void {
-    this.states = [];
-    this.cities = [];
-    this.zipCodes = [];
+    this.states.set([]);
+    this.cities.set([]);
+    this.zipCodes.set([]);
 
     if (data.country) {
-      this.states = this.countries.find(c => c.name === data.country)?.states || [];
+      const states = this.countries().find(c => c.name === data.country)?.states || [];
+      this.states.set(states);
     }
 
     if (data.state) {
-      this.cities = this.states.find(s => s.name === data.state)?.cities || [];
+      const cities = this.states().find(s => s.name === data.state)?.cities || [];
+      this.cities.set(cities);
     }
 
     if (data.city) {
-      this.zipCodes = this.cities.find(s => s.name === data.city)?.zipCodes || [];
+      const zipCodes = this.cities().find(s => s.name === data.city)?.zipCodes || [];
+      this.zipCodes.set(zipCodes);
     }
   }
 }

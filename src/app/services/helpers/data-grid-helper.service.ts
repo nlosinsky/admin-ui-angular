@@ -10,7 +10,7 @@ import { Workbook } from 'exceljs';
   providedIn: 'root'
 })
 export class DataGridHelperService {
-  openTableChooser(dataGrid: DxDataGridComponent): void {
+  showColumnChooser(dataGrid: DxDataGridComponent): void {
     dataGrid.instance.showColumnChooser();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const columnChooserView = (dataGrid.instance as any).getView('columnChooserView');

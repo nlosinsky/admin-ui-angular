@@ -38,7 +38,19 @@ export class ErrorMessagePipe implements PipeTransform {
     }
 
     if (errors.websiteUrl) {
-      return 'The input mast be a valid website url';
+      return 'The input must be a valid website URL';
+    }
+
+    if (errors.uppercase) {
+      return 'Password must contain at least one uppercase letter';
+    }
+
+    if (errors.lowercase) {
+      return 'Password must contain at least one lowercase letter';
+    }
+
+    if (errors.number) {
+      return 'Password must contain at least one number';
     }
 
     return '';

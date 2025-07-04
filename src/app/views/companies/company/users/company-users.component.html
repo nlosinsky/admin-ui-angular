@@ -1,9 +1,9 @@
-@if (isDataLoaded) {
+@if (isDataLoaded()) {
   <section class="content-section">
     <h5 class="section-title">Pending Approvals</h5>
-    @if (pendingMembers.length) {
+    @if (pendingMembers().length) {
       <div class="table-list">
-        @for (member of pendingMembers; track member.id) {
+        @for (member of pendingMembers(); track member.id) {
           <div class="table-list-row">
             <div class="table-list-col">
               <div class="table-list-label">Email</div>
@@ -15,7 +15,7 @@
                     text="Decline"
                     type="normal"
                     class="button-small grayed"
-                    [ngClass]="{ 'loading-blue': declineRequestsSet.has(member.id) }"
+                    [class]="{ 'loading-blue': declineRequestsSet().has(member.id) }"
                     (onClick)="onDecline(member.id)"
                   ></dx-button>
                   <dx-button
@@ -23,7 +23,7 @@
                     text="Approve"
                     type="success"
                     class="button-small"
-                    [ngClass]="{ loading: approveRequestsSet.has(member.id) }"
+                    [class]="{ loading: approveRequestsSet().has(member.id) }"
                     (onClick)="onApprove(member.id)"
                   ></dx-button>
                 </div>
@@ -40,7 +40,7 @@
     <h5 class="section-title">Company Members</h5>
     <dx-data-grid
       class="data-grid"
-      [dataSource]="members"
+      [dataSource]="members()"
       [showBorders]="true"
       [showColumnLines]="true"
       [showRowLines]="true"

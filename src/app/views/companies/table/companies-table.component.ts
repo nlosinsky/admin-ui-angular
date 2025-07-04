@@ -1,13 +1,13 @@
-import { DatePipe, DecimalPipe, formatDate, NgClass } from '@angular/common';
+import { DatePipe, DecimalPipe, formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  DestroyRef,
   LOCALE_ID,
-  OnDestroy,
   OnInit,
   inject,
-  viewChild
+  viewChild,
+  signal
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
@@ -32,9 +32,9 @@ import {
   finalize,
   mergeMap,
   switchMap,
-  takeUntil,
   tap
 } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-companies-table',
@@ -42,7 +42,6 @@ import {
   styleUrls: ['./companies-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     DatePipe,
     DecimalPipe,
     GeneralToolbarComponent,
@@ -54,26 +53,25 @@ import {
     BgSpinnerComponent
   ]
 })
-export class CompaniesTableComponent implements OnInit, OnDestroy {
-  private cd = inject(ChangeDetectorRef);
+export class CompaniesTableComponent implements OnInit {
   private dataGridHelperService = inject(DataGridHelperService);
   private companiesService = inject(CompaniesService);
   private toastService = inject(ToastService);
   private dialogService = inject(DialogService);
   private localeId = inject(LOCALE_ID);
+  private destroyRef = inject(DestroyRef);
 
   readonly dataGrid = viewChild.required(DxDataGridComponent);
 
-  companies: Company[] = [];
-  temporaryCompanies: Company[] = [];
-  approveRequestsSet = new Set<string>();
-  declineRequestsSet = new Set<string>();
-  isDataLoaded = false;
+  isDataLoaded = signal(false);
+  companies = signal<Company[]>([]);
+  temporaryCompanies = signal<Company[]>([]);
+  approveRequestsSet = signal(new Set<string>());
+  declineRequestsSet = signal(new Set<string>());
 
   readonly indicatorSrc = tableIndicatorSrc;
 
   private searchSubj = new Subject<string>();
-  private ngUnsub = new Subject<void>();
   private reloadCompaniesSubj = new Subject<void>();
 
   ngOnInit(): void {
@@ -82,17 +80,12 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
-  }
-
-  openColumnChooserButtonClick(): void {
-    this.dataGridHelperService.openTableChooser(this.dataGrid());
+  onShowColumnChooser(): void {
+    this.dataGridHelperService.showColumnChooser(this.dataGrid());
   }
 
   onDecline(id: string): void {
-    if (this.declineRequestsSet.has(id)) {
+    if (this.declineRequestsSet().has(id)) {
       return;
     }
 
@@ -100,8 +93,11 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
       .pipe(
         filter(confirm => confirm),
         mergeMap(() => {
-          this.declineRequestsSet.add(id);
-          this.cd.markForCheck();
+          this.declineRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.add(id);
+            return newSet;
+          });
           return this.companiesService.disapproveTemporaryCompany(id);
         }),
         catchError((error: HttpError) => {
@@ -109,23 +105,30 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
           return EMPTY;
         }),
         finalize(() => {
-          this.declineRequestsSet.delete(id);
-          this.cd.markForCheck();
+          this.declineRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.delete(id);
+            return newSet;
+          });
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        this.temporaryCompanies = this.temporaryCompanies.filter(item => item.id !== id);
         this.toastService.showSuccess('The company has been Declined successfully.');
+        this.temporaryCompanies.update(temporaryCompanies => temporaryCompanies.filter(item => item.id !== id));
       });
   }
 
   onApprove(id: string): void {
-    if (this.approveRequestsSet.has(id)) {
+    if (this.approveRequestsSet().has(id)) {
       return;
     }
 
-    this.approveRequestsSet.add(id);
+    this.approveRequestsSet.update(set => {
+      const newSet = new Set(set);
+      newSet.add(id);
+      return newSet;
+    });
     this.companiesService
       .approveTemporaryCompany(id)
       .pipe(
@@ -134,15 +137,18 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
           return EMPTY;
         }),
         finalize(() => {
-          this.approveRequestsSet.delete(id);
-          this.cd.markForCheck();
+          this.approveRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.delete(id);
+            return newSet;
+          });
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.reloadCompaniesSubj.next();
-        this.temporaryCompanies = this.temporaryCompanies.filter(item => item.id !== id);
         this.toastService.showSuccess('The company has been Approved successfully.');
+        this.temporaryCompanies.update(temporaryCompanies => temporaryCompanies.filter(item => item.id !== id));
       });
   }
 
@@ -186,19 +192,18 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(companies => {
-        this.companies = companies;
         this.dataGrid().instance.endCustomLoading();
-        this.cd.markForCheck();
+        this.companies.set(companies);
       });
   }
 
   private handleSearch(): void {
     this.searchSubj
       .asObservable()
-      .pipe(distinctUntilChanged(), debounceTime(300), takeUntil(this.ngUnsub))
+      .pipe(distinctUntilChanged(), debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe(val => {
         this.dataGrid().instance.searchByText(val);
       });
@@ -211,15 +216,12 @@ export class CompaniesTableComponent implements OnInit, OnDestroy {
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
-        finalize(() => {
-          this.isDataLoaded = true;
-          this.cd.markForCheck();
-        }),
-        takeUntil(this.ngUnsub)
+        finalize(() => this.isDataLoaded.set(true)),
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([companies, temporaryCompanies]) => {
-        this.temporaryCompanies = temporaryCompanies;
-        this.companies = companies;
+        this.temporaryCompanies.set(temporaryCompanies);
+        this.companies.set(companies);
       });
   }
 }

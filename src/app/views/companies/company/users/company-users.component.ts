@@ -1,10 +1,9 @@
-import { NgClass } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
-import { Company, CompanyMember, HttpError } from '@app/shared/models';
-import { CompanyMemberAccountState } from '@app/shared/models/companies/company.enum';
+import { CompanyMember, HttpError } from '@app/shared/models';
 import { CommonCustomerComponentActions } from '@app/shared/models/components';
 import { AvatarBoxComponent } from '@components/avatar-box/avatar-box.component';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
@@ -16,8 +15,8 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import { DxButtonModule, DxDataGridModule, DxDropDownButtonModule } from 'devextreme-angular';
-import { EMPTY, from, Subject, zip } from 'rxjs';
-import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, from, zip } from 'rxjs';
+import { catchError, filter, finalize, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-company-users',
@@ -25,7 +24,6 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
   styleUrls: ['./company-users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     AvatarBoxComponent,
     DxDataGridModule,
     DxButtonModule,
@@ -36,34 +34,26 @@ import { catchError, filter, finalize, mergeMap, takeUntil } from 'rxjs/operator
     StatusColorPipe
   ]
 })
-export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerComponentActions {
+export class CompanyUsersComponent implements OnInit, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private companiesService = inject(CompaniesService);
   private route = inject(ActivatedRoute);
-  private cd = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
   private toastService = inject(ToastService);
   private dialogService = inject(DialogService);
   private router = inject(Router);
 
-  company!: Company;
-  isDataLoaded = false;
-  pendingMembers: CompanyMember[] = [];
-  members: CompanyMember[] = [];
-  approveRequestsSet = new Set<string>();
-  declineRequestsSet = new Set<string>();
+  companyId = this.companyStateService.currentCompanyId;
+  isDataLoaded = signal(false);
+  pendingMembers = signal<CompanyMember[]>([]);
+  members = signal<CompanyMember[]>([]);
+  approveRequestsSet = signal<Set<string>>(new Set<string>());
+  declineRequestsSet = signal<Set<string>>(new Set<string>());
 
-  readonly memberAccountState = CompanyMemberAccountState;
   readonly indicatorSrc = tableIndicatorSrc;
-
-  private ngUnsub = new Subject<void>();
 
   ngOnInit(): void {
     this.loadData();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
@@ -80,7 +70,7 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
   };
 
   onDecline(memberId: string): void {
-    if (this.declineRequestsSet.has(memberId)) {
+    if (this.declineRequestsSet().has(memberId)) {
       return;
     }
 
@@ -88,8 +78,11 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
       .pipe(
         filter(confirm => confirm),
         mergeMap(() => {
-          this.declineRequestsSet.add(memberId);
-          this.cd.markForCheck();
+          this.declineRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.add(memberId);
+            return newSet;
+          });
           return this.companiesService.disapprovePendingMember(memberId);
         }),
         catchError((error: HttpError) => {
@@ -97,74 +90,75 @@ export class CompanyUsersComponent implements OnInit, OnDestroy, CommonCustomerC
           return EMPTY;
         }),
         finalize(() => {
-          this.declineRequestsSet.delete(memberId);
-          this.cd.markForCheck();
+          this.declineRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.delete(memberId);
+            return newSet;
+          });
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        this.pendingMembers = this.pendingMembers.filter(item => item.id !== memberId);
+        this.pendingMembers.update(pendingMembers => pendingMembers.filter(item => item.id !== memberId));
         this.toastService.showSuccess('User has been successfully Declined.');
       });
   }
 
   onApprove(memberId: string): void {
-    if (this.approveRequestsSet.has(memberId)) {
+    const companyId = this.companyId();
+
+    if (this.approveRequestsSet().has(memberId) || !companyId) {
       return;
     }
 
-    this.approveRequestsSet.add(memberId);
+    this.approveRequestsSet.update(set => {
+      const newSet = new Set(set);
+      newSet.add(memberId);
+      return newSet;
+    });
     this.companiesService
       .approvePendingMember(memberId)
       .pipe(
-        mergeMap(() => this.companiesService.getMembers(this.company.id)),
+        mergeMap(() => this.companiesService.getMembers(companyId)),
         catchError((error: HttpErrorResponse) => {
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
         finalize(() => {
-          this.approveRequestsSet.delete(memberId);
-          this.cd.markForCheck();
+          this.approveRequestsSet.update(set => {
+            const newSet = new Set(set);
+            newSet.delete(memberId);
+            return newSet;
+          });
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(members => {
-        this.members = members;
-        this.pendingMembers = this.pendingMembers.filter(item => item.id !== memberId);
+        this.members.set(members);
+        this.pendingMembers.update(pendingMembers => pendingMembers.filter(item => item.id !== memberId));
         this.toastService.showSuccess('User has been successfully Approved.');
       });
   }
 
   private loadData() {
-    const companyId = this.route.snapshot.paramMap.get('companyId');
+    const companyId = this.companyId();
+
     if (!companyId) {
       return;
     }
 
-    zip(
-      this.companiesService.getPendingMembers(companyId),
-      this.companiesService.getMembers(companyId),
-      this.companyStateService.currentCompany$
-    )
+    zip(this.companiesService.getPendingMembers(companyId), this.companiesService.getMembers(companyId))
       .pipe(
         catchError((error: HttpError) => {
           this.toastService.showHttpError(error);
           return EMPTY;
         }),
-        finalize(() => {
-          this.isDataLoaded = true;
-          this.cd.markForCheck();
-        }),
-        takeUntil(this.ngUnsub)
+        finalize(() => this.isDataLoaded.set(true)),
+        takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(([pendingMembers, members, company]) => {
-        this.pendingMembers = pendingMembers;
-        this.members = members;
-
-        if (!company) {
-          return;
-        }
-        this.company = company;
+      .subscribe(([pendingMembers, members]) => {
+        this.pendingMembers.set(pendingMembers);
+        this.members.set(members);
       });
   }
 }

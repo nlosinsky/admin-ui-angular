@@ -1,8 +1,8 @@
-import { Injectable, inject } from '@angular/core';
-import { Company, HttpError, CompanyUpdateDTO, CompanyFeatures, CompanyContract } from '@app/shared/models';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { Company, CompanyContract, CompanyFeatures, CompanyUpdateDTO, HttpError } from '@app/shared/models';
 import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { EMPTY, Observable, ReplaySubject, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -11,27 +11,17 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 export class CompanyStateService {
   private companiesService = inject(CompaniesService);
   private toastService = inject(ToastService);
-
-  currentCompany$: Observable<Company | null>;
-  currentCompany!: Company | null;
-
-  private currentCompanySubj = new ReplaySubject<Company | null>(1);
   private loadCompanySubj = new Subject<string>();
+  private _currentCompany = signal<Company | null>(null);
+
+  currentCompany = this._currentCompany.asReadonly();
+  currentCompanyId = computed(() => this.currentCompany()?.id);
 
   constructor() {
-    this.currentCompany$ = this.currentCompanySubj.asObservable();
-
     this.loadCompanySubj
       .asObservable()
       .pipe(
-        switchMap((id: string) => {
-          return this.getCompany(id).pipe(
-            catchError((error: HttpError) => {
-              this.toastService.showHttpError(error);
-              return EMPTY;
-            })
-          );
-        }),
+        switchMap((id: string) => this.getCompany(id)),
         tap((company: Company) => this.setCurrentCompany(company))
       )
       .subscribe();
@@ -39,23 +29,23 @@ export class CompanyStateService {
 
   runCompanyLoad(id: string | null): void {
     if (!id) {
+      this.resetCurrentCompany();
       return;
     }
+
     this.loadCompanySubj.next(id);
   }
 
-  setCurrentCompany(company: Company | null): void {
-    this.currentCompany = company;
-    this.currentCompanySubj.next(company);
+  setCurrentCompany(company: Company): void {
+    this._currentCompany.set(company);
   }
 
-  updateCurrentCompany(company: Partial<Company>): void {
-    const data = new Company(Object.assign({}, this.currentCompany, company));
-    this.setCurrentCompany(data);
+  updateCurrentCompany(data: Partial<Company>): void {
+    this._currentCompany.update(currentCompany => new Company(Object.assign({}, currentCompany, data)));
   }
 
   resetCurrentCompany(): void {
-    this.setCurrentCompany(null);
+    this._currentCompany.set(null);
   }
 
   updateCompany(id: string, data: CompanyUpdateDTO): Observable<Company> {
@@ -63,24 +53,23 @@ export class CompanyStateService {
   }
 
   updateCompanyFeatures(id: string, featuresPayload: CompanyFeatures): Observable<Company> {
-    return this.companiesService.updateCompanyFeatures(id, featuresPayload).pipe(
-      tap(() => {
-        const data = Object.assign({}, this.currentCompany, { features: featuresPayload });
-        this.setCurrentCompany(new Company(data));
-      })
-    );
+    return this.companiesService
+      .updateCompanyFeatures(id, featuresPayload)
+      .pipe(tap(() => this.updateCurrentCompany({ features: featuresPayload })));
   }
 
   updateCompanyContract(id: string, contractPayload: CompanyContract): Observable<Company> {
-    return this.companiesService.updateCompanyContract(id, contractPayload).pipe(
-      tap(() => {
-        const data = Object.assign({}, this.currentCompany, { contract: contractPayload });
-        this.setCurrentCompany(new Company(data));
-      })
-    );
+    return this.companiesService
+      .updateCompanyContract(id, contractPayload)
+      .pipe(tap(() => this.updateCurrentCompany({ contract: contractPayload })));
   }
 
   private getCompany(id: string): Observable<Company> {
-    return this.companiesService.getCompany(id);
+    return this.companiesService.getCompany(id).pipe(
+      catchError((error: HttpError) => {
+        this.toastService.showHttpError(error);
+        return EMPTY;
+      })
+    );
   }
 }

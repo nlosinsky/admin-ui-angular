@@ -1,11 +1,11 @@
 <ng-template #actionsTpl>
-  @if (isEditMode) {
+  @if (isEditMode()) {
     <dx-button stylingMode="outlined" text="Cancel" class="grayed" (onClick)="onCancelEdit()" />
     <dx-button
       stylingMode="contained"
       type="default"
       text="Save changes"
-      [ngClass]="{ loading: isSubmitting }"
+      [class]="{ loading: isSubmitting() }"
       (onClick)="onSaveChanges()"
     />
   }
@@ -15,16 +15,16 @@
     [showArrowIcon]="false"
     class="actions-dropdown-btn"
     [dropDownOptions]="{ container: '.actions-dropdown-btn', width: 150 }"
-    [disabled]="isEditMode"
+    [disabled]="isEditMode()"
   >
     <dxi-item [onClick]="onEdit">Edit information</dxi-item>
   </dx-drop-down-button>
 </ng-template>
 
-@if (isDataLoaded) {
-  @if (company) {
+@if (isDataLoaded()) {
+  @if (currentCompany(); as company) {
     <form [formGroup]="form" novalidate>
-      <fieldset [disabled]="isSubmitting" class="content-section">
+      <fieldset [disabled]="isSubmitting()" class="content-section">
         <h5 class="section-title">Company Details</h5>
         <div class="table-list-row">
           <div class="table-list-col">
@@ -34,7 +34,7 @@
                 formControlName="name"
                 validationMessageMode="always"
                 valueChangeEvent="keyup"
-                [readOnly]="!isEditMode"
+                [readOnly]="!isEditMode()"
               >
                 <dx-validator>
                   <dxi-validation-rule
@@ -53,7 +53,7 @@
               <dx-select-box
                 [dataSource]="companyStates"
                 [dropDownOptions]="{ container: 'dx-select-box' }"
-                [readOnly]="!isEditMode"
+                [readOnly]="!isEditMode()"
                 formControlName="companyState"
                 itemTemplate="item"
                 fieldTemplate="field"
@@ -83,7 +83,7 @@
                 formControlName="website"
                 validationMessageMode="always"
                 valueChangeEvent="keyup"
-                [readOnly]="!isEditMode"
+                [readOnly]="!isEditMode()"
               >
                 <dx-validator>
                   <dxi-validation-rule
@@ -109,7 +109,7 @@
                 formControlName="streetAddress"
                 validationMessageMode="always"
                 valueChangeEvent="keyup"
-                [readOnly]="!isEditMode"
+                [readOnly]="!isEditMode()"
               >
                 <dx-validator>
                   <dxi-validation-rule
@@ -128,9 +128,9 @@
             <div class="table-list-label">Country</div>
             <div class="table-list-content">
               <dx-select-box
-                [dataSource]="countries"
+                [dataSource]="countries()"
                 [dropDownOptions]="{ container: 'dx-select-box' }"
-                [readOnly]="!isEditMode"
+                [readOnly]="!isEditMode()"
                 (onValueChanged)="onCountryChange($event)"
                 formControlName="country"
                 validationMessageMode="always"
@@ -154,9 +154,9 @@
             <div class="table-list-label">State</div>
             <div class="table-list-content">
               <dx-select-box
-                [dataSource]="states"
+                [dataSource]="states()"
                 [dropDownOptions]="{ container: 'dx-select-box' }"
-                [readOnly]="!isEditMode"
+                [readOnly]="!isEditMode()"
                 (onValueChanged)="onStateChange($event)"
                 formControlName="state"
                 validationMessageMode="always"
@@ -180,9 +180,9 @@
             <div class="table-list-label">City</div>
             <div class="table-list-content">
               <dx-select-box
-                [dataSource]="cities"
+                [dataSource]="cities()"
                 [dropDownOptions]="{ container: 'dx-select-box' }"
-                [readOnly]="!isEditMode"
+                [readOnly]="!isEditMode()"
                 [acceptCustomValue]="true"
                 (onValueChanged)="onCityChange($event)"
                 (onCustomItemCreating)="onAddCustomCity($event)"
@@ -208,9 +208,9 @@
             <div class="table-list-label">ZIP Code</div>
             <div class="table-list-content">
               <dx-select-box
-                [dataSource]="zipCodes"
+                [dataSource]="zipCodes()"
                 [dropDownOptions]="{ container: 'dx-select-box' }"
-                [readOnly]="!isEditMode"
+                [readOnly]="!isEditMode()"
                 [acceptCustomValue]="true"
                 (onCustomItemCreating)="onAddCustomZipCode($event)"
                 formControlName="zipCode"

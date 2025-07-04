@@ -1,13 +1,13 @@
-@if (isDataLoaded) {
+@if (isDataLoaded()) {
   <div class="container">
-    <app-general-toolbar title="Usage Data" subtitle="We found {{ stats.length }} results">
+    <app-general-toolbar title="Usage Data" subtitle="We found {{ stats().length }} results">
       <div toolbar-controls class="toolbar-controls">
         <dx-button
           icon="spindown"
           text="Manage columns"
           [rtlEnabled]="true"
           stylingMode="outlined"
-          (onClick)="openColumnChooserButtonClick()"
+          (onClick)="onShowColumnChooser()"
           class="grid-column-chooser-btn"
         ></dx-button>
         <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
@@ -17,7 +17,7 @@
     <section class="content-section">
       <dx-data-grid
         class="data-grid"
-        [dataSource]="stats"
+        [dataSource]="stats()"
         [showBorders]="true"
         [showColumnLines]="true"
         [showRowLines]="true"

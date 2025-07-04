@@ -5,6 +5,14 @@ body {
   height: 100%;
 }
 
+app-root {
+  margin-top: -33px;
+  display: block;
+  position: relative;
+  z-index: 1501;
+  background: #fff;
+}
+
 body {
   font-family: Roboto, sans-serif;
 }

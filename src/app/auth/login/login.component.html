@@ -5,7 +5,7 @@
 
   <h1 class="login-text">Login</h1>
 
-  <form [formGroup]="form" (ngSubmit)="onFormSubmit($event)" novalidate>
+  <form [formGroup]="form" (ngSubmit)="onLogin($event)" novalidate>
     <div class="table-list-row">
       <div class="table-list-col">
         <div class="table-list-label">Email</div>
@@ -42,8 +42,8 @@
       </div>
     </div>
 
-    @if (errorMessage) {
-      <p class="error-message mb-0">{{ errorMessage }}</p>
+    @if (errorMessage(); as error) {
+      <p class="error-message mb-0">{{ error }}</p>
     }
 
     <div class="actions-container">
@@ -51,7 +51,7 @@
         type="default"
         stylingMode="contained"
         text="Login"
-        [elementAttr]="{ class: 'submit-btn' + (isSubmitting ? ' loading' : '') }"
+        [elementAttr]="{ class: 'submit-btn' + (isSubmitting() ? ' loading' : '') }"
         [useSubmitBehavior]="true"
       ></dx-button>
     </div>

@@ -1,15 +1,15 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  DestroyRef,
   EventEmitter,
-  OnDestroy,
-  OnInit,
   TemplateRef,
   inject,
-  viewChild
+  viewChild,
+  effect,
+  signal,
+  computed
 } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -29,8 +29,9 @@ import {
   DxSwitchModule,
   DxTextBoxModule
 } from 'devextreme-angular';
-import { EMPTY, forkJoin, Observable, Subject } from 'rxjs';
-import { catchError, filter, finalize, takeUntil } from 'rxjs/operators';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface CompanyContractForm {
   contract: FormGroup<{
@@ -51,7 +52,6 @@ interface CompanyContractForm {
   templateUrl: './company-contract.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     NgTemplateOutlet,
     DxSwitchModule,
     ContractTypePipe,
@@ -64,61 +64,66 @@ interface CompanyContractForm {
     DxDropDownButtonModule
   ]
 })
-export class CompanyContractComponent
-  implements OnInit, OnDestroy, Submittable, CommonCustomerComponentActions, AfterViewInit
-{
+export class CompanyContractComponent implements Submittable, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
-  private cd = inject(ChangeDetectorRef);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
 
-  isEditMode = false;
-  isDataLoaded = false;
-  company!: Company;
+  currentCompany = this.companyStateService.currentCompany;
+  currentCompanyId = this.companyStateService.currentCompanyId;
+
+  isEditMode = signal(false);
+  isDataLoaded = signal(false);
+  isSubmitting = signal(false);
+  isReadonlyTransactionFee = signal(false);
+  minTransactionFeeValue = signal(0);
+  isDisabled = computed(() => this.isSubmitting() || !this.isEditMode());
+
   form!: FormGroup<CompanyContractForm>;
-  isSubmitting = false;
   companyContract = CompanyContractEnum;
-  companyContractList: string[] = [];
-  isReadonlyTransactionFee = false;
-  minTransactionFeeValue = 0;
+  companyContractList: string[] = ObjectUtil.enumToArray(CompanyContractEnum);
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
-  private ngUnsub = new Subject<void>();
+  constructor() {
+    effect(() => {
+      this.actionsTemplateEvent.emit(this.actionsTpl());
+      return () => {
+        this.actionsTemplateEvent.emit(undefined);
+      };
+    });
 
-  ngOnInit(): void {
-    this.loadData();
-    this.companyContractList = ObjectUtil.enumToArray(CompanyContractEnum);
-  }
-
-  ngAfterViewInit() {
-    this.actionsTemplateEvent.emit(this.actionsTpl());
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
+    effect(() => {
+      this.setFormData(this.currentCompany());
+      this.verifyTransactionFeeConstraints();
+    });
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
 
   onCancelEdit() {
     this.restoreForm();
-    this.isEditMode = false;
+    this.isEditMode.set(false);
     this.verifyTransactionFeeConstraints();
   }
 
   onEdit = () => {
-    this.isEditMode = true;
+    this.isEditMode.set(true);
     this.verifyTransactionFeeConstraints();
-    this.cd.markForCheck();
   };
 
   onSaveChanges() {
+    const companyId = this.currentCompanyId();
+
+    if (!companyId) {
+      return;
+    }
+
     if (!this.hasChangedData() && this.form.valid) {
-      this.isEditMode = false;
+      this.isEditMode.set(false);
       return;
     }
 
@@ -129,14 +134,14 @@ export class CompanyContractComponent
     const obsArr: Observable<Company>[] = [];
 
     if (this.isFeaturesChanged) {
-      obsArr.push(this.companyStateService.updateCompanyFeatures(this.company.id, this.features));
+      obsArr.push(this.companyStateService.updateCompanyFeatures(companyId, this.features));
     }
 
     if (this.isContractChanged) {
-      obsArr.push(this.companyStateService.updateCompanyContract(this.company.id, this.contract));
+      obsArr.push(this.companyStateService.updateCompanyContract(companyId, this.contract));
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     forkJoin(obsArr)
       .pipe(
@@ -145,15 +150,14 @@ export class CompanyContractComponent
           return EMPTY;
         }),
         finalize(() => {
-          this.isSubmitting = false;
-          this.cd.markForCheck();
+          this.isSubmitting.set(false);
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
         this.toastService.showSuccess('Data has been updated successfully.');
         this.form.markAsPristine();
-        this.isEditMode = false;
+        this.isEditMode.set(false);
       });
   }
 
@@ -162,11 +166,11 @@ export class CompanyContractComponent
   }
 
   private get isFeaturesChanged(): boolean {
-    return !ObjectUtil.isDeepEquals(this.company.features, this.features);
+    return !ObjectUtil.isDeepEquals(this.currentCompany()?.features, this.features);
   }
 
   private get isContractChanged(): boolean {
-    return !ObjectUtil.isDeepEquals(this.company.contract, this.contract);
+    return !ObjectUtil.isDeepEquals(this.currentCompany()?.contract, this.contract);
   }
 
   get features(): CompanyFeatures | null {
@@ -175,10 +179,6 @@ export class CompanyContractComponent
 
   get contract(): CompanyContract | null {
     return this.form.get('contract')?.value as CompanyContract;
-  }
-
-  get isDisabled(): boolean {
-    return this.isSubmitting || !this.isEditMode;
   }
 
   onChangeType(): void {
@@ -191,8 +191,8 @@ export class CompanyContractComponent
     }
     const type = this.contract?.type;
 
-    this.isReadonlyTransactionFee = this.isDisabled || type === this.companyContract.FREE;
-    this.minTransactionFeeValue = type === this.companyContract.BP_ONLY ? 1 : 0;
+    this.isReadonlyTransactionFee.set(this.isDisabled() || type === this.companyContract.FREE);
+    this.minTransactionFeeValue.set(type === this.companyContract.BP_ONLY ? 1 : 0);
 
     const basisPoints = this.form.get('contract.basisPoints');
 
@@ -202,33 +202,16 @@ export class CompanyContractComponent
 
     if (type === CompanyContractEnum.FREE) {
       basisPoints.setValue(0);
-    } else if (type === CompanyContractEnum.BP_ONLY && +basisPoints.value < this.minTransactionFeeValue) {
-      basisPoints.setValue(this.minTransactionFeeValue);
+    } else if (type === CompanyContractEnum.BP_ONLY && +basisPoints.value < this.minTransactionFeeValue()) {
+      basisPoints.setValue(this.minTransactionFeeValue());
     }
   }
 
-  loadData(): void {
-    this.companyStateService.currentCompany$
-      .pipe(
-        catchError(() => EMPTY),
-        filter(resp => !!(resp && resp.id)),
-        takeUntil(this.ngUnsub)
-      )
-      .subscribe(data => {
-        this.isDataLoaded = true;
+  setFormData(data: Company | null): void {
+    if (!data) {
+      return;
+    }
 
-        if (!data) {
-          return;
-        }
-
-        this.company = data;
-        this.setFormData(data);
-        this.verifyTransactionFeeConstraints();
-        this.cd.markForCheck();
-      });
-  }
-
-  setFormData(data: Company): void {
     const { accounting, advancedReporting, marketData, onlineTransactions, contractInventory } = data.features;
     const { type, basisPoints } = data.contract;
 
@@ -248,7 +231,7 @@ export class CompanyContractComponent
   }
 
   restoreForm(): void {
-    const { features, contract } = this.company;
+    const { features, contract } = this.currentCompany() || {};
     this.form.reset({ features, contract });
   }
 }

@@ -14,7 +14,7 @@ export class AvatarBoxComponent {
 
   readonly itemClicked = output<void>();
 
-  onClick(event: MouseEvent): void {
+  onSelectAvatar(event: MouseEvent): void {
     event.preventDefault();
     this.itemClicked.emit();
   }

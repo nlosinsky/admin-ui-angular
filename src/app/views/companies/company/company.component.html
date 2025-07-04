@@ -1,8 +1,8 @@
-@if (currentCompany$ | async; as company) {
+@if (currentCompany(); as company) {
   <section class="heading-section">
     <app-details-toolbar [title]="company.name" [logo]="company.logoUrl" (back)="onReturnBack()">
       <div toolbar-controls class="toolbar-controls">
-        <ng-container [ngTemplateOutlet]="actionsTemplate"></ng-container>
+        <ng-container [ngTemplateOutlet]="actionsTemplate()"></ng-container>
       </div>
     </app-details-toolbar>
     <dx-tabs [dataSource]="tabs" itemTemplate="tabTemplate">

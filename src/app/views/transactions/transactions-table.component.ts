@@ -1,14 +1,14 @@
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  OnDestroy,
+  DestroyRef,
   OnInit,
   inject,
   viewChildren,
-  viewChild
+  viewChild,
+  signal
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Company, CompanyMember } from '@app/shared/models';
 import { TransactionsCount, TransactionsSeries } from '@app/shared/models/transactions';
@@ -28,8 +28,8 @@ import {
   DxValidatorComponent,
   DxValidatorModule
 } from 'devextreme-angular';
-import { of, Subject } from 'rxjs';
-import { finalize, switchMap, takeUntil } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { finalize, switchMap } from 'rxjs/operators';
 import { TimeInterval } from 'devextreme/common/charts';
 
 interface TransactionsForm {
@@ -45,7 +45,6 @@ interface TransactionsForm {
   styleUrls: ['./transactions-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgClass,
     DxDateBoxModule,
     ReactiveFormsModule,
     DxSelectBoxModule,
@@ -57,19 +56,20 @@ interface TransactionsForm {
     DxDropDownButtonModule
   ]
 })
-export class TransactionsTableComponent implements OnInit, OnDestroy {
+export class TransactionsTableComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
-  private cd = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
   private transactionsTableService = inject(TransactionsTableService);
 
   readonly validators = viewChildren(DxValidatorComponent);
   readonly chart = viewChild.required(DxChartComponent);
 
+  dataSource = signal<TransactionsCount[]>([]);
+  isSubmitting = signal(false);
+  companies = signal<Company[]>([]);
+  companyMembers = signal<CompanyMember[]>([{ fullName: 'All', id: '' } as CompanyMember]);
+
   selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
-  dataSource: TransactionsCount[] = [];
-  companies: Company[] = [];
-  companyMembers: CompanyMember[] = [{ fullName: 'All', id: '' } as CompanyMember];
-  isSubmitting = false;
   form!: FormGroup<TransactionsForm>;
   maxDate = new Date();
   tickInterval!: TimeInterval;
@@ -77,17 +77,10 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
 
   readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
-  private ngUnsub = new Subject<void>();
-
   ngOnInit(): void {
     this.loadCompanies();
     this.initForm();
     this.handleCountryChange();
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsub.next();
-    this.ngUnsub.complete();
   }
 
   customizeTooltip = (info: { valueText: string; argument: Date }) => {
@@ -112,7 +105,7 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   onChartExport = (format = 'png') => this.transactionsTableService.onChartExport(this.chart(), format);
 
   onSearch() {
-    if (this.isSubmitting) {
+    if (this.isSubmitting()) {
       return;
     }
 
@@ -121,13 +114,13 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     const formValue = this.form.value;
     const payload = this.transactionsTableService.getSearchPayload(formValue);
 
     if (!isValid(new Date(payload.startDate)) || !isValid(new Date(payload.endDate))) {
-      this.isSubmitting = false;
+      this.isSubmitting.set(false);
       return;
     }
 
@@ -135,13 +128,12 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
       .getTransactionsCount(payload)
       .pipe(
         finalize(() => {
-          this.isSubmitting = false;
-          this.cd.markForCheck();
+          this.isSubmitting.set(false);
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(items => {
-        this.dataSource = items;
+        this.dataSource.set(items);
       });
   }
 
@@ -158,10 +150,9 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
   private loadCompanies() {
     this.transactionsTableService
       .getCompanies()
-      .pipe(takeUntil(this.ngUnsub))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(companies => {
-        this.companies = companies;
-        this.cd.markForCheck();
+        this.companies.set(companies);
       });
   }
 
@@ -186,11 +177,10 @@ export class TransactionsTableComponent implements OnInit, OnDestroy {
           }
           return this.transactionsTableService.getMembers(companyId);
         }),
-        takeUntil(this.ngUnsub)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(members => {
-        this.companyMembers = members;
-        this.cd.markForCheck();
+        this.companyMembers.set(members);
       });
   }
 }

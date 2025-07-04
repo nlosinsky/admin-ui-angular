@@ -20,7 +20,7 @@
     }
   </div>
 
-  @if (user$ | async; as user) {
+  @if (currentUser(); as user) {
     <dx-drop-down-button
       stylingMode="outlined"
       [text]="user.fullName"
@@ -28,7 +28,7 @@
       [showArrowIcon]="false"
       [items]="userDropdownItems"
       displayExpr="text"
-      (onItemClick)="onUserDropdown($event)"
+      (onItemClick)="onUserDropdownAction($event)"
       height="48"
       width="100%"
       class="sidenav-user-btn"
