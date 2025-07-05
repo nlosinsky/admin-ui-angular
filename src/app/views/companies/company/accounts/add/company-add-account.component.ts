@@ -24,7 +24,7 @@ import {
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
-interface AccountForm {
+type AccountForm = {
   name: FormControl<string>;
   number: FormControl<number>;
   naturalBalance: FormControl<string>;
@@ -32,7 +32,7 @@ interface AccountForm {
   subtype: FormControl<string>;
   description: FormControl<string>;
   archived: FormControl<boolean>;
-}
+};
 
 @Component({
   selector: 'app-company-add-account',

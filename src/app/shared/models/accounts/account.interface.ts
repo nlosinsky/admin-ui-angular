@@ -1,6 +1,6 @@
 import { AccountNaturalBalanceType, AccountTypeType } from '@app/shared/models/accounts/account.enum';
 
-export interface AccountDTO {
+export type AccountDTO = {
   name: string;
   number: number;
   naturalBalance: AccountNaturalBalanceType;
@@ -9,4 +9,4 @@ export interface AccountDTO {
   description?: string;
   archived?: boolean;
   companyId: string;
-}
+};

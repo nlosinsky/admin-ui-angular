@@ -26,14 +26,13 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   currentCompany = this.companyStateService.currentCompany;
 
-  tabs: Tab[] = [];
+  tabs: Tab[] = this.companyHelperService.getTabs();
   activeComponent!: Submittable & CommonCustomerComponentActions;
   actionsTemplate = signal<TemplateRef<HTMLElement> | null>(null);
   companyId!: string;
 
   ngOnInit(): void {
     this.handleCompanyLoad();
-    this.tabs = this.companyHelperService.getTabs();
   }
 
   ngOnDestroy(): void {

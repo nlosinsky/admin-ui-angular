@@ -16,9 +16,9 @@ import { DxButtonModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-a
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
-interface CompanyUserForm {
+type CompanyUserForm = {
   accountState: FormControl<CompanyMemberAccountStateType>;
-}
+};
 
 @Component({
   selector: 'app-company-user',

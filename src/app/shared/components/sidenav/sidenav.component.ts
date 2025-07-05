@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 
 import { RouterModule } from '@angular/router';
 import { User } from '@app/shared/models/user';
@@ -15,18 +15,13 @@ import { DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, DxButtonModule, DxDropDownButtonModule, NgOptimizedImage]
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent {
   private service = inject(SidenavService);
 
-  items: NavItem[] = [];
-  userDropdownItems: UserDropdownItem[] = [];
+  items: NavItem[] = this.service.getNavItems();
+  userDropdownItems: UserDropdownItem[] = this.service.getProfileDropdownItems();
 
   currentUser: Signal<User | null> = this.service.getCurrentUser();
-
-  ngOnInit(): void {
-    this.items = this.service.getNavItems();
-    this.userDropdownItems = this.service.getProfileDropdownItems();
-  }
 
   onUserDropdownAction(event: DxDropDownButtonTypes.ItemClickEvent): void {
     const eventId = event?.itemData?.id;

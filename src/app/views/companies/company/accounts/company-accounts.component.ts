@@ -80,9 +80,6 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
   constructor() {
     effect(() => {
       this.actionsTemplateEvent.emit(this.actionsTpl());
-      return () => {
-        this.actionsTemplateEvent.emit(undefined);
-      };
     });
   }
 

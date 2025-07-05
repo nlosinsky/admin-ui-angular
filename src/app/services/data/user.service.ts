@@ -4,7 +4,7 @@ import { User } from '@app/shared/models/user';
 import { UserApiService } from '@services/api/user-api.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +20,10 @@ export class UserService {
   constructor() {
     this.loadUserSubj
       .asObservable()
-      .pipe(
-        switchMap(() => this.getCurrentUser()),
-        tap((user: User) => this._currentUser.set(user))
-      )
-      .subscribe();
+      .pipe(switchMap(() => this.getCurrentUser()))
+      .subscribe((user: User) => {
+        this._currentUser.set(user);
+      });
   }
 
   runUserLoad(): void {

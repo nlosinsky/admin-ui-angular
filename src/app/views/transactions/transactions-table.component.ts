@@ -32,12 +32,12 @@ import { of } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
 import { TimeInterval } from 'devextreme/common/charts';
 
-interface TransactionsForm {
+type TransactionsForm = {
   startDate: FormControl<Date>;
   endDate: FormControl<Date>;
   companyId: FormControl<string>;
   userId: FormControl<string>;
-}
+};
 
 @Component({
   selector: 'app-transactions-table',

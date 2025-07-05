@@ -12,14 +12,7 @@ import {
   effect,
   signal
 } from '@angular/core';
-import {
-  AbstractControl,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { City, Company, CompanyUpdateDTO, Country, HttpError, State } from '@app/shared/models';
 import { CompanyState, CompanyStateType } from '@app/shared/models/companies/company.enum';
@@ -48,7 +41,7 @@ import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
 
-interface CompanyInformationForm {
+type CompanyInformationForm = {
   name: FormControl<string>;
   website: FormControl<string>;
   streetAddress: FormControl<string>;
@@ -57,7 +50,7 @@ interface CompanyInformationForm {
   city: FormControl<string>;
   zipCode: FormControl<string>;
   companyState: FormControl<CompanyStateType>;
-}
+};
 
 @Component({
   selector: 'app-company-information',
@@ -108,9 +101,6 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   constructor() {
     effect(() => {
       this.actionsTemplateEvent.emit(this.actionsTpl());
-      return () => {
-        this.actionsTemplateEvent.emit(undefined);
-      };
     });
 
     effect(() => {
@@ -300,9 +290,8 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     }
 
     const newItem = { name: data.text } as City;
-    this.cities.update(cities => [newItem].concat(cities));
+    this.cities.update(cities => [...cities, newItem]);
     data.customItem = newItem;
-    this.city.setValue(data.text);
   }
 
   onAddCustomZipCode(data: DxSelectBoxTypes.CustomItemCreatingEvent) {
@@ -312,41 +301,39 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     }
 
     const newItem = data.text;
-    this.zipCodes.update(zipCodes => [newItem].concat(zipCodes));
+    this.zipCodes.update(zipCodes => [...zipCodes, newItem]);
     data.customItem = newItem;
-    this.zipCode.setValue(data.text);
   }
 
   get state() {
-    return this.form.get('state') as AbstractControl;
+    return this.form.get('state') as FormControl<string>;
   }
 
   get city() {
-    return this.form.get('city') as AbstractControl;
+    return this.form.get('city') as FormControl<string>;
   }
 
   get zipCode() {
-    return this.form.get('zipCode') as AbstractControl;
+    return this.form.get('zipCode') as FormControl<string>;
   }
 
   private populateLists(data: Company | CompanyUpdateDTO): void {
-    this.states.set([]);
-    this.cities.set([]);
-    this.zipCodes.set([]);
+    const country = this.countries().find(item => item.name === data.country);
 
-    if (data.country) {
-      const states = this.countries().find(c => c.name === data.country)?.states || [];
-      this.states.set(states);
+    if (country?.states) {
+      this.states.set(country.states);
     }
 
-    if (data.state) {
-      const cities = this.states().find(s => s.name === data.state)?.cities || [];
-      this.cities.set(cities);
+    const state = this.states().find(item => item.name === data.state);
+
+    if (state?.cities) {
+      this.cities.set(state.cities);
     }
 
-    if (data.city) {
-      const zipCodes = this.cities().find(s => s.name === data.city)?.zipCodes || [];
-      this.zipCodes.set(zipCodes);
+    const city = this.cities().find(item => item.name === data.city);
+
+    if (city?.zipCodes) {
+      this.zipCodes.set(city.zipCodes);
     }
   }
 }

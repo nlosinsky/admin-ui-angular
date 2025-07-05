@@ -16,7 +16,8 @@
     "prettier:diff": "prettier --list-different \"./src/**/*.{ts,js,html,scss}\"",
     "prebuild": "rm -rf ./dist",
     "prepare": "husky install",
-    "serve:ssr:admin-ui-angular": "node dist/server/server.mjs"
+    "serve:ssr:admin-ui-angular": "node dist/server/server.mjs",
+    "analyze": "ng build --configuration=production --stats-json && npx esbuild-visualizer --metadata=dist/stats.json --open=true"
   },
   "private": true,
   "dependencies": {

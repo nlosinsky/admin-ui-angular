@@ -33,7 +33,7 @@ import { EMPTY, forkJoin, Observable } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-interface CompanyContractForm {
+type CompanyContractForm = {
   contract: FormGroup<{
     type: FormControl<CompanyContractType>;
     basisPoints: FormControl<number>;
@@ -45,7 +45,7 @@ interface CompanyContractForm {
     onlineTransactions: FormControl<boolean>;
     contractInventory: FormControl<boolean>;
   }>;
-}
+};
 
 @Component({
   selector: 'app-company-contract',
@@ -91,9 +91,6 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
   constructor() {
     effect(() => {
       this.actionsTemplateEvent.emit(this.actionsTpl());
-      return () => {
-        this.actionsTemplateEvent.emit(undefined);
-      };
     });
 
     effect(() => {

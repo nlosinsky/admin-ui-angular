@@ -11,10 +11,10 @@ import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-interface LoginForm {
+type LoginForm = {
   email: FormControl<string>;
   password: FormControl<string>;
-}
+};
 
 @Component({
   selector: 'app-auth-login',

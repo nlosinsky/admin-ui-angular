@@ -1,17 +1,17 @@
 import dxDataGrid from 'devextreme/ui/data_grid';
 
-export interface DxGridExportingEvent {
+export type DxGridExportingEvent = {
   cancel: boolean;
   component: dxDataGrid;
   element: HTMLElement;
   format: string;
   filename: string;
   data: Blob;
-}
+};
 
-export interface ExportGridExcelCell {
+export type ExportGridExcelCell = {
   value: unknown;
   alignment: {
     horizontal: string;
   };
-}
+};

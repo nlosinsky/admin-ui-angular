@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, HostBinding, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
 
 @Component({
@@ -6,13 +6,14 @@ import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
   templateUrl: './status-item.component.html',
   styleUrls: ['./status-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: []
+  imports: [],
+  host: {
+    '[class]': 'statusItemClassName'
+  }
 })
 export class StatusItemComponent {
   readonly text = input.required();
   readonly type = input.required<StatusColorsType>();
-
-  @HostBinding('class') class = 'status-item';
-
+  readonly statusItemClassName = 'status-item';
   readonly statusColors = StatusColorsEnum;
 }

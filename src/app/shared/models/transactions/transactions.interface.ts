@@ -1,13 +1,13 @@
-export interface TransactionsFormValue {
+export type TransactionsFormValue = {
   startDate: Date;
   endDate: Date;
   companyId: string;
   userId: string;
-}
+};
 
-export interface TransactionsCount {
+export type TransactionsCount = {
   date: string;
   count: number;
   companyId: string;
   userId: string;
-}
+};

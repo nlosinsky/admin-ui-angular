@@ -1,11 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
-export interface ApiError {
+export type ApiError = {
   message: string;
   code?: string;
   details?: Record<string, unknown>;
-}
+};
 
-export interface HttpError extends HttpErrorResponse {
-  error: ApiError;
-}
+export type HttpError = { error: ApiError } & HttpErrorResponse;

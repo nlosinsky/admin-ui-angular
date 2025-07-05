@@ -20,11 +20,10 @@ export class CompanyStateService {
   constructor() {
     this.loadCompanySubj
       .asObservable()
-      .pipe(
-        switchMap((id: string) => this.getCompany(id)),
-        tap((company: Company) => this.setCurrentCompany(company))
-      )
-      .subscribe();
+      .pipe(switchMap((id: string) => this.getCompany(id)))
+      .subscribe((company: Company) => {
+        this.setCurrentCompany(company);
+      });
   }
 
   runCompanyLoad(id: string | null): void {

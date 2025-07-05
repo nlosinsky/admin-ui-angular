@@ -82,7 +82,8 @@ export default tseslint.config(
           arrowParens: 'avoid',
           trailingComma: 'none'
         }
-      ]
+      ],
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     },
   },
   {
