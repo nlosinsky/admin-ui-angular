@@ -4,7 +4,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'app-bg-spinner',
   templateUrl: './bg-spinner.component.html',
   styleUrls: ['./bg-spinner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BgSpinnerComponent {}

@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SidenavComponent } from '@components/sidenav/sidenav.component';
-import { UserService } from '@services/data/user.service';
 
 @Component({
   selector: 'app-app-layout',
@@ -13,10 +12,4 @@ import { UserService } from '@services/data/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterModule, SidenavComponent]
 })
-export class AppLayoutComponent implements OnInit {
-  private userService = inject(UserService);
-
-  ngOnInit(): void {
-    this.userService.runUserLoad();
-  }
-}
+export class AppLayoutComponent {}
