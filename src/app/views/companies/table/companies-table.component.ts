@@ -24,11 +24,12 @@ import { ToastService } from '@services/helpers/toast.service';
 import { DxButtonComponent, DxDataGridComponent, DxTemplateDirective, DxTextBoxComponent } from 'devextreme-angular';
 import {
   DxiColumnComponent,
+  DxoColumnChooserComponent,
   DxoLoadPanelComponent,
   DxoPagingComponent,
   DxoScrollingComponent
 } from 'devextreme-angular/ui/nested';
-import { DataGridCell } from 'devextreme/excel_exporter';
+import { DataGridCell } from 'devextreme-angular/common/export/excel';
 import { EMPTY, forkJoin, from, Subject } from 'rxjs';
 import {
   catchError,
@@ -61,7 +62,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     DecimalPipe,
     DatePipe,
     ContractTypePipe,
-    BgSpinnerComponent
+    BgSpinnerComponent,
+    DxoColumnChooserComponent
   ]
 })
 export class CompaniesTableComponent implements OnInit {

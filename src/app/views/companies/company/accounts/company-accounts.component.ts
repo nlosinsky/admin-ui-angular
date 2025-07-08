@@ -34,11 +34,12 @@ import {
 } from 'devextreme-angular';
 import {
   DxiColumnComponent,
+  DxoColumnChooserComponent,
   DxoLoadPanelComponent,
   DxoPagingComponent,
   DxoScrollingComponent
 } from 'devextreme-angular/ui/nested';
-import { DataGridCell } from 'devextreme/excel_exporter';
+import { DataGridCell } from 'devextreme-angular/common/export/excel';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { on } from 'devextreme/events';
@@ -61,7 +62,8 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
     BooleanYesNoPipe,
     StringValueCapitalizePipe,
     DxTooltipComponent,
-    BgSpinnerComponent
+    BgSpinnerComponent,
+    DxoColumnChooserComponent
   ]
 })
 export class CompanyAccountsComponent implements OnInit, CommonCustomerComponentActions {

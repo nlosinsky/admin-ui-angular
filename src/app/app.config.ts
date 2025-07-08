@@ -8,19 +8,8 @@ import {
 import { provideRouter, withEnabledBlockingInitialNavigation, withRouterConfig } from '@angular/router';
 import { authInterceptor } from '@app/interceptors/auth-interceptor';
 import { errorInterceptor } from '@app/interceptors/error-interceptor';
-import dxDataGrid from 'devextreme/ui/data_grid';
 import { APP_ROUTES } from './app.routes';
 import { provideClientHydration, withIncrementalHydration } from '@angular/platform-browser';
-
-dxDataGrid.defaultOptions({
-  options: {
-    columnChooser: {
-      mode: 'select',
-      title: '',
-      sortOrder: 'asc'
-    }
-  }
-});
 
 export const appConfig: ApplicationConfig = {
   providers: [

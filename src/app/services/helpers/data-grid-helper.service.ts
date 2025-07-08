@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { DxGridExportingEvent, ExportGridExcelCell } from '@app/shared/models';
+import { ExportGridExcelCell } from '@app/shared/models';
 import { DxDataGridComponent } from 'devextreme-angular';
-import { DataGridCell, exportDataGrid } from 'devextreme/excel_exporter';
 import dxDataGrid from 'devextreme/ui/data_grid';
-import { saveAs } from 'file-saver';
+import { DataGridCell, exportDataGrid } from 'devextreme-angular/common/export/excel';
+import { saveAs } from 'file-saver-es';
 import { Workbook } from 'exceljs';
 
 @Injectable({
@@ -52,14 +52,5 @@ export class DataGridHelperService {
         const blob = new Blob([buffer], { type: 'application/octet-stream' });
         saveAs(blob, `${fileName}.xlsx`);
       });
-  }
-
-  exportToExcelFromEvent(
-    e: DxGridExportingEvent,
-    fileName: string,
-    customizeCell?: (gridCell: DataGridCell, excelCell: ExportGridExcelCell) => void
-  ) {
-    this.exportToExcel(e.component, fileName, customizeCell);
-    e.cancel = true;
   }
 }

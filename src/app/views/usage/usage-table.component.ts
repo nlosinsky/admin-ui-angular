@@ -9,6 +9,7 @@ import { ToastService } from '@services/helpers/toast.service';
 import { DxButtonComponent, DxDataGridComponent, DxTextBoxComponent } from 'devextreme-angular';
 import {
   DxiColumnComponent,
+  DxoColumnChooserComponent,
   DxoLoadPanelComponent,
   DxoPagingComponent,
   DxoScrollingComponent
@@ -31,7 +32,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     DxoLoadPanelComponent,
     DxoScrollingComponent,
     DxiColumnComponent,
-    BgSpinnerComponent
+    BgSpinnerComponent,
+    DxoColumnChooserComponent
   ]
 })
 export class UsageTableComponent implements OnInit {
