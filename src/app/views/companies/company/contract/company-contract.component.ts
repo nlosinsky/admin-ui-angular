@@ -83,14 +83,14 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
   isEditMode = signal(false);
   isDataLoaded = signal(false);
   isSubmitting = signal(false);
-  isReadonlyTransactionFee = signal(false);
-  minTransactionFeeValue = signal(0);
   isDisabled = computed(() => this.isSubmitting() || !this.isEditMode());
 
+  isReadonlyTransactionFee = false;
+  minTransactionFeeValue = 0;
   form!: FormGroup<CompanyContractForm>;
-  companyContract = CompanyContractEnum;
-  companyContractList: string[] = ObjectUtil.enumToArray(CompanyContractEnum);
-  actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
+  readonly companyContract = CompanyContractEnum;
+  readonly companyContractList: string[] = ObjectUtil.enumToArray(CompanyContractEnum);
+  readonly actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   constructor() {
     effect(() => {
@@ -100,12 +100,9 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
     effect(() => {
       if (this.currentCompany() && !this.isDataLoaded()) {
         this.isDataLoaded.set(true);
+        this.setFormData(this.currentCompany());
+        this.verifyTransactionFeeConstraints();
       }
-    });
-
-    effect(() => {
-      this.setFormData(this.currentCompany());
-      this.verifyTransactionFeeConstraints();
     });
   }
 
@@ -198,8 +195,8 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
     }
     const type = this.contract?.type;
 
-    this.isReadonlyTransactionFee.set(this.isDisabled() || type === this.companyContract.FREE);
-    this.minTransactionFeeValue.set(type === this.companyContract.BP_ONLY ? 1 : 0);
+    this.isReadonlyTransactionFee = this.isDisabled() || type === this.companyContract.FREE;
+    this.minTransactionFeeValue = type === this.companyContract.BP_ONLY ? 1 : 0;
 
     const basisPoints = this.form.get('contract.basisPoints');
 
@@ -209,8 +206,8 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
 
     if (type === CompanyContractEnum.FREE) {
       basisPoints.setValue(0);
-    } else if (type === CompanyContractEnum.BP_ONLY && +basisPoints.value < this.minTransactionFeeValue()) {
-      basisPoints.setValue(this.minTransactionFeeValue());
+    } else if (type === CompanyContractEnum.BP_ONLY && +basisPoints.value < this.minTransactionFeeValue) {
+      basisPoints.setValue(this.minTransactionFeeValue);
     }
   }
 

@@ -54,8 +54,8 @@
             <div class="table-list-label">Transaction Fee</div>
             <div class="table-list-content">
               <dx-number-box
-                [readOnly]="isReadonlyTransactionFee()"
-                [min]="minTransactionFeeValue()"
+                [readOnly]="isReadonlyTransactionFee"
+                [min]="minTransactionFeeValue"
                 formControlName="basisPoints"
                 format="#0 BP"
               ></dx-number-box>

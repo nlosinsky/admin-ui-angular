@@ -8,7 +8,7 @@
           [rtlEnabled]="true"
           stylingMode="outlined"
           (onClick)="onShowColumnChooser()"
-          [elementAttr]="{class: 'grid-column-chooser-btn'}"
+          [elementAttr]="{ class: 'grid-column-chooser-btn' }"
         ></dx-button>
         <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
         <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34"></dx-text-box>
