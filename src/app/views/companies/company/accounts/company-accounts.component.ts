@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   EventEmitter,
@@ -27,13 +26,18 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyAddAccountComponent } from '@views/companies/company/accounts/add/company-add-account.component';
 import {
-  DxButtonModule,
+  DxButtonComponent,
   DxDataGridComponent,
-  DxDataGridModule,
-  DxTextBoxModule,
-  DxTooltipComponent,
-  DxTooltipModule
+  DxTemplateDirective,
+  DxTextBoxComponent,
+  DxTooltipComponent
 } from 'devextreme-angular';
+import {
+  DxiColumnComponent,
+  DxoLoadPanelComponent,
+  DxoPagingComponent,
+  DxoScrollingComponent
+} from 'devextreme-angular/ui/nested';
 import { DataGridCell } from 'devextreme/excel_exporter';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
@@ -46,17 +50,21 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
   styleUrls: ['./company-accounts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DxDataGridModule,
-    BgSpinnerComponent,
-    DxTooltipModule,
+    DxButtonComponent,
+    DxTextBoxComponent,
+    DxDataGridComponent,
+    DxoPagingComponent,
+    DxoLoadPanelComponent,
+    DxoScrollingComponent,
+    DxiColumnComponent,
+    DxTemplateDirective,
+    BooleanYesNoPipe,
     StringValueCapitalizePipe,
-    DxButtonModule,
-    DxTextBoxModule,
-    BooleanYesNoPipe
+    DxTooltipComponent,
+    BgSpinnerComponent
   ]
 })
 export class CompanyAccountsComponent implements OnInit, CommonCustomerComponentActions {
-  private cd = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
   private accountsApiService = inject(AccountsService);
   private toastService = inject(ToastService);

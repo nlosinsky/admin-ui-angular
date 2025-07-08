@@ -1,12 +1,12 @@
 import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, Signal } from '@angular/core';
 
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserService } from '@app/services';
 import { User } from '@app/shared/models/user';
 import { DropdownTypes, NavItem, UserDropdownItem } from '@components/sidenav/sidenav.model';
 import { SidenavService } from '@components/sidenav/sidenav.service';
-import { DxButtonModule, DxDropDownButtonModule } from 'devextreme-angular';
+import { DxButtonComponent, DxDropDownButtonComponent } from 'devextreme-angular';
 import { DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
 
 @Component({
@@ -14,7 +14,7 @@ import { DxDropDownButtonTypes } from 'devextreme-angular/ui/drop-down-button';
   templateUrl: 'sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, DxButtonModule, DxDropDownButtonModule, NgOptimizedImage]
+  imports: [DxButtonComponent, RouterLink, DxDropDownButtonComponent, RouterLinkActive, NgOptimizedImage]
 })
 export class SidenavComponent implements OnInit {
   private service = inject(SidenavService);

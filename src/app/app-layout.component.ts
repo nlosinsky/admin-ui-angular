@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { SidenavComponent } from '@components/sidenav/sidenav.component';
+import { RouterOutlet } from '@angular/router';
+import { SidenavComponent } from '@app/shared/components';
 
 @Component({
   selector: 'app-app-layout',
@@ -10,6 +10,6 @@ import { SidenavComponent } from '@components/sidenav/sidenav.component';
     </app-sidenav>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, SidenavComponent]
+  imports: [SidenavComponent, RouterOutlet]
 })
 export class AppLayoutComponent {}

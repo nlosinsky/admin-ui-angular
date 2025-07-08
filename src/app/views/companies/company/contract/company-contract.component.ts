@@ -22,13 +22,15 @@ import { ContractTypePipe } from '@pipes/contract-type/contract-type.pipe';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import {
-  DxButtonModule,
-  DxDropDownButtonModule,
-  DxNumberBoxModule,
-  DxSelectBoxModule,
-  DxSwitchModule,
-  DxTextBoxModule
+  DxButtonComponent,
+  DxDropDownButtonComponent,
+  DxNumberBoxComponent,
+  DxSelectBoxComponent,
+  DxSwitchComponent,
+  DxTemplateDirective,
+  DxTextBoxComponent
 } from 'devextreme-angular';
+import { DxiItemComponent } from 'devextreme-angular/ui/nested';
 import { EMPTY, forkJoin, Observable } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -52,16 +54,18 @@ type CompanyContractForm = {
   templateUrl: './company-contract.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgTemplateOutlet,
-    DxSwitchModule,
-    ContractTypePipe,
+    DxButtonComponent,
+    DxDropDownButtonComponent,
+    DxiItemComponent,
     ReactiveFormsModule,
-    DxSelectBoxModule,
-    DxNumberBoxModule,
-    DxTextBoxModule,
-    BgSpinnerComponent,
-    DxButtonModule,
-    DxDropDownButtonModule
+    DxSelectBoxComponent,
+    ContractTypePipe,
+    DxTemplateDirective,
+    DxTextBoxComponent,
+    DxNumberBoxComponent,
+    DxSwitchComponent,
+    NgTemplateOutlet,
+    BgSpinnerComponent
   ]
 })
 export class CompanyContractComponent implements Submittable, CommonCustomerComponentActions {

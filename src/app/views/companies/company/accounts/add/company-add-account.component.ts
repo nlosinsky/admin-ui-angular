@@ -13,14 +13,15 @@ import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AccountsService } from '@services/data/accounts.service';
 import { ToastService } from '@services/helpers/toast.service';
 import {
-  DxNumberBoxModule,
-  DxPopupModule,
-  DxSelectBoxModule,
-  DxTextAreaModule,
-  DxTextBoxModule,
-  DxToolbarModule,
-  DxValidatorModule
+  DxNumberBoxComponent,
+  DxPopupComponent,
+  DxSelectBoxComponent,
+  DxTextAreaComponent,
+  DxTextBoxComponent,
+  DxValidatorComponent
 } from 'devextreme-angular';
+import { DxiValidationRuleComponent } from 'devextreme-angular/ui/nested';
+import { DxiPopupToolbarItemComponent } from 'devextreme-angular/ui/popup';
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
@@ -40,15 +41,16 @@ type AccountForm = {
   styleUrls: ['./company-add-account.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DxTextBoxModule,
-    DxPopupModule,
+    DxPopupComponent,
     ReactiveFormsModule,
+    DxTextBoxComponent,
+    DxiValidationRuleComponent,
+    DxValidatorComponent,
     ErrorMessagePipe,
-    DxNumberBoxModule,
-    DxTextAreaModule,
-    DxSelectBoxModule,
-    DxValidatorModule,
-    DxToolbarModule
+    DxNumberBoxComponent,
+    DxTextAreaComponent,
+    DxSelectBoxComponent,
+    DxiPopupToolbarItemComponent
   ]
 })
 export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit {

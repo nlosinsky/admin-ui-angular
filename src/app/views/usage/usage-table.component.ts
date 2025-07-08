@@ -6,7 +6,13 @@ import { GeneralToolbarComponent } from '@components/general-toolbar/general-too
 import { DocumentsService } from '@services/data/documents.service';
 import { DataGridHelperService } from '@services/helpers/data-grid-helper.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxTextBoxModule } from 'devextreme-angular';
+import { DxButtonComponent, DxDataGridComponent, DxTextBoxComponent } from 'devextreme-angular';
+import {
+  DxiColumnComponent,
+  DxoLoadPanelComponent,
+  DxoPagingComponent,
+  DxoScrollingComponent
+} from 'devextreme-angular/ui/nested';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -16,7 +22,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './usage-table.component.html',
   styleUrls: ['./usage-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [GeneralToolbarComponent, DxDataGridModule, DxButtonModule, DxTextBoxModule, BgSpinnerComponent]
+  imports: [
+    GeneralToolbarComponent,
+    DxButtonComponent,
+    DxTextBoxComponent,
+    DxDataGridComponent,
+    DxoPagingComponent,
+    DxoLoadPanelComponent,
+    DxoScrollingComponent,
+    DxiColumnComponent,
+    BgSpinnerComponent
+  ]
 })
 export class UsageTableComponent implements OnInit {
   private dataGridHelperService = inject(DataGridHelperService);

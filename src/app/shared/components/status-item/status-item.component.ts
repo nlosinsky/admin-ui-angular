@@ -6,7 +6,6 @@ import { StatusColorsEnum, StatusColorsType } from '@app/shared/models/common';
   templateUrl: './status-item.component.html',
   styleUrls: ['./status-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
   host: {
     '[class]': 'statusItemClassName'
   }

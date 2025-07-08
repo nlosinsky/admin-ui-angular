@@ -19,15 +19,24 @@ import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { TransactionsTableService } from '@views/transactions/transactions-table.service';
 import { isValid } from 'date-fns';
 import {
-  DxButtonModule,
+  DxButtonComponent,
   DxChartComponent,
-  DxChartModule,
-  DxDateBoxModule,
-  DxDropDownButtonModule,
-  DxSelectBoxModule,
-  DxValidatorComponent,
-  DxValidatorModule
+  DxDateBoxComponent,
+  DxDropDownButtonComponent,
+  DxSelectBoxComponent,
+  DxValidatorComponent
 } from 'devextreme-angular';
+import {
+  DxiItemComponent,
+  DxiSeriesComponent,
+  DxiValidationRuleComponent,
+  DxiValueAxisComponent,
+  DxoAggregationComponent,
+  DxoArgumentAxisComponent,
+  DxoLegendComponent,
+  DxoTitleComponent,
+  DxoTooltipComponent
+} from 'devextreme-angular/ui/nested';
 import { of } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
 import { TimeInterval } from 'devextreme/common/charts';
@@ -45,15 +54,24 @@ type TransactionsForm = {
   styleUrls: ['./transactions-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DxDateBoxModule,
-    ReactiveFormsModule,
-    DxSelectBoxModule,
-    DxValidatorModule,
-    ErrorMessagePipe,
-    DxChartModule,
     GeneralToolbarComponent,
-    DxButtonModule,
-    DxDropDownButtonModule
+    ReactiveFormsModule,
+    DxDateBoxComponent,
+    DxValidatorComponent,
+    DxiValidationRuleComponent,
+    ErrorMessagePipe,
+    DxSelectBoxComponent,
+    DxChartComponent,
+    DxiSeriesComponent,
+    DxoAggregationComponent,
+    DxoLegendComponent,
+    DxoTooltipComponent,
+    DxiValueAxisComponent,
+    DxoTitleComponent,
+    DxoArgumentAxisComponent,
+    DxDropDownButtonComponent,
+    DxiItemComponent,
+    DxButtonComponent
   ]
 })
 export class TransactionsTableComponent implements OnInit {

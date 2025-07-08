@@ -14,7 +14,19 @@ import { CompaniesService } from '@services/data/companies.service';
 import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
-import { DxButtonModule, DxDataGridModule, DxDropDownButtonModule } from 'devextreme-angular';
+import {
+  DxButtonComponent,
+  DxDataGridComponent,
+  DxDropDownButtonComponent,
+  DxTemplateDirective
+} from 'devextreme-angular';
+import {
+  DxiColumnComponent,
+  DxiItemComponent,
+  DxoLoadPanelComponent,
+  DxoPagingComponent,
+  DxoScrollingComponent
+} from 'devextreme-angular/ui/nested';
 import { EMPTY, from, zip } from 'rxjs';
 import { catchError, filter, finalize, mergeMap } from 'rxjs/operators';
 
@@ -24,14 +36,20 @@ import { catchError, filter, finalize, mergeMap } from 'rxjs/operators';
   styleUrls: ['./company-users.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    DxButtonComponent,
+    DxDataGridComponent,
+    DxoPagingComponent,
+    DxoLoadPanelComponent,
+    DxoScrollingComponent,
+    DxiColumnComponent,
+    DxTemplateDirective,
     AvatarBoxComponent,
-    DxDataGridModule,
-    DxButtonModule,
-    StatusItemComponent,
+    StatusColorPipe,
     StringValueCapitalizePipe,
-    BgSpinnerComponent,
-    DxDropDownButtonModule,
-    StatusColorPipe
+    StatusItemComponent,
+    DxDropDownButtonComponent,
+    DxiItemComponent,
+    BgSpinnerComponent
   ]
 })
 export class CompanyUsersComponent implements OnInit, CommonCustomerComponentActions {

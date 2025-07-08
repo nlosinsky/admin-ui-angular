@@ -29,13 +29,14 @@ import { ToastService } from '@services/helpers/toast.service';
 import { WebsiteUrlValidator } from '@validators/website-url.validator';
 import { CompanyStateService } from '@views/companies/company/company-state.service';
 import {
-  DxButtonModule,
-  DxDropDownButtonModule,
-  DxSelectBoxModule,
-  DxTextBoxModule,
-  DxValidatorComponent,
-  DxValidatorModule
+  DxButtonComponent,
+  DxDropDownButtonComponent,
+  DxSelectBoxComponent,
+  DxTemplateDirective,
+  DxTextBoxComponent,
+  DxValidatorComponent
 } from 'devextreme-angular';
+import { DxiItemComponent, DxiValidationRuleComponent } from 'devextreme-angular/ui/nested';
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -57,18 +58,21 @@ type CompanyInformationForm = {
   templateUrl: './company-information.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DatePipe,
-    BgSpinnerComponent,
+    DxButtonComponent,
+    DxDropDownButtonComponent,
+    DxiItemComponent,
     ReactiveFormsModule,
-    DxTextBoxModule,
+    DxTextBoxComponent,
+    DxValidatorComponent,
     ErrorMessagePipe,
-    DxButtonModule,
-    DxDropDownButtonModule,
-    DxValidatorModule,
-    DxSelectBoxModule,
-    StringValueCapitalizePipe,
+    DxiValidationRuleComponent,
+    DxSelectBoxComponent,
+    DxTemplateDirective,
     StatusItemComponent,
-    StatusColorPipe
+    StatusColorPipe,
+    StringValueCapitalizePipe,
+    DatePipe,
+    BgSpinnerComponent
   ]
 })
 export class CompanyInformationComponent implements OnInit, Submittable, CommonCustomerComponentActions {
