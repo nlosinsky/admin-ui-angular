@@ -94,8 +94,7 @@
                 stylingMode="contained"
                 text="Save"
                 type="success"
-                class="button-small ml-15"
-                [class]="{ loading: isSubmitting() }"
+                [elementAttr]="{class: 'button-small ml-15' + (isSubmitting() ? ' loading' : '') }"
                 (onClick)="onSave()"
               ></dx-button>
             } @else {
@@ -103,7 +102,7 @@
                 stylingMode="contained"
                 text="Edit"
                 type="success"
-                class="button-small"
+                [elementAttr]="{class: 'button-small'}"
                 (onClick)="onEdit()"
               ></dx-button>
             }
