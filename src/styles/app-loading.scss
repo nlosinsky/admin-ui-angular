@@ -1,12 +1,17 @@
 @use 'variables' as *;
 
 .app-loading-container {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  position: fixed;
+  z-index: 9999;
+  background: #fff;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
   .app-loading {
     max-width: 20vmin;
