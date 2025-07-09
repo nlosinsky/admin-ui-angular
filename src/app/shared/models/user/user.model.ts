@@ -7,7 +7,7 @@ export class User {
   password!: string;
   fullName: string;
 
-  constructor(input: Partial<User> = {}) {
+  constructor(input: unknown = {}) {
     Object.assign(this, input);
 
     this.fullName = this.getFullName();

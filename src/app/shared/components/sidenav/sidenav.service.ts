@@ -1,17 +1,10 @@
-import { inject, Injectable, Signal } from '@angular/core';
-import { User } from '@app/shared/models';
+import { inject, Injectable } from '@angular/core';
 import { DropdownTypes, NavItem, UserDropdownItem } from '@components/sidenav/sidenav.model';
 import { AuthService } from '@services/data/auth.service';
-import { UserService } from '@services/data/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class SidenavService {
   private authService = inject(AuthService);
-  private userService = inject(UserService);
-
-  getCurrentUser(): Signal<User | null> {
-    return this.userService.currentUser;
-  }
 
   logout(): void {
     this.authService.logout();

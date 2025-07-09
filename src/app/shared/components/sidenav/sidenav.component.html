@@ -20,7 +20,7 @@
     }
   </div>
 
-  @if (currentUser(); as user) {
+  @if (currentUser.value(); as user) {
     <dx-drop-down-button
       stylingMode="outlined"
       [text]="user.fullName"
