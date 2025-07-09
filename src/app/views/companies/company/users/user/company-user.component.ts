@@ -106,7 +106,6 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
         this.toastService.showSuccess('Member data has been updated successfully.');
         this.form.get('accountState')?.setValue(accountState);
         this.member.update(member => new CompanyMember({ ...member, accountState }));
-        this.isSubmitting.set(false);
         this.onCancel();
       });
   }
@@ -123,6 +122,10 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
 
   private loadData() {
     this.memberId = this.route.snapshot.paramMap.get('id') || '';
+
+    if (!this.memberId) {
+      return;
+    }
 
     this.companyUserService
       .getData(this.memberId)

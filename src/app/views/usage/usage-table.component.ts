@@ -78,7 +78,6 @@ export class UsageTableComponent implements OnInit {
   }
 
   private loadData() {
-    this.isDataLoaded.set(false);
     this.documentsService
       .getDocumentsStats()
       .pipe(

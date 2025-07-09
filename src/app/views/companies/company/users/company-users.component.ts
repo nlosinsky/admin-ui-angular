@@ -87,6 +87,7 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
     });
   };
 
+  // todo add decorator
   onDecline(memberId: string): void {
     if (this.declineRequestsSet().has(memberId)) {
       return;
@@ -122,10 +123,15 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
       });
   }
 
+  // todo add decorator
   onApprove(memberId: string): void {
     const companyId = this.companyId();
 
-    if (this.approveRequestsSet().has(memberId) || !companyId) {
+    if (!companyId) {
+      return;
+    }
+
+    if (this.approveRequestsSet().has(memberId)) {
       return;
     }
 

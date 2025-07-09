@@ -132,15 +132,14 @@ export class TransactionsTableComponent implements OnInit {
       return;
     }
 
-    this.isSubmitting.set(true);
-
     const formValue = this.form.value;
     const payload = this.transactionsTableService.getSearchPayload(formValue);
 
     if (!isValid(new Date(payload.startDate)) || !isValid(new Date(payload.endDate))) {
-      this.isSubmitting.set(false);
       return;
     }
+
+    this.isSubmitting.set(true);
 
     this.transactionsTableService
       .getTransactionsCount(payload)

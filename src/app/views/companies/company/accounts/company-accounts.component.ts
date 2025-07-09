@@ -5,7 +5,6 @@ import {
   EventEmitter,
   OnInit,
   TemplateRef,
-  ViewContainerRef,
   inject,
   viewChild,
   effect,
@@ -77,11 +76,11 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
 
   readonly tooltip = viewChild.required(DxTooltipComponent);
   readonly dataGrid = viewChild.required(DxDataGridComponent);
-  readonly popupContainer = viewChild.required('popupContainer', { read: ViewContainerRef });
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
 
   accounts = signal<Account[]>([]);
   isDataLoaded = signal(false);
+
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   private searchSubj = new Subject<string>();

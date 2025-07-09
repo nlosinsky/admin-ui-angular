@@ -97,6 +97,7 @@ export class CompaniesTableComponent implements OnInit {
     this.dataGridHelperService.showColumnChooser(this.dataGrid());
   }
 
+  // todo add decorator
   onDecline(id: string): void {
     if (this.declineRequestsSet().has(id)) {
       return;
@@ -132,6 +133,7 @@ export class CompaniesTableComponent implements OnInit {
       });
   }
 
+  // todo add decorator
   onApprove(id: string): void {
     if (this.approveRequestsSet().has(id)) {
       return;

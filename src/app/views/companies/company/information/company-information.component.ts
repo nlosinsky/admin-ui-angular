@@ -107,6 +107,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
       this.actionsTemplateEvent.emit(this.actionsTpl());
     });
 
+    // todo do we need it here?
     effect(() => {
       this.setFormData(this.currentCompany());
     });
@@ -294,8 +295,8 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     }
 
     const newItem = { name: data.text } as City;
-    this.cities.update(cities => [...cities, newItem]);
     data.customItem = newItem;
+    this.cities.update(cities => [...cities, newItem]);
   }
 
   onAddCustomZipCode(data: DxSelectBoxTypes.CustomItemCreatingEvent) {
@@ -305,8 +306,8 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
     }
 
     const newItem = data.text;
-    this.zipCodes.update(zipCodes => [...zipCodes, newItem]);
     data.customItem = newItem;
+    this.zipCodes.update(zipCodes => [...zipCodes, newItem]);
   }
 
   get state() {

@@ -10,8 +10,6 @@
   <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined" />
   <dx-text-box placeholder="Search..." (keyup)="onSearch($event)" height="34" />
   <dx-button icon="plus" type="success" (onClick)="onAdd()" stylingMode="contained" />
-
-  <ng-container #popupContainer />
 </ng-template>
 
 @if (isDataLoaded()) {

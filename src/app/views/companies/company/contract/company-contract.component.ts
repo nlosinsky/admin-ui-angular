@@ -97,6 +97,7 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
       this.actionsTemplateEvent.emit(this.actionsTpl());
     });
 
+    // todo refactor
     effect(() => {
       if (this.currentCompany() && !this.isDataLoaded()) {
         this.isDataLoaded.set(true);

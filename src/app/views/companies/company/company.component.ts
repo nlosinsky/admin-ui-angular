@@ -33,10 +33,10 @@ export class CompanyComponent implements OnInit, OnDestroy {
   private dialogService = inject(DialogService);
 
   currentCompany = this.companyStateService.currentCompany;
+  actionsTemplate = signal<TemplateRef<HTMLElement> | null>(null);
 
   tabs: Tab[] = this.companyHelperService.getTabs();
   activeComponent!: Submittable & CommonCustomerComponentActions;
-  actionsTemplate = signal<TemplateRef<HTMLElement> | null>(null);
   companyId!: string;
 
   ngOnInit(): void {
@@ -56,6 +56,7 @@ export class CompanyComponent implements OnInit, OnDestroy {
     this.activeComponent.navigateBack();
   }
 
+  // todo rewrite with signals
   onActivateRoute(component: Submittable & CommonCustomerComponentActions): void {
     this.activeComponent = component;
 
