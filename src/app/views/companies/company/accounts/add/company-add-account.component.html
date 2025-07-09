@@ -1,164 +1,157 @@
-<dx-popup
-  [width]="940"
-  [height]="400"
-  [showTitle]="true"
-  [dragEnabled]="false"
-  [hideOnOutsideClick]="true"
-  [showCloseButton]="true"
-  [visible]="true"
-  title="Add Account"
->
-  <form [formGroup]="form">
-    <div class="flex-row">
-      <div class="flex-col">
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Name</div>
-            <div class="table-list-content">
-              <dx-text-box formControlName="name" validationMessageMode="always" valueChangeEvent="keyup">
-                <dx-validator>
-                  <dxi-validation-rule
-                    type="custom"
-                    [validationCallback]="onValidateRule('name')"
-                    [message]="form.get('name')?.errors | errorMessage"
-                  >
-                  </dxi-validation-rule>
-                </dx-validator>
-              </dx-text-box>
-            </div>
-          </div>
-        </div>
-
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Number</div>
-            <div class="table-list-content">
-              <dx-number-box formControlName="number" validationMessageMode="always" valueChangeEvent="keyup">
-                <dx-validator>
-                  <dxi-validation-rule
-                    type="custom"
-                    [validationCallback]="onValidateRule('number')"
-                    [message]="form.get('number')?.errors | errorMessage"
-                  >
-                  </dxi-validation-rule>
-                </dx-validator>
-              </dx-number-box>
-            </div>
-          </div>
-        </div>
-
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Description</div>
-            <div class="table-list-content">
-              <dx-text-area
-                formControlName="description"
-                validationMessageMode="always"
-                valueChangeEvent="keyup"
-                [height]="100"
-              >
-                <dx-validator>
-                  <dxi-validation-rule
-                    type="custom"
-                    [validationCallback]="onValidateRule('description')"
-                    [message]="form.get('description')?.errors | errorMessage"
-                  >
-                  </dxi-validation-rule>
-                </dx-validator>
-              </dx-text-area>
-            </div>
+<form [formGroup]="form">
+  <div class="flex-row">
+    <div class="flex-col">
+      <div class="table-list-row">
+        <div class="table-list-col">
+          <div class="table-list-label">Name</div>
+          <div class="table-list-content">
+            <dx-text-box formControlName="name" validationMessageMode="always" valueChangeEvent="keyup">
+              <dx-validator>
+                <dxi-validation-rule
+                  type="custom"
+                  [validationCallback]="onValidateRule('name')"
+                  [message]="form.get('name')?.errors | errorMessage"
+                >
+                </dxi-validation-rule>
+              </dx-validator>
+            </dx-text-box>
           </div>
         </div>
       </div>
 
-      <div class="flex-col">
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Inactive</div>
-            <div class="table-list-content">
-              <dx-select-box
-                [dataSource]="inactiveTypes"
-                [dropDownOptions]="{ container: 'dx-select-box' }"
-                formControlName="archived"
-                displayExpr="label"
-                valueExpr="value"
-              ></dx-select-box>
-            </div>
+      <div class="table-list-row">
+        <div class="table-list-col">
+          <div class="table-list-label">Number</div>
+          <div class="table-list-content">
+            <dx-number-box formControlName="number" validationMessageMode="always" valueChangeEvent="keyup">
+              <dx-validator>
+                <dxi-validation-rule
+                  type="custom"
+                  [validationCallback]="onValidateRule('number')"
+                  [message]="form.get('number')?.errors | errorMessage"
+                >
+                </dxi-validation-rule>
+              </dx-validator>
+            </dx-number-box>
           </div>
         </div>
+      </div>
 
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Type</div>
-            <div class="table-list-content">
-              <dx-select-box
-                [dataSource]="accountTypes"
-                [dropDownOptions]="{ container: 'dx-select-box' }"
-                formControlName="type"
-                validationMessageMode="always"
-                displayExpr="label"
-                valueExpr="value"
-              >
-                <dx-validator>
-                  <dxi-validation-rule
-                    type="custom"
-                    [validationCallback]="onValidateRule('type')"
-                    [message]="form.get('type')?.errors | errorMessage"
-                  >
-                  </dxi-validation-rule>
-                </dx-validator>
-              </dx-select-box>
-            </div>
-          </div>
-        </div>
-
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Sub-Type</div>
-            <div class="table-list-content">
-              <dx-text-box formControlName="subtype" validationMessageMode="always" valueChangeEvent="keyup">
-                <dx-validator>
-                  <dxi-validation-rule
-                    type="custom"
-                    [validationCallback]="onValidateRule('subtype')"
-                    [message]="form.get('subtype')?.errors | errorMessage"
-                  >
-                  </dxi-validation-rule>
-                </dx-validator>
-              </dx-text-box>
-            </div>
-          </div>
-        </div>
-
-        <div class="table-list-row">
-          <div class="table-list-col">
-            <div class="table-list-label">Natural Balance</div>
-            <div class="table-list-content">
-              <dx-select-box
-                [dataSource]="naturalBalances"
-                [dropDownOptions]="{ container: 'dx-select-box' }"
-                formControlName="naturalBalance"
-                validationMessageMode="always"
-                displayExpr="label"
-                valueExpr="value"
-              >
-                <dx-validator>
-                  <dxi-validation-rule
-                    type="custom"
-                    [validationCallback]="onValidateRule('naturalBalance')"
-                    [message]="form.get('naturalBalance')?.errors | errorMessage"
-                  >
-                  </dxi-validation-rule>
-                </dx-validator>
-              </dx-select-box>
-            </div>
+      <div class="table-list-row">
+        <div class="table-list-col">
+          <div class="table-list-label">Description</div>
+          <div class="table-list-content">
+            <dx-text-area
+              formControlName="description"
+              validationMessageMode="always"
+              valueChangeEvent="keyup"
+              [height]="100"
+            >
+              <dx-validator>
+                <dxi-validation-rule
+                  type="custom"
+                  [validationCallback]="onValidateRule('description')"
+                  [message]="form.get('description')?.errors | errorMessage"
+                >
+                </dxi-validation-rule>
+              </dx-validator>
+            </dx-text-area>
           </div>
         </div>
       </div>
     </div>
-  </form>
 
-  <dxi-popup-toolbar-item widget="dxButton" toolbar="bottom" location="after" [options]="cancelButtonOptions" />
+    <div class="flex-col">
+      <div class="table-list-row">
+        <div class="table-list-col">
+          <div class="table-list-label">Inactive</div>
+          <div class="table-list-content">
+            <dx-select-box
+              [dataSource]="inactiveTypes"
+              [dropDownOptions]="{ container: 'dx-select-box' }"
+              formControlName="archived"
+              displayExpr="label"
+              valueExpr="value"
+            ></dx-select-box>
+          </div>
+        </div>
+      </div>
 
-  <dxi-popup-toolbar-item widget="dxButton" toolbar="bottom" location="after" [options]="saveButtonOptions" />
-</dx-popup>
+      <div class="table-list-row">
+        <div class="table-list-col">
+          <div class="table-list-label">Type</div>
+          <div class="table-list-content">
+            <dx-select-box
+              [dataSource]="accountTypes"
+              [dropDownOptions]="{ container: 'dx-select-box' }"
+              formControlName="type"
+              validationMessageMode="always"
+              displayExpr="label"
+              valueExpr="value"
+            >
+              <dx-validator>
+                <dxi-validation-rule
+                  type="custom"
+                  [validationCallback]="onValidateRule('type')"
+                  [message]="form.get('type')?.errors | errorMessage"
+                >
+                </dxi-validation-rule>
+              </dx-validator>
+            </dx-select-box>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-list-row">
+        <div class="table-list-col">
+          <div class="table-list-label">Sub-Type</div>
+          <div class="table-list-content">
+            <dx-text-box formControlName="subtype" validationMessageMode="always" valueChangeEvent="keyup">
+              <dx-validator>
+                <dxi-validation-rule
+                  type="custom"
+                  [validationCallback]="onValidateRule('subtype')"
+                  [message]="form.get('subtype')?.errors | errorMessage"
+                >
+                </dxi-validation-rule>
+              </dx-validator>
+            </dx-text-box>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-list-row">
+        <div class="table-list-col">
+          <div class="table-list-label">Natural Balance</div>
+          <div class="table-list-content">
+            <dx-select-box
+              [dataSource]="naturalBalances"
+              [dropDownOptions]="{ container: 'dx-select-box' }"
+              formControlName="naturalBalance"
+              validationMessageMode="always"
+              displayExpr="label"
+              valueExpr="value"
+            >
+              <dx-validator>
+                <dxi-validation-rule
+                  type="custom"
+                  [validationCallback]="onValidateRule('naturalBalance')"
+                  [message]="form.get('naturalBalance')?.errors | errorMessage"
+                >
+                </dxi-validation-rule>
+              </dx-validator>
+            </dx-select-box>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="flex-row justify-content-end">
+  <dx-button stylingMode="outlined" class="grayed" [disabled]="isSubmitting" [width]="120" (onClick)="onClose()"
+    >Cancel</dx-button
+  >
+
+  <dx-button type="success" [disabled]="isSubmitting" [width]="120" (onClick)="onSave()">Save</dx-button>
+</div>

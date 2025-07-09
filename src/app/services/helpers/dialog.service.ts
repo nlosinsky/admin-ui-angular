@@ -1,13 +1,14 @@
-import { Injectable, ViewContainerRef } from '@angular/core';
-import { PopupBaseComponent } from '@app/shared/base/popup.base';
-import { ComponentType } from '@app/shared/models/components';
+import { inject, Injectable } from '@angular/core';
+import { CompanyAddAccountComponent } from '@views/companies/company/accounts/add/company-add-account.component';
+import { DxPopupService, DxPopupTypes } from 'devextreme-angular/ui/popup';
 import { custom } from 'devextreme/ui/dialog';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DialogService {
+  private popupService = inject(DxPopupService);
+
   showConfirm(message: string): Promise<boolean> {
     const customRef = custom({
       title: 'Confirm',
@@ -32,9 +33,19 @@ export class DialogService {
     return customRef.show() as Promise<boolean>;
   }
 
-  openPopup<T extends PopupBaseComponent>(viewRef: ViewContainerRef, component: ComponentType<T>): Observable<unknown> {
-    viewRef.clear();
-    const componentRef = viewRef.createComponent<T>(component);
-    return componentRef.instance.close$;
+  openPopup(component: typeof CompanyAddAccountComponent, popupOptions: DxPopupTypes.Properties) {
+    const defaultOptions = {
+      width: 940,
+      height: 400,
+      showTitle: true,
+      dragEnabled: false,
+      hideOnOutsideClick: true,
+      showCloseButton: true
+    };
+    const popupRef = this.popupService.open(component, { ...defaultOptions, ...popupOptions });
+
+    popupRef.contentRef.instance.setPopupRef(popupRef.instance);
+
+    return popupRef.contentRef.instance.closeEvent;
   }
 }

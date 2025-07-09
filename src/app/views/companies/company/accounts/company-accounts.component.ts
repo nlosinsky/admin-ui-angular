@@ -106,8 +106,6 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
       return;
     }
 
-    this.isDataLoaded.set(false);
-
     this.accountsApiService
       .getAccounts(companyId)
       .pipe(
@@ -170,7 +168,7 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
 
   onAdd() {
     this.dialogService
-      .openPopup(this.popupContainer(), CompanyAddAccountComponent)
+      .openPopup(CompanyAddAccountComponent, { title: 'Add Account' })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(refresh => {
         if (refresh) {
