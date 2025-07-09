@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +13,7 @@ import { StringValueCapitalizePipe } from '@pipes/string-value-capitalize/string
 import { CompaniesService } from '@services/data/companies.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyUserService } from '@views/companies/company/users/user/company-user.service';
-import { DxButtonModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
+import { DxButtonComponent, DxSelectBoxComponent, DxTemplateDirective, DxTextBoxComponent } from 'devextreme-angular';
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
@@ -27,13 +28,15 @@ type CompanyUserForm = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
+    DxSelectBoxComponent,
     StatusItemComponent,
     StatusColorPipe,
     StringValueCapitalizePipe,
-    DxTextBoxModule,
-    DxButtonModule,
-    DxSelectBoxModule,
-    BgSpinnerComponent
+    DxTextBoxComponent,
+    DxTemplateDirective,
+    DxButtonComponent,
+    BgSpinnerComponent,
+    NgOptimizedImage
   ]
 })
 export class CompanyUserComponent implements OnInit, CommonCustomerComponentActions {
@@ -103,7 +106,6 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
         this.toastService.showSuccess('Member data has been updated successfully.');
         this.form.get('accountState')?.setValue(accountState);
         this.member.update(member => new CompanyMember({ ...member, accountState }));
-        this.isSubmitting.set(false);
         this.onCancel();
       });
   }
@@ -120,6 +122,10 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
 
   private loadData() {
     this.memberId = this.route.snapshot.paramMap.get('id') || '';
+
+    if (!this.memberId) {
+      return;
+    }
 
     this.companyUserService
       .getData(this.memberId)

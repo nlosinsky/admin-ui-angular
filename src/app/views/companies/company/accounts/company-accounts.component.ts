@@ -1,12 +1,10 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   EventEmitter,
   OnInit,
   TemplateRef,
-  ViewContainerRef,
   inject,
   viewChild,
   effect,
@@ -27,14 +25,20 @@ import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
 import { CompanyAddAccountComponent } from '@views/companies/company/accounts/add/company-add-account.component';
 import {
-  DxButtonModule,
+  DxButtonComponent,
   DxDataGridComponent,
-  DxDataGridModule,
-  DxTextBoxModule,
-  DxTooltipComponent,
-  DxTooltipModule
+  DxTemplateDirective,
+  DxTextBoxComponent,
+  DxTooltipComponent
 } from 'devextreme-angular';
-import { DataGridCell } from 'devextreme/excel_exporter';
+import {
+  DxiColumnComponent,
+  DxoColumnChooserComponent,
+  DxoLoadPanelComponent,
+  DxoPagingComponent,
+  DxoScrollingComponent
+} from 'devextreme-angular/ui/nested';
+import { DataGridCell } from 'devextreme-angular/common/export/excel';
 import { EMPTY, Subject } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { on } from 'devextreme/events';
@@ -46,17 +50,22 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
   styleUrls: ['./company-accounts.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DxDataGridModule,
-    BgSpinnerComponent,
-    DxTooltipModule,
+    DxButtonComponent,
+    DxTextBoxComponent,
+    DxDataGridComponent,
+    DxoPagingComponent,
+    DxoLoadPanelComponent,
+    DxoScrollingComponent,
+    DxiColumnComponent,
+    DxTemplateDirective,
+    BooleanYesNoPipe,
     StringValueCapitalizePipe,
-    DxButtonModule,
-    DxTextBoxModule,
-    BooleanYesNoPipe
+    DxTooltipComponent,
+    BgSpinnerComponent,
+    DxoColumnChooserComponent
   ]
 })
 export class CompanyAccountsComponent implements OnInit, CommonCustomerComponentActions {
-  private cd = inject(ChangeDetectorRef);
   private destroyRef = inject(DestroyRef);
   private accountsApiService = inject(AccountsService);
   private toastService = inject(ToastService);
@@ -67,11 +76,11 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
 
   readonly tooltip = viewChild.required(DxTooltipComponent);
   readonly dataGrid = viewChild.required(DxDataGridComponent);
-  readonly popupContainer = viewChild.required('popupContainer', { read: ViewContainerRef });
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
 
   accounts = signal<Account[]>([]);
   isDataLoaded = signal(false);
+
   actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   private searchSubj = new Subject<string>();
@@ -95,8 +104,6 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
     if (!companyId) {
       return;
     }
-
-    this.isDataLoaded.set(false);
 
     this.accountsApiService
       .getAccounts(companyId)
@@ -160,7 +167,7 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
 
   onAdd() {
     this.dialogService
-      .openPopup(this.popupContainer(), CompanyAddAccountComponent)
+      .openPopup(CompanyAddAccountComponent, { title: 'Add Account' })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(refresh => {
         if (refresh) {

@@ -12,8 +12,8 @@ import { catchError, switchMap } from 'rxjs/operators';
 export class UserService {
   private userApiService = inject(UserApiService);
   private toastService = inject(ToastService);
-  private _currentUser = signal<User | null>(null);
   private loadUserSubj = new Subject<void>();
+  private _currentUser = signal<User | null>(null);
 
   currentUser = this._currentUser.asReadonly();
 

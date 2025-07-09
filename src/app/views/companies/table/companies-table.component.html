@@ -7,7 +7,7 @@
           text="Manage columns"
           [rtlEnabled]="true"
           stylingMode="outlined"
-          class="grid-column-chooser-btn"
+          [elementAttr]="{ class: 'grid-column-chooser-btn' }"
           (onClick)="onShowColumnChooser()"
         ></dx-button>
         <dx-button icon="file" (onClick)="onExport()" stylingMode="outlined"></dx-button>
@@ -24,6 +24,7 @@
         [columnAutoWidth]="true"
         [remoteOperations]="false"
       >
+        <dxo-column-chooser mode="select" sortOrder="asc"></dxo-column-chooser>
         <dxo-paging [enabled]="false"></dxo-paging>
         <dxo-load-panel [enabled]="true" [indicatorSrc]="indicatorSrc"></dxo-load-panel>
         <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
@@ -76,16 +77,16 @@
                   stylingMode="outlined"
                   text="Decline"
                   type="normal"
-                  class="button-small grayed"
-                  [class]="{ 'loading-blue': declineRequestsSet().has(item.id) }"
+                  [elementAttr]="{
+                    class: 'button-small grayed' + (declineRequestsSet().has(item.id) ? ' loading-blue' : '')
+                  }"
                   (onClick)="onDecline(item.id)"
                 ></dx-button>
                 <dx-button
                   stylingMode="contained"
                   type="success"
-                  class="button-small"
+                  [elementAttr]="{ class: 'button-small' + (approveRequestsSet().has(item.id) ? ' loading' : '') }"
                   text="Approve"
-                  [class]="{ loading: approveRequestsSet().has(item.id) }"
                   (onClick)="onApprove(item.id)"
                 >
                 </dx-button>

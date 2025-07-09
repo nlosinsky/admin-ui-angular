@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-
-import { DxButtonModule } from 'devextreme-angular';
+import { DxButtonComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-details-toolbar',
   templateUrl: './details-toolbar.component.html',
   styleUrls: ['./details-toolbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DxButtonModule]
+  imports: [DxButtonComponent]
 })
 export class DetailsToolbarComponent {
   readonly logo = input('');

@@ -1,9 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  inject,
+  EventEmitter,
+  viewChildren
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { PopupBaseComponent } from '@app/shared/base/popup.base';
 import { AccountDTO, ObjectLike } from '@app/shared/models';
 import { AccountNaturalBalanceEnum, AccountTypeEnum } from '@app/shared/models/accounts/account.enum';
 import { FormHelper } from '@app/shared/utils/form-helper';
@@ -12,15 +19,18 @@ import { TransformHelper } from '@app/shared/utils/transform-helper';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AccountsService } from '@services/data/accounts.service';
 import { ToastService } from '@services/helpers/toast.service';
+import { CompanyStateService } from '@views/companies/company/company-state.service';
+import { DxPopupTypes } from 'devextreme-angular/ui/popup';
+import DxPopup from 'devextreme/ui/popup';
 import {
-  DxNumberBoxModule,
-  DxPopupModule,
-  DxSelectBoxModule,
-  DxTextAreaModule,
-  DxTextBoxModule,
-  DxToolbarModule,
-  DxValidatorModule
+  DxButtonComponent,
+  DxNumberBoxComponent,
+  DxSelectBoxComponent,
+  DxTextAreaComponent,
+  DxTextBoxComponent,
+  DxValidatorComponent
 } from 'devextreme-angular';
+import { DxiValidationRuleComponent } from 'devextreme-angular/ui/nested';
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
@@ -40,28 +50,31 @@ type AccountForm = {
   styleUrls: ['./company-add-account.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DxTextBoxModule,
-    DxPopupModule,
     ReactiveFormsModule,
+    DxTextBoxComponent,
+    DxiValidationRuleComponent,
+    DxValidatorComponent,
     ErrorMessagePipe,
-    DxNumberBoxModule,
-    DxTextAreaModule,
-    DxSelectBoxModule,
-    DxValidatorModule,
-    DxToolbarModule
+    DxNumberBoxComponent,
+    DxTextAreaComponent,
+    DxSelectBoxComponent,
+    DxButtonComponent
   ]
 })
-export class CompanyAddAccountComponent extends PopupBaseComponent implements OnInit {
+export class CompanyAddAccountComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
   private accountsService = inject(AccountsService);
   private toastService = inject(ToastService);
+  private companyStateService = inject(CompanyStateService);
+  private currentCompanyId = this.companyStateService.currentCompanyId;
+  readonly validators = viewChildren(DxValidatorComponent);
 
   form!: FormGroup<AccountForm>;
-  cancelButtonOptions!: unknown;
-  saveButtonOptions!: unknown;
   isSubmitting = false;
+
+  private popupRef!: DxPopup<DxPopupTypes.Properties>;
 
   readonly accountTypes = ObjectUtil.enumToArray(AccountTypeEnum).map(value => {
     return { label: TransformHelper.stringValueCapitalize(value), value };
@@ -73,9 +86,9 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
     { label: 'Yes', value: true },
     { label: 'No', value: false }
   ];
+  readonly closeEvent = new EventEmitter<boolean | void>();
 
   ngOnInit() {
-    this.initButtons();
     this.initForm();
   }
 
@@ -101,30 +114,10 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
     this.form = this.fb.group(config);
   }
 
-  private initButtons() {
-    this.cancelButtonOptions = {
-      text: 'Cancel',
-      stylingMode: 'outlined',
-      elementAttr: { class: 'grayed' },
-      disabled: this.isSubmitting,
-      onClick: () => this.close()
-    };
+  onSave() {
+    const companyId = this.currentCompanyId();
 
-    this.saveButtonOptions = {
-      text: 'Save',
-      type: 'success',
-      disabled: this.isSubmitting,
-      onClick: () => this.save()
-    };
-  }
-
-  protected override close(data: boolean | void) {
-    this.popupElem().instance.hide();
-    super.close(data);
-  }
-
-  private save() {
-    if (this.isSubmitting) {
+    if (this.isSubmitting || !companyId) {
       return;
     }
 
@@ -136,7 +129,6 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
     this.isSubmitting = true;
 
     const value = this.form.value as ObjectLike;
-    const companyId = this.route.snapshot.paramMap.get('companyId') as string;
     let payload = ObjectUtil.deleteEmptyProperties(value) as unknown as AccountDTO;
     payload.name = payload.name.trim();
 
@@ -159,7 +151,17 @@ export class CompanyAddAccountComponent extends PopupBaseComponent implements On
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        this.close(true);
+        this.popupRef.hide();
+        this.closeEvent.emit(true);
       });
+  }
+
+  onClose(): void {
+    this.popupRef.hide();
+    this.closeEvent.emit();
+  }
+
+  setPopupRef(ref: DxPopup<DxPopupTypes.Properties>) {
+    this.popupRef = ref;
   }
 }

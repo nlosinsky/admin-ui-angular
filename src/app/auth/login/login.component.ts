@@ -6,7 +6,8 @@ import { LoginCredentials } from '@app/shared/models';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { AuthService } from '@services/data/auth.service';
-import { DxButtonModule, DxTextBoxModule, DxValidatorComponent, DxValidatorModule } from 'devextreme-angular';
+import { DxButtonComponent, DxTextBoxComponent, DxValidatorComponent } from 'devextreme-angular';
+import { DxiValidationRuleComponent } from 'devextreme-angular/ui/nested';
 import { EMPTY } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -21,7 +22,15 @@ type LoginForm = {
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DxTextBoxModule, ReactiveFormsModule, DxButtonModule, ErrorMessagePipe, DxValidatorModule, NgOptimizedImage]
+  imports: [
+    DxButtonComponent,
+    DxTextBoxComponent,
+    DxValidatorComponent,
+    DxiValidationRuleComponent,
+    ErrorMessagePipe,
+    NgOptimizedImage,
+    ReactiveFormsModule
+  ]
 })
 export class LoginComponent implements OnInit {
   private fb = inject(NonNullableFormBuilder);

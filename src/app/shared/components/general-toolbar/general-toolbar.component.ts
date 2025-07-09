@@ -4,8 +4,7 @@ import { Component, ChangeDetectionStrategy, input } from '@angular/core';
   selector: 'app-general-toolbar',
   templateUrl: './general-toolbar.component.html',
   styleUrls: ['./general-toolbar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: []
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GeneralToolbarComponent {
   readonly title = input.required();

@@ -9,7 +9,7 @@ import {
   viewChild,
   signal
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { Company, ExportGridExcelCell, HttpError } from '@app/shared/models';
 import { CompanyContractType } from '@app/shared/models/companies/company.enum';
@@ -21,8 +21,15 @@ import { CompaniesService } from '@services/data/companies.service';
 import { DataGridHelperService } from '@services/helpers/data-grid-helper.service';
 import { DialogService } from '@services/helpers/dialog.service';
 import { ToastService } from '@services/helpers/toast.service';
-import { DxButtonModule, DxDataGridComponent, DxDataGridModule, DxTextBoxModule } from 'devextreme-angular';
-import { DataGridCell } from 'devextreme/excel_exporter';
+import { DxButtonComponent, DxDataGridComponent, DxTemplateDirective, DxTextBoxComponent } from 'devextreme-angular';
+import {
+  DxiColumnComponent,
+  DxoColumnChooserComponent,
+  DxoLoadPanelComponent,
+  DxoPagingComponent,
+  DxoScrollingComponent
+} from 'devextreme-angular/ui/nested';
+import { DataGridCell } from 'devextreme-angular/common/export/excel';
 import { EMPTY, forkJoin, from, Subject } from 'rxjs';
 import {
   catchError,
@@ -42,15 +49,21 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrls: ['./companies-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    DatePipe,
-    DecimalPipe,
     GeneralToolbarComponent,
-    DxDataGridModule,
-    DxButtonModule,
-    DxTextBoxModule,
+    DxButtonComponent,
+    DxTextBoxComponent,
+    DxDataGridComponent,
+    DxoPagingComponent,
+    DxoLoadPanelComponent,
+    DxoScrollingComponent,
+    DxiColumnComponent,
+    DxTemplateDirective,
+    RouterLink,
+    DecimalPipe,
+    DatePipe,
     ContractTypePipe,
-    RouterModule,
-    BgSpinnerComponent
+    BgSpinnerComponent,
+    DxoColumnChooserComponent
   ]
 })
 export class CompaniesTableComponent implements OnInit {
@@ -84,6 +97,7 @@ export class CompaniesTableComponent implements OnInit {
     this.dataGridHelperService.showColumnChooser(this.dataGrid());
   }
 
+  // todo add decorator
   onDecline(id: string): void {
     if (this.declineRequestsSet().has(id)) {
       return;
@@ -119,6 +133,7 @@ export class CompaniesTableComponent implements OnInit {
       });
   }
 
+  // todo add decorator
   onApprove(id: string): void {
     if (this.approveRequestsSet().has(id)) {
       return;

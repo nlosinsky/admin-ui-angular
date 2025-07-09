@@ -4,8 +4,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
   selector: 'app-avatar-box',
   templateUrl: './avatar-box.component.html',
   styleUrls: ['./avatar-box.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: []
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AvatarBoxComponent {
   readonly avatar = input.required();
