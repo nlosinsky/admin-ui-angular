@@ -60,7 +60,7 @@ export class Company {
     users: number;
   };
 
-  constructor(input: Partial<Company>) {
+  constructor(input: unknown = {}) {
     Object.assign(this, input);
   }
 }

@@ -39,8 +39,17 @@ export class CompaniesApiService {
     });
   }
 
-  getCompany(id: string): Observable<Company> {
-    return this.http.get<Company>(`${this.basePath}/companies/${id}`).pipe(map(resp => new Company(resp)));
+  getCompany(companyId: Signal<string | null>): HttpResourceRef<Company | null> {
+    return httpResource(
+      // @ts-ignore
+      () => {
+        return companyId() ? `${this.basePath}/companies/${companyId()}` : undefined;
+      },
+      {
+        defaultValue: null,
+        parse: (value: unknown) => new Company(value)
+      }
+    );
   }
 
   approvePendingMember(pendingMemberId: string): Observable<unknown> {

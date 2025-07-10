@@ -115,7 +115,8 @@ export class CompanyInformationComponent implements Submittable, CommonCustomerC
     });
 
     effect(() => {
-      this.populateLists(untracked(() => this.getCompanyDTO(this.currentCompany())));
+      const currentCompany = this.currentCompany();
+      this.populateLists(untracked(() => this.getCompanyDTO(currentCompany)));
     });
   }
 

@@ -34,7 +34,7 @@ export class CompaniesService {
     return this.companiesApiService.disapprovePendingMember(pendingMemberId);
   }
 
-  getCompany(id: string): Observable<Company> {
+  getCompany(id: Signal<string | null>) {
     return this.companiesApiService.getCompany(id);
   }
 

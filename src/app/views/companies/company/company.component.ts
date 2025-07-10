@@ -49,7 +49,7 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   private handleCompanyLoad(): void {
     this.companyId = this.route.snapshot.paramMap.get('companyId') || '';
-    this.companyStateService.runCompanyLoad(this.companyId);
+    this.companyStateService.setCompanyId(this.companyId);
   }
 
   onReturnBack(): void {
