@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { LoginCredentials, Token } from '@app/shared/models/auth';
 import { AuthApiService } from '@services/api/auth-api.service';
 import { TokenHelperService } from '@services/helpers/token-helper.service';
-import { SsrCookieService } from 'ngx-cookie-service-ssr';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -15,7 +14,6 @@ export class AuthService {
   private authApiService = inject(AuthApiService);
   private tokenHelperService = inject(TokenHelperService);
   private router = inject(Router);
-  private ssrCookieService = inject(SsrCookieService);
 
   login(credentials: LoginCredentials): Observable<Token> {
     return this.authApiService.login(credentials).pipe(
