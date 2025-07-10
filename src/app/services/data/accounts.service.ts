@@ -13,7 +13,7 @@ export class AccountsService {
     return this.accountsApiService.addAccount(payload);
   }
 
-  getAccounts(companyId: string): Observable<Account[]> {
+  getAccounts(companyId: string | null) {
     return this.accountsApiService.getAccounts(companyId);
   }
 }

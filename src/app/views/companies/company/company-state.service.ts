@@ -15,7 +15,7 @@ export class CompanyStateService {
   private _currentCompany = signal<Company | null>(null);
 
   currentCompany = this._currentCompany.asReadonly();
-  currentCompanyId = computed(() => this.currentCompany()?.id);
+  currentCompanyId = computed(() => this.currentCompany()?.id || null);
 
   constructor() {
     this.loadCompanySubj

@@ -87,8 +87,8 @@ export class CompanyInformationComponent implements Submittable, CommonCustomerC
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
   readonly validators = viewChildren(DxValidatorComponent);
 
-  currentCompany = this.companyStateService.currentCompany;
-  currentCompanyId = this.companyStateService.currentCompanyId;
+  readonly currentCompany = this.companyStateService.currentCompany;
+  readonly currentCompanyId = this.companyStateService.currentCompanyId;
 
   isEditMode = signal(false);
   isDataLoaded = computed(() => !this.countriesResource.isLoading());
@@ -97,11 +97,12 @@ export class CompanyInformationComponent implements Submittable, CommonCustomerC
   cities = signal<City[]>([]);
   zipCodes = signal<string[]>([]);
 
-  form!: FormGroup<CompanyInformationForm>;
-  actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
-  countriesResource = this.constantDataApiService.countriesResource;
+  readonly countriesResource = this.constantDataApiService.countriesResource;
 
   readonly companyStates = [CompanyState.ACTIVE, CompanyState.ARCHIVED];
+
+  form!: FormGroup<CompanyInformationForm>;
+  actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   constructor() {
     effect(() => {

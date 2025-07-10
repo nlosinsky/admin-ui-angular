@@ -38,14 +38,13 @@ export class UsageTableComponent implements OnInit {
   private dataGridHelperService = inject(DataGridHelperService);
   private documentsService = inject(DocumentsService);
   private destroyRef = inject(DestroyRef);
+  private searchSubj = new Subject<string>();
 
   readonly dataGrid = viewChild.required(DxDataGridComponent);
 
-  stats = this.documentsService.getDocumentsStats();
+  readonly stats = this.documentsService.getDocumentsStats();
 
   readonly indicatorSrc = tableIndicatorSrc;
-
-  private searchSubj = new Subject<string>();
 
   ngOnInit(): void {
     this.handleSearch();

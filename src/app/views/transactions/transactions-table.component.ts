@@ -85,15 +85,16 @@ export class TransactionsTableComponent implements OnInit {
   companies = signal<Company[]>([]);
   companyMembers = signal<CompanyMember[]>([{ fullName: 'All', id: '' } as CompanyMember]);
   searchParams = signal<TransactionsSearchParamsValue | null>(null);
-  dataSource = this.transactionsTableService.getTransactionsCount(this.searchParams);
+
+  readonly dataSource = this.transactionsTableService.getTransactionsCount(this.searchParams);
+
+  readonly maxDate = new Date();
+  readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
   selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
   form!: FormGroup<TransactionsForm>;
-  maxDate = new Date();
-  tickInterval!: TimeInterval;
+  tickInterval: TimeInterval = 'day';
   aggregationInterval: TimeInterval = 'day';
-
-  readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
   ngOnInit(): void {
     this.loadCompanies();

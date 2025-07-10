@@ -12,11 +12,11 @@
   <dx-button icon="plus" type="success" (onClick)="onAdd()" stylingMode="contained" />
 </ng-template>
 
-@if (isDataLoaded()) {
+@if (!accounts.isLoading()) {
   <section class="content-section">
     <dx-data-grid
       class="data-grid"
-      [dataSource]="accounts()"
+      [dataSource]="accounts.value()"
       [showBorders]="true"
       [showColumnLines]="true"
       [showRowLines]="true"

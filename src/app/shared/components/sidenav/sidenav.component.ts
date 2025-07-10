@@ -19,10 +19,10 @@ export class SidenavComponent {
   private service = inject(SidenavService);
   private userService = inject(UserService);
 
-  currentUser = this.userService.getCurrentUser();
+  readonly currentUser = this.userService.getCurrentUser();
 
-  items: NavItem[] = this.service.getNavItems();
-  userDropdownItems: UserDropdownItem[] = this.service.getProfileDropdownItems();
+  readonly items: NavItem[] = this.service.getNavItems();
+  readonly userDropdownItems: UserDropdownItem[] = this.service.getProfileDropdownItems();
 
   onUserDropdownAction(event: DxDropDownButtonTypes.ItemClickEvent): void {
     const eventId = event?.itemData?.id;
