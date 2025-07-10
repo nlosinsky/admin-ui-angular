@@ -10,13 +10,8 @@ export class UserApiService {
   private readonly basePath = environment.apiUrl;
 
   getCurrentUser() {
-    return httpResource(
-      () => ({
-        url: `${this.basePath}/users/current`
-      }),
-      {
-        parse: (value: unknown) => new User(value)
-      }
-    );
+    return httpResource(() => `${this.basePath}/users/current`, {
+      parse: (value: unknown) => new User(value)
+    });
   }
 }

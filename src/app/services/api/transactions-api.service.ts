@@ -1,30 +1,43 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { TransactionsCount, TransactionsFormValue } from '@app/shared/models/transactions';
+import { httpResource, HttpResourceRef } from '@angular/common/http';
+import { Injectable, Signal } from '@angular/core';
+import { TransactionsCount, TransactionsSearchParamsValue } from '@app/shared/models/transactions';
 import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
+import { addMilliseconds, subMilliseconds } from 'date-fns';
+import { isArray } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionsApiService {
-  private http = inject(HttpClient);
-
   private readonly basePath = environment.apiUrl;
 
-  getTransactionsCount({
-    companyId,
-    userId,
-    endDate,
-    startDate
-  }: TransactionsFormValue): Observable<TransactionsCount[]> {
-    const params = {
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
-      companyId,
-      userId
-    };
+  getTransactionsCount(params: Signal<TransactionsSearchParamsValue | null>): HttpResourceRef<TransactionsCount[]> {
+    return httpResource(
+      () => {
+        return params()
+          ? { url: `${this.basePath}/transactions`, params: JSON.parse(JSON.stringify(params())) }
+          : undefined;
+      },
+      {
+        defaultValue: [],
+        parse: (value: unknown): TransactionsCount[] => this.formatTransactionsCountResponse(value)
+      }
+    );
+  }
 
-    return this.http.get<TransactionsCount[]>(`${this.basePath}/transactions`, { params });
+  private formatTransactionsCountResponse(items: unknown): TransactionsCount[] {
+    if (!isArray(items)) {
+      return [];
+    }
+
+    if (items.length !== 1) {
+      return items;
+    }
+
+    const item = items[0];
+    const date = new Date(item.date);
+    const fakeDate = date.getMilliseconds() > 1 ? subMilliseconds(date, 1) : addMilliseconds(date, 1);
+
+    return [item].concat({ count: 0, date: fakeDate.toISOString(), companyId: '', userId: '' });
   }
 }

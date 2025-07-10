@@ -11,13 +11,12 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Company, CompanyMember } from '@app/shared/models';
-import { TransactionsCount, TransactionsSeries } from '@app/shared/models/transactions';
+import { TransactionsSearchParamsValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { TransactionsTableService } from '@views/transactions/transactions-table.service';
-import { isValid } from 'date-fns';
 import {
   DxButtonComponent,
   DxChartComponent,
@@ -38,8 +37,9 @@ import {
   DxoTooltipComponent
 } from 'devextreme-angular/ui/nested';
 import { of } from 'rxjs';
-import { finalize, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { TimeInterval } from 'devextreme/common/charts';
+import { isValid } from 'date-fns';
 
 type TransactionsForm = {
   startDate: FormControl<Date>;
@@ -82,10 +82,10 @@ export class TransactionsTableComponent implements OnInit {
   readonly validators = viewChildren(DxValidatorComponent);
   readonly chart = viewChild.required(DxChartComponent);
 
-  dataSource = signal<TransactionsCount[]>([]);
-  isSubmitting = signal(false);
   companies = signal<Company[]>([]);
   companyMembers = signal<CompanyMember[]>([{ fullName: 'All', id: '' } as CompanyMember]);
+  searchParams = signal<TransactionsSearchParamsValue | null>(null);
+  dataSource = this.transactionsTableService.getTransactionsCount(this.searchParams);
 
   selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
   form!: FormGroup<TransactionsForm>;
@@ -123,35 +123,19 @@ export class TransactionsTableComponent implements OnInit {
   onChartExport = (format = 'png') => this.transactionsTableService.onChartExport(this.chart(), format);
 
   onSearch() {
-    if (this.isSubmitting()) {
-      return;
-    }
-
     if (this.form.invalid) {
       FormHelper.triggerFormValidation(this.form, this.validators());
       return;
     }
 
     const formValue = this.form.value;
-    const payload = this.transactionsTableService.getSearchPayload(formValue);
+    const payload = this.transactionsTableService.getSearchParams(formValue);
 
     if (!isValid(new Date(payload.startDate)) || !isValid(new Date(payload.endDate))) {
       return;
     }
 
-    this.isSubmitting.set(true);
-
-    this.transactionsTableService
-      .getTransactionsCount(payload)
-      .pipe(
-        finalize(() => {
-          this.isSubmitting.set(false);
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(items => {
-        this.dataSource.set(items);
-      });
+    this.searchParams.set(payload);
   }
 
   get maxStartDate() {

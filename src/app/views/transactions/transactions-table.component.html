@@ -58,7 +58,7 @@
         <dx-button
           text="Search Transactions"
           type="success"
-          [class]="{ loading: isSubmitting() }"
+          [class]="{ loading: dataSource.isLoading() }"
           (onClick)="onSearch()"
         ></dx-button>
       </div>
@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <dx-chart id="chart" [dataSource]="dataSource()" [animation]="false">
+      <dx-chart id="chart" [dataSource]="dataSource.value()" [animation]="false">
         <dxi-series argumentField="date" valueField="count" type="bar" color="#69bbe8">
           <dxo-aggregation [enabled]="true"></dxo-aggregation>
         </dxi-series>
