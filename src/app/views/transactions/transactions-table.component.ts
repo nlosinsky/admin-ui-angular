@@ -6,11 +6,13 @@ import {
   inject,
   viewChildren,
   viewChild,
-  signal
+  signal,
+  computed,
+  effect
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Company, CompanyMember } from '@app/shared/models';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Company } from '@app/shared/models';
 import { TransactionsSearchParamsValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
@@ -36,8 +38,6 @@ import {
   DxoTitleComponent,
   DxoTooltipComponent
 } from 'devextreme-angular/ui/nested';
-import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { TimeInterval } from 'devextreme/common/charts';
 import { isValid } from 'date-fns';
 
@@ -75,7 +75,6 @@ type TransactionsForm = {
   ]
 })
 export class TransactionsTableComponent implements OnInit {
-  private fb = inject(NonNullableFormBuilder);
   private destroyRef = inject(DestroyRef);
   private transactionsTableService = inject(TransactionsTableService);
 
@@ -83,7 +82,6 @@ export class TransactionsTableComponent implements OnInit {
   readonly chart = viewChild.required(DxChartComponent);
 
   companies = signal<Company[]>([]);
-  companyMembers = signal<CompanyMember[]>([{ fullName: 'All', id: '' } as CompanyMember]);
   searchParams = signal<TransactionsSearchParamsValue | null>(null);
 
   readonly dataSource = this.transactionsTableService.getTransactionsCount(this.searchParams);
@@ -92,14 +90,26 @@ export class TransactionsTableComponent implements OnInit {
   readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
   selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
-  form!: FormGroup<TransactionsForm>;
   tickInterval: TimeInterval = 'day';
   aggregationInterval: TimeInterval = 'day';
+  form: FormGroup<TransactionsForm> = this.transactionsTableService.createForm();
+
+  companyId = toSignal(this.form.controls.companyId.valueChanges, { initialValue: '' });
+  companyMembers = this.transactionsTableService.getMembers(this.companyId);
+  companyMembersWithAll = computed(() => [{ fullName: 'All', id: '' }, ...this.companyMembers.value()]);
+
+  constructor() {
+    effect(() => {
+      if (!this.companyId()) {
+        this.companyMembers.set([]);
+      }
+
+      this.form.get('userId')?.setValue('');
+    });
+  }
 
   ngOnInit(): void {
     this.loadCompanies();
-    this.initForm();
-    this.handleCountryChange();
   }
 
   customizeTooltip = (info: { valueText: string; argument: Date }) => {
@@ -155,34 +165,6 @@ export class TransactionsTableComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(companies => {
         this.companies.set(companies);
-      });
-  }
-
-  private initForm() {
-    this.form = this.fb.group({
-      startDate: [new Date(), Validators.required],
-      endDate: [new Date(), Validators.required],
-      companyId: [''],
-      userId: ['']
-    });
-  }
-
-  private handleCountryChange() {
-    this.form
-      .get('companyId')
-      ?.valueChanges.pipe(
-        switchMap((companyId: string) => {
-          this.form.get('userId')?.setValue('');
-
-          if (!companyId) {
-            return of([]);
-          }
-          return this.transactionsTableService.getMembers(companyId);
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(members => {
-        this.companyMembers.set(members);
       });
   }
 }

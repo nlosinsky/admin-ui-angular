@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Injectable, LOCALE_ID, inject, Signal } from '@angular/core';
-import { CompanyMember, Company } from '@app/shared/models';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Company } from '@app/shared/models';
 import { TransactionsSearchParamsValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { CompaniesService } from '@services/data/companies.service';
 import { TransactionsService } from '@services/data/transactions.service';
@@ -22,13 +23,19 @@ export class TransactionsTableService {
   private transactionsService = inject(TransactionsService);
   private companiesService = inject(CompaniesService);
   private platformHelperService = inject(PlatformHelperService);
+  private fb = inject(NonNullableFormBuilder);
 
-  getMembers(companyId: string) {
-    return this.companiesService.getMembers(companyId).pipe(
-      map(members => {
-        return [{ fullName: 'All', id: '' } as CompanyMember].concat(members);
-      })
-    );
+  createForm() {
+    return this.fb.group({
+      startDate: [new Date(), Validators.required],
+      endDate: [new Date(), Validators.required],
+      companyId: [''],
+      userId: ['']
+    });
+  }
+
+  getMembers(companyId: Signal<string | null>) {
+    return this.companiesService.getMembers(companyId);
   }
 
   getCompanies() {

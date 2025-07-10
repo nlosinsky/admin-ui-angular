@@ -1,4 +1,4 @@
-import { HttpClient, httpResource } from '@angular/common/http';
+import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Account, AccountDTO } from '@app/shared/models';
 import { environment } from '@env/environment';
@@ -14,7 +14,7 @@ export class AccountsApiService {
 
   private readonly basePath = environment.apiUrl;
 
-  getAccounts(companyId: string | null, limit = 1000, offset = 0) {
+  getAccounts(companyId: string | null, limit = 1000, offset = 0): HttpResourceRef<Account[]> {
     return httpResource(
       () =>
         companyId
@@ -23,7 +23,7 @@ export class AccountsApiService {
               params: {
                 limit,
                 offset,
-                companyId: companyId
+                companyId
               }
             }
           : undefined,

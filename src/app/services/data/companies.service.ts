@@ -1,5 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-import { Company, CompanyContract, CompanyFeatures, CompanyMember, CompanyUpdateDTO } from '@app/shared/models';
+import { Injectable, inject, Signal } from '@angular/core';
+import { Company, CompanyContract, CompanyFeatures, CompanyUpdateDTO } from '@app/shared/models';
 import { CompanyMemberAccountStateType } from '@app/shared/models/companies/company.enum';
 import { CompaniesApiService } from '@services/api/companies-api.service';
 import { Observable } from 'rxjs';
@@ -38,15 +38,15 @@ export class CompaniesService {
     return this.companiesApiService.getCompany(id);
   }
 
-  getPendingMembers(id: string): Observable<CompanyMember[]> {
+  getPendingMembers(id: Signal<string | null>) {
     return this.companiesApiService.getPendingMembers(id);
   }
 
-  getMembers(id: string): Observable<CompanyMember[]> {
+  getMembers(id: Signal<string | null>) {
     return this.companiesApiService.getMembers(id);
   }
 
-  getMemberById(memberId: string): Observable<CompanyMember> {
+  getMemberById(memberId: string | null) {
     return this.companiesApiService.getMemberById(memberId);
   }
 

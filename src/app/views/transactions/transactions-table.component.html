@@ -45,9 +45,9 @@
       <div class="form-item">
         <span class="text-bold">User</span>
         <dx-select-box
-          [dataSource]="companyMembers()"
+          [dataSource]="companyMembersWithAll()"
           [dropDownOptions]="{ container: 'dx-select-box' }"
-          [readOnly]="!companies().length || !companyMembers().length"
+          [readOnly]="!companies().length || !companyMembersWithAll().length"
           formControlName="userId"
           displayExpr="fullName"
           valueExpr="id"
