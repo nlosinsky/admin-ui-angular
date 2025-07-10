@@ -128,7 +128,7 @@
             <div class="table-list-label">Country</div>
             <div class="table-list-content">
               <dx-select-box
-                [dataSource]="countries()"
+                [dataSource]="countriesResource.value()"
                 [dropDownOptions]="{ container: 'dx-select-box' }"
                 [readOnly]="!isEditMode()"
                 (onValueChanged)="onCountryChange($event)"
