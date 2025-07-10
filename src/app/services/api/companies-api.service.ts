@@ -7,6 +7,7 @@ import {
   CompanyState
 } from '@app/shared/models/companies/company.enum';
 import { environment } from '@env/environment';
+import { isArray } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -18,11 +19,11 @@ export class CompaniesApiService {
 
   private readonly basePath = environment.apiUrl;
 
-  getCompanies(): Observable<Company[]> {
+  getCompanies() {
     return this.getCompaniesByState(CompanyState.ACTIVE);
   }
 
-  getTemporaryCompanies(): Observable<Company[]> {
+  getTemporaryCompanies() {
     return this.getCompaniesByState(CompanyState.PENDING);
   }
 
@@ -135,15 +136,22 @@ export class CompaniesApiService {
     return this.http.patch<Company>(`${this.basePath}/companies/${id}`, data).pipe(map(resp => new Company(resp)));
   }
 
-  private getCompaniesByState(state: CompanyState, limit = 100, offset = 0): Observable<Company[]> {
-    return this.http
-      .get<Company[]>(`${this.basePath}/companies`, {
+  private getCompaniesByState(state: CompanyState, limit = 100, offset = 0) {
+    return httpResource(
+      () => ({
+        url: `${this.basePath}/companies`,
         params: {
           limit,
           offset,
           companyState: state
         }
-      })
-      .pipe(map(resp => resp.map(item => new Company(item))));
+      }),
+      {
+        defaultValue: [],
+        parse: (value: unknown) => {
+          return isArray(value) ? value.map(item => new Company(item)) : [];
+        }
+      }
+    );
   }
 }

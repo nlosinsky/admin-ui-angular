@@ -1,7 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Injectable, LOCALE_ID, inject, Signal } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
-import { Company } from '@app/shared/models';
 import { TransactionsSearchParamsValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { CompaniesService } from '@services/data/companies.service';
 import { TransactionsService } from '@services/data/transactions.service';
@@ -11,7 +10,6 @@ import { endOfDay, getQuarter, startOfDay } from 'date-fns';
 import { DxChartComponent } from 'devextreme-angular';
 import { TimeInterval } from 'devextreme/common/charts';
 import { exportFromMarkup } from 'devextreme/viz/export';
-import { map } from 'rxjs/operators';
 
 const yearQuarters = ['January - March', 'April - June', 'July - September', 'October - December'];
 
@@ -39,11 +37,7 @@ export class TransactionsTableService {
   }
 
   getCompanies() {
-    return this.companiesService.getCompanies().pipe(
-      map(data => {
-        return [{ name: 'All', id: '' } as Company].concat(data);
-      })
-    );
+    return this.companiesService.getCompanies();
   }
 
   getTransactionsCount(payload: Signal<TransactionsSearchParamsValue | null>) {

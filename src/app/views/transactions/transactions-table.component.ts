@@ -1,8 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  OnInit,
   inject,
   viewChildren,
   viewChild,
@@ -10,9 +8,8 @@ import {
   computed,
   effect
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Company } from '@app/shared/models';
 import { TransactionsSearchParamsValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
@@ -74,14 +71,12 @@ type TransactionsForm = {
     DxButtonComponent
   ]
 })
-export class TransactionsTableComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
+export class TransactionsTableComponent {
   private transactionsTableService = inject(TransactionsTableService);
 
   readonly validators = viewChildren(DxValidatorComponent);
   readonly chart = viewChild.required(DxChartComponent);
 
-  companies = signal<Company[]>([]);
   searchParams = signal<TransactionsSearchParamsValue | null>(null);
 
   readonly dataSource = this.transactionsTableService.getTransactionsCount(this.searchParams);
@@ -95,8 +90,12 @@ export class TransactionsTableComponent implements OnInit {
   form: FormGroup<TransactionsForm> = this.transactionsTableService.createForm();
 
   companyId = toSignal(this.form.controls.companyId.valueChanges, { initialValue: '' });
-  companyMembers = this.transactionsTableService.getMembers(this.companyId);
-  companyMembersWithAll = computed(() => [{ fullName: 'All', id: '' }, ...this.companyMembers.value()]);
+
+  private companyMembers = this.transactionsTableService.getMembers(this.companyId);
+  companyMembersExtended = computed(() => [{ fullName: 'All', id: '' }, ...this.companyMembers.value()]);
+
+  private companies = this.transactionsTableService.getCompanies();
+  companiesExtended = computed(() => [{ name: 'All', id: '' }, ...this.companies.value()]);
 
   constructor() {
     effect(() => {
@@ -106,10 +105,6 @@ export class TransactionsTableComponent implements OnInit {
 
       this.form.get('userId')?.setValue('');
     });
-  }
-
-  ngOnInit(): void {
-    this.loadCompanies();
   }
 
   customizeTooltip = (info: { valueText: string; argument: Date }) => {
@@ -157,14 +152,5 @@ export class TransactionsTableComponent implements OnInit {
     }
 
     return new Date();
-  }
-
-  private loadCompanies() {
-    this.transactionsTableService
-      .getCompanies()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(companies => {
-        this.companies.set(companies);
-      });
   }
 }

@@ -10,11 +10,11 @@ import { Observable } from 'rxjs';
 export class CompaniesService {
   private companiesApiService = inject(CompaniesApiService);
 
-  getCompanies(): Observable<Company[]> {
+  getCompanies() {
     return this.companiesApiService.getCompanies();
   }
 
-  getTemporaryCompanies(): Observable<Company[]> {
+  getTemporaryCompanies() {
     return this.companiesApiService.getTemporaryCompanies();
   }
 
