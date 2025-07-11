@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  EventEmitter,
   TemplateRef,
   inject,
   viewChild,
@@ -15,7 +14,7 @@ import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } f
 import { Router } from '@angular/router';
 import { Company, CompanyContract, CompanyFeatures, HttpError } from '@app/shared/models';
 import { CompanyContractEnum, CompanyContractType } from '@app/shared/models/companies/company.enum';
-import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
+import { CommonCustomerComponentActions, Submittable, TabWithActions } from '@app/shared/models/components';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
 import { ContractTypePipe } from '@pipes/contract-type/contract-type.pipe';
@@ -68,7 +67,7 @@ type CompanyContractForm = {
     BgSpinnerComponent
   ]
 })
-export class CompanyContractComponent implements Submittable, CommonCustomerComponentActions {
+export class CompanyContractComponent implements Submittable, TabWithActions, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
@@ -90,13 +89,8 @@ export class CompanyContractComponent implements Submittable, CommonCustomerComp
   form!: FormGroup<CompanyContractForm>;
   readonly companyContract = CompanyContractEnum;
   readonly companyContractList: string[] = ObjectUtil.enumToArray(CompanyContractEnum);
-  readonly actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   constructor() {
-    effect(() => {
-      this.actionsTemplateEvent.emit(this.actionsTpl());
-    });
-
     // todo refactor
     effect(() => {
       if (this.currentCompany() && !this.isDataLoaded()) {

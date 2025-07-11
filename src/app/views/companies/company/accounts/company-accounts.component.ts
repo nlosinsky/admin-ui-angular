@@ -1,19 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  EventEmitter,
-  OnInit,
-  TemplateRef,
-  inject,
-  viewChild,
-  effect
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, TemplateRef, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
 import { Account, ExportGridExcelCell } from '@app/shared/models';
-import { CommonCustomerComponentActions } from '@app/shared/models/components';
+import { CommonCustomerComponentActions, TabWithActions } from '@app/shared/models/components';
 import { TransformHelper } from '@app/shared/utils/transform-helper';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
 import { BooleanYesNoPipe } from '@pipes/boolean-yes-no/boolean-yes-no.pipe';
@@ -64,7 +54,7 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
     DxoColumnChooserComponent
   ]
 })
-export class CompanyAccountsComponent implements OnInit, CommonCustomerComponentActions {
+export class CompanyAccountsComponent implements OnInit, TabWithActions, CommonCustomerComponentActions {
   private destroyRef = inject(DestroyRef);
   private accountsApiService = inject(AccountsService);
   private dataGridHelperService = inject(DataGridHelperService);
@@ -74,7 +64,7 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
 
   readonly tooltip = viewChild.required(DxTooltipComponent);
   readonly dataGrid = viewChild.required(DxDataGridComponent);
-  readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
+  readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef<HTMLElement> });
 
   readonly currentCompanyId = this.companyStateService.currentCompanyId;
 
@@ -83,14 +73,6 @@ export class CompanyAccountsComponent implements OnInit, CommonCustomerComponent
   private searchSubj = new Subject<string>();
 
   readonly indicatorSrc = tableIndicatorSrc;
-
-  actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
-
-  constructor() {
-    effect(() => {
-      this.actionsTemplateEvent.emit(this.actionsTpl());
-    });
-  }
 
   ngOnInit(): void {
     this.handleSearch();

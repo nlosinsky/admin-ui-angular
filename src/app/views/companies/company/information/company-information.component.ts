@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  EventEmitter,
   TemplateRef,
   inject,
   viewChild,
@@ -17,7 +16,7 @@ import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Va
 import { Router } from '@angular/router';
 import { City, Company, CompanyUpdateDTO, HttpError, State } from '@app/shared/models';
 import { CompanyState, CompanyStateType } from '@app/shared/models/companies/company.enum';
-import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
+import { CommonCustomerComponentActions, Submittable, TabWithActions } from '@app/shared/models/components';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
@@ -76,7 +75,7 @@ type CompanyInformationForm = {
     BgSpinnerComponent
   ]
 })
-export class CompanyInformationComponent implements Submittable, CommonCustomerComponentActions {
+export class CompanyInformationComponent implements Submittable, TabWithActions, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
@@ -102,16 +101,12 @@ export class CompanyInformationComponent implements Submittable, CommonCustomerC
   readonly companyStates = [CompanyState.ACTIVE, CompanyState.ARCHIVED];
 
   form!: FormGroup<CompanyInformationForm>;
-  actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
 
   constructor() {
     effect(() => {
-      this.actionsTemplateEvent.emit(this.actionsTpl());
-    });
-
-    // todo do we need it here?
-    effect(() => {
-      this.setFormData(this.currentCompany());
+      if (!this.form) {
+        this.setFormData(this.currentCompany());
+      }
     });
 
     effect(() => {
