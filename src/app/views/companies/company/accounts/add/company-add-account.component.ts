@@ -11,7 +11,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AccountDTO, ObjectLike } from '@app/shared/models';
+import { Account, AccountDTO, ObjectLike } from '@app/shared/models';
 import { AccountNaturalBalanceEnum, AccountTypeEnum } from '@app/shared/models/accounts/account.enum';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
@@ -86,7 +86,7 @@ export class CompanyAddAccountComponent implements OnInit {
     { label: 'Yes', value: true },
     { label: 'No', value: false }
   ];
-  readonly closeEvent = new EventEmitter<boolean | void>();
+  readonly closeEvent = new EventEmitter<Account | void>();
 
   ngOnInit() {
     this.initForm();
@@ -150,9 +150,9 @@ export class CompanyAddAccountComponent implements OnInit {
         finalize(() => (this.isSubmitting = false)),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(() => {
+      .subscribe((data: Account) => {
         this.popupRef.hide();
-        this.closeEvent.emit(true);
+        this.closeEvent.emit(data);
       });
   }
 

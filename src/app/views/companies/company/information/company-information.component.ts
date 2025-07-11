@@ -3,20 +3,20 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  EventEmitter,
-  OnInit,
   TemplateRef,
   inject,
   viewChild,
   viewChildren,
   effect,
-  signal
+  signal,
+  computed,
+  untracked
 } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { City, Company, CompanyUpdateDTO, Country, HttpError, State } from '@app/shared/models';
+import { City, Company, CompanyUpdateDTO, HttpError, State } from '@app/shared/models';
 import { CompanyState, CompanyStateType } from '@app/shared/models/companies/company.enum';
-import { CommonCustomerComponentActions, Submittable } from '@app/shared/models/components';
+import { CommonCustomerComponentActions, Submittable, TabWithActions } from '@app/shared/models/components';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
@@ -75,7 +75,7 @@ type CompanyInformationForm = {
     BgSpinnerComponent
   ]
 })
-export class CompanyInformationComponent implements OnInit, Submittable, CommonCustomerComponentActions {
+export class CompanyInformationComponent implements Submittable, TabWithActions, CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private fb = inject(NonNullableFormBuilder);
   private toastService = inject(ToastService);
@@ -86,35 +86,33 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   readonly actionsTpl = viewChild.required('actionsTpl', { read: TemplateRef });
   readonly validators = viewChildren(DxValidatorComponent);
 
-  currentCompany = this.companyStateService.currentCompany;
-  currentCompanyId = this.companyStateService.currentCompanyId;
+  readonly currentCompany = this.companyStateService.currentCompany;
+  readonly currentCompanyId = this.companyStateService.currentCompanyId;
 
   isEditMode = signal(false);
-  isDataLoaded = signal(false);
+  isDataLoaded = computed(() => !this.countriesResource.isLoading());
   isSubmitting = signal(false);
-  countries = signal<Country[]>([]);
   states = signal<State[]>([]);
   cities = signal<City[]>([]);
   zipCodes = signal<string[]>([]);
 
-  form!: FormGroup<CompanyInformationForm>;
-  actionsTemplateEvent = new EventEmitter<TemplateRef<HTMLElement>>();
+  readonly countriesResource = this.constantDataApiService.countriesResource;
 
   readonly companyStates = [CompanyState.ACTIVE, CompanyState.ARCHIVED];
 
+  form!: FormGroup<CompanyInformationForm>;
+
   constructor() {
     effect(() => {
-      this.actionsTemplateEvent.emit(this.actionsTpl());
+      if (!this.form) {
+        this.setFormData(this.currentCompany.value());
+      }
     });
 
-    // todo do we need it here?
     effect(() => {
-      this.setFormData(this.currentCompany());
+      const currentCompany = this.currentCompany.value();
+      this.populateLists(untracked(() => this.getCompanyDTO(currentCompany)));
     });
-  }
-
-  ngOnInit(): void {
-    this.loadData();
   }
 
   navigateBack = () => this.router.navigate(['/companies']);
@@ -181,25 +179,11 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   }
 
   hasChangedData(): boolean {
-    return !ObjectUtil.isDeepEquals(this.getPreparedData(), this.getCompanyDTO(this.currentCompany()));
-  }
-
-  loadData(): void {
-    this.constantDataApiService
-      .getCountries()
-      .pipe(
-        catchError(() => EMPTY),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe((countries: Country[]) => {
-        this.isDataLoaded.set(true);
-        this.countries.set(countries);
-        this.populateLists(this.getCompanyDTO(this.currentCompany()));
-      });
+    return !ObjectUtil.isDeepEquals(this.getPreparedData(), this.getCompanyDTO(this.currentCompany.value()));
   }
 
   restoreForm(): void {
-    this.form.reset(this.getCompanyDTO(this.currentCompany()));
+    this.form.reset(this.getCompanyDTO(this.currentCompany.value()));
   }
 
   setFormData(data: Company | null): void {
@@ -238,7 +222,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   }
 
   onCountryChange({ value: countryName }: DxSelectBoxTypes.ValueChangedEvent) {
-    const country = this.countries().find(item => item.name === countryName);
+    const country = this.countriesResource.value().find(item => item.name === countryName);
 
     if (!country) {
       this.state.setValue('');
@@ -323,7 +307,7 @@ export class CompanyInformationComponent implements OnInit, Submittable, CommonC
   }
 
   private populateLists(data: Company | CompanyUpdateDTO): void {
-    const country = this.countries().find(item => item.name === data.country);
+    const country = this.countriesResource.value().find(item => item.name === data.country);
 
     if (country?.states) {
       this.states.set(country.states);

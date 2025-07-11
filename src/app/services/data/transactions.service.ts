@@ -1,7 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { TransactionsCount, TransactionsFormValue } from '@app/shared/models/transactions';
+import { Injectable, inject, Signal } from '@angular/core';
+import { TransactionsSearchParamsValue } from '@app/shared/models/transactions';
 import { TransactionsApiService } from '@services/api/transactions-api.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,7 @@ import { Observable } from 'rxjs';
 export class TransactionsService {
   private transactionsApiService = inject(TransactionsApiService);
 
-  getTransactionsCount(params: TransactionsFormValue): Observable<TransactionsCount[]> {
+  getTransactionsCount(params: Signal<TransactionsSearchParamsValue | null>) {
     return this.transactionsApiService.getTransactionsCount(params);
   }
 }

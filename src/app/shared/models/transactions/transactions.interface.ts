@@ -1,4 +1,4 @@
-export type TransactionsFormValue = {
+export type TransactionsSearchParamsValue = {
   startDate: Date;
   endDate: Date;
   companyId: string;

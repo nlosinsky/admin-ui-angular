@@ -1,12 +1,15 @@
-import { EventEmitter, TemplateRef } from '@angular/core';
+import { Signal, TemplateRef } from '@angular/core';
 import { Company } from '@app/shared/models';
 
 export type Submittable = {
-  actionsTemplateEvent?: EventEmitter<TemplateRef<HTMLElement>>;
   hasChangedData(): boolean;
   restoreForm(): void;
   setFormData(data: Company): void;
   loadData?(): void;
+};
+
+export type TabWithActions = {
+  actionsTpl: Signal<TemplateRef<HTMLElement>>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

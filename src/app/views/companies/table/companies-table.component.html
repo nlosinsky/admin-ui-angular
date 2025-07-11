@@ -1,6 +1,6 @@
 @if (isDataLoaded()) {
   <div class="container">
-    <app-general-toolbar title="Customer Management" subtitle="We found {{ companies().length }} results">
+    <app-general-toolbar title="Customer Management" subtitle="We found {{ companies.value().length }} results">
       <div toolbar-controls class="toolbar-controls">
         <dx-button
           icon="spindown"
@@ -17,7 +17,7 @@
     <section class="content-section">
       <dx-data-grid
         class="data-grid"
-        [dataSource]="companies()"
+        [dataSource]="companies.value()"
         [showBorders]="true"
         [showColumnLines]="true"
         [showRowLines]="true"
@@ -63,7 +63,7 @@
         <div *dxTemplate="let item of 'transactionRateTemplate'">{{ item.value / 100 }}%</div>
       </dx-data-grid>
     </section>
-    @if (temporaryCompanies(); as temporaryCompanies) {
+    @if (temporaryCompanies.value(); as temporaryCompanies) {
       <section class="content-section">
         <h5 class="section-title">Pending Approvals</h5>
 

@@ -13,7 +13,6 @@ export * from './data/auth.service';
 export * from './data/companies.service';
 export * from './data/documents.service';
 export * from './data/transactions.service';
-export * from './data/user.service';
 
 // Helper Services
 export * from './helpers/data-grid-helper.service';

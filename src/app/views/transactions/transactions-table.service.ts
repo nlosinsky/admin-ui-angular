@@ -1,18 +1,15 @@
 import { formatDate } from '@angular/common';
-import { Injectable, LOCALE_ID, inject } from '@angular/core';
-import { CompanyMember, Company, HttpError } from '@app/shared/models';
-import { TransactionsCount, TransactionsFormValue, TransactionsSeries } from '@app/shared/models/transactions';
+import { Injectable, LOCALE_ID, inject, Signal } from '@angular/core';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { TransactionsSearchParamsValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { CompaniesService } from '@services/data/companies.service';
 import { TransactionsService } from '@services/data/transactions.service';
 import { PlatformHelperService } from '@services/helpers/platform-helper.service';
-import { ToastService } from '@services/helpers/toast.service';
 import { Canvg } from 'canvg';
-import { addMilliseconds, endOfDay, getQuarter, startOfDay, subMilliseconds } from 'date-fns';
+import { endOfDay, getQuarter, startOfDay } from 'date-fns';
 import { DxChartComponent } from 'devextreme-angular';
 import { TimeInterval } from 'devextreme/common/charts';
 import { exportFromMarkup } from 'devextreme/viz/export';
-import { EMPTY } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 
 const yearQuarters = ['January - March', 'April - June', 'July - September', 'October - December'];
 
@@ -22,56 +19,42 @@ const yearQuarters = ['January - March', 'April - June', 'July - September', 'Oc
 export class TransactionsTableService {
   private localeId = inject(LOCALE_ID);
   private transactionsService = inject(TransactionsService);
-  private toastService = inject(ToastService);
   private companiesService = inject(CompaniesService);
   private platformHelperService = inject(PlatformHelperService);
+  private fb = inject(NonNullableFormBuilder);
 
-  getMembers(companyId: string) {
-    return this.companiesService.getMembers(companyId).pipe(
-      map(members => {
-        return [{ fullName: 'All', id: '' } as CompanyMember].concat(members);
-      })
-    );
+  createForm() {
+    return this.fb.group({
+      startDate: [new Date(), Validators.required],
+      endDate: [new Date(), Validators.required],
+      companyId: [''],
+      userId: ['']
+    });
+  }
+
+  getMembers(companyId: Signal<string | null>) {
+    return this.companiesService.getMembers(companyId);
   }
 
   getCompanies() {
-    return this.companiesService.getCompanies().pipe(
-      map(data => {
-        return [{ name: 'All', id: '' } as Company].concat(data);
-      })
-    );
+    return this.companiesService.getCompanies();
   }
 
-  getTransactionsCount(payload: TransactionsFormValue) {
-    return this.transactionsService.getTransactionsCount(payload).pipe(
-      map(resp => this.formatItemsResp(resp)),
-      catchError((error: HttpError) => {
-        this.toastService.showHttpError(error);
-        return EMPTY;
-      })
-    );
+  getTransactionsCount(payload: Signal<TransactionsSearchParamsValue | null>) {
+    return this.transactionsService.getTransactionsCount(payload);
   }
 
-  getSearchPayload(formValue: Partial<TransactionsFormValue>): TransactionsFormValue {
-    const { startDate, endDate, userId, companyId } = formValue;
+  getSearchParams(formValue: Partial<TransactionsSearchParamsValue>): TransactionsSearchParamsValue {
+    let { startDate, endDate } = formValue;
+    startDate = startDate ? startOfDay(startDate) : new Date();
+    endDate = endDate ? endOfDay(endDate) : new Date();
+
     return {
-      startDate: startDate ? startOfDay(startDate) : new Date(),
-      endDate: endDate ? endOfDay(endDate) : new Date(),
-      userId: userId || '',
-      companyId: companyId || ''
+      startDate: startDate,
+      endDate: endDate,
+      userId: formValue.userId || '',
+      companyId: formValue.companyId || ''
     };
-  }
-
-  private formatItemsResp(items: TransactionsCount[]) {
-    if (items.length !== 1) {
-      return items;
-    }
-
-    const item = items[0];
-    const date = new Date(item.date);
-    const fakeDate = date.getMilliseconds() > 1 ? subMilliseconds(date, 1) : addMilliseconds(date, 1);
-
-    return [item].concat({ count: 0, date: fakeDate.toISOString(), companyId: '', userId: '' });
   }
 
   getTickInterval(value: TransactionsSeries): TimeInterval {
@@ -104,7 +87,7 @@ export class TransactionsTableService {
 
     return {
       html: `
-        <b>Count:</b> ${value} 
+        <b>Count:</b> ${value}
         <br>
         <br>
         ${date}

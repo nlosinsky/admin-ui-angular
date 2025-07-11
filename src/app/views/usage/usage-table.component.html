@@ -1,6 +1,6 @@
-@if (isDataLoaded()) {
+@if (!stats.isLoading()) {
   <div class="container">
-    <app-general-toolbar title="Usage Data" subtitle="We found {{ stats().length }} results">
+    <app-general-toolbar title="Usage Data" subtitle="We found {{ stats.value().length }} results">
       <div toolbar-controls class="toolbar-controls">
         <dx-button
           icon="spindown"
@@ -17,7 +17,7 @@
     <section class="content-section">
       <dx-data-grid
         class="data-grid"
-        [dataSource]="stats()"
+        [dataSource]="stats.value()"
         [showBorders]="true"
         [showColumnLines]="true"
         [showRowLines]="true"

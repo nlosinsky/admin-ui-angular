@@ -34,7 +34,7 @@
       <div class="form-item">
         <span class="text-bold">Company</span>
         <dx-select-box
-          [dataSource]="companies()"
+          [dataSource]="companiesExtended()"
           [dropDownOptions]="{ container: 'dx-select-box' }"
           formControlName="companyId"
           displayExpr="name"
@@ -45,9 +45,9 @@
       <div class="form-item">
         <span class="text-bold">User</span>
         <dx-select-box
-          [dataSource]="companyMembers()"
+          [dataSource]="companyMembersExtended()"
           [dropDownOptions]="{ container: 'dx-select-box' }"
-          [readOnly]="!companies().length || !companyMembers().length"
+          [readOnly]="!companiesExtended().length || !companyMembersExtended().length"
           formControlName="userId"
           displayExpr="fullName"
           valueExpr="id"
@@ -58,7 +58,7 @@
         <dx-button
           text="Search Transactions"
           type="success"
-          [class]="{ loading: isSubmitting() }"
+          [class]="{ loading: dataSource.isLoading() }"
           (onClick)="onSearch()"
         ></dx-button>
       </div>
@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <dx-chart id="chart" [dataSource]="dataSource()" [animation]="false">
+      <dx-chart id="chart" [dataSource]="dataSource.value()" [animation]="false">
         <dxi-series argumentField="date" valueField="count" type="bar" color="#69bbe8">
           <dxo-aggregation [enabled]="true"></dxo-aggregation>
         </dxi-series>

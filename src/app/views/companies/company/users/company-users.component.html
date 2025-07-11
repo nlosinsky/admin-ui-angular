@@ -1,9 +1,9 @@
 @if (isDataLoaded()) {
   <section class="content-section">
     <h5 class="section-title">Pending Approvals</h5>
-    @if (pendingMembers().length) {
+    @if (pendingMembers.hasValue()) {
       <div class="table-list">
-        @for (member of pendingMembers(); track member.id) {
+        @for (member of pendingMembers.value(); track member.id) {
           <div class="table-list-row">
             <div class="table-list-col">
               <div class="table-list-label">Email</div>
@@ -40,7 +40,7 @@
     <h5 class="section-title">Company Members</h5>
     <dx-data-grid
       class="data-grid"
-      [dataSource]="members()"
+      [dataSource]="members.value()"
       [showBorders]="true"
       [showColumnLines]="true"
       [showRowLines]="true"

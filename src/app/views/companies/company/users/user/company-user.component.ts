@@ -1,5 +1,14 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal, computed } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  effect
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -49,13 +58,10 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
   private destroyRef = inject(DestroyRef);
 
   form!: FormGroup<CompanyUserForm>;
-  isDataLoaded = signal(false);
   isSubmitting = signal(false);
   isEditMode = signal(false);
   isDisabled = computed(() => this.isSubmitting() || !this.isEditMode());
-  member = signal<CompanyMember | null>(null);
-
-  private memberId!: string;
+  member = this.companyUserService.getMemberById(this.route.snapshot.paramMap.get('id'));
 
   readonly accountStateList = [
     CompanyMemberAccountState.APPROVED,
@@ -63,9 +69,16 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
     CompanyMemberAccountState.UPDATE_REQUIRED
   ];
 
+  constructor() {
+    effect(() => {
+      if (this.member.hasValue()) {
+        this.initFormData(this.member.value());
+      }
+    });
+  }
+
   ngOnInit(): void {
     this.listenRouteChanges();
-    this.loadData();
   }
 
   navigateBack = () => this.router.navigate(['../'], { relativeTo: this.route });
@@ -85,7 +98,13 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
   onSave() {
     const newAccountState = (this.form.value as { accountState: CompanyMemberAccountStateType }).accountState || null;
 
-    if (this.member()?.accountState === newAccountState) {
+    const memberId = this.member.value()?.id;
+
+    if (!memberId) {
+      return;
+    }
+
+    if (this.member.value()?.accountState === newAccountState) {
       this.onCancel();
       return;
     }
@@ -93,7 +112,7 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
     this.isSubmitting.set(true);
 
     this.companiesService
-      .updateCompanyMemberAccountState(this.memberId, newAccountState)
+      .updateCompanyMemberAccountState(memberId, newAccountState)
       .pipe(
         catchError((error: HttpError) => {
           this.toastService.showHttpError(error);
@@ -120,35 +139,12 @@ export class CompanyUserComponent implements OnInit, CommonCustomerComponentActi
     });
   }
 
-  private loadData() {
-    this.memberId = this.route.snapshot.paramMap.get('id') || '';
-
-    if (!this.memberId) {
-      return;
-    }
-
-    this.companyUserService
-      .getData(this.memberId)
-      .pipe(
-        finalize(() => this.isDataLoaded.set(true)),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(member => {
-        if (!member) {
-          return;
-        }
-
-        this.initFormData(member);
-        this.member.set(member);
-      });
-  }
-
   private initFormData(data: CompanyMember): void {
     this.form = this.fb.group({ accountState: data.accountState });
   }
 
   private restoreForm(): void {
-    const { accountState } = this.member() || {};
+    const { accountState } = this.member.value() || {};
     this.form.reset({ accountState });
   }
 }

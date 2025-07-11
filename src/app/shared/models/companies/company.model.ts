@@ -14,7 +14,7 @@ export class CompanyMember {
   callingCode!: string;
   workPhone!: string;
 
-  constructor(input: Partial<CompanyMember>) {
+  constructor(input: unknown = {}) {
     Object.assign(this, input);
 
     this.fullName = this.getFullName();
@@ -60,7 +60,7 @@ export class Company {
     users: number;
   };
 
-  constructor(input: Partial<Company>) {
+  constructor(input: unknown = {}) {
     Object.assign(this, input);
   }
 }

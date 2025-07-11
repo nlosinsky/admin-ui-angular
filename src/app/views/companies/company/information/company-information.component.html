@@ -22,7 +22,7 @@
 </ng-template>
 
 @if (isDataLoaded()) {
-  @if (currentCompany(); as company) {
+  @if (currentCompany.value(); as company) {
     <form [formGroup]="form" novalidate>
       <fieldset [disabled]="isSubmitting()" class="content-section">
         <h5 class="section-title">Company Details</h5>
@@ -128,7 +128,7 @@
             <div class="table-list-label">Country</div>
             <div class="table-list-content">
               <dx-select-box
-                [dataSource]="countries()"
+                [dataSource]="countriesResource.value()"
                 [dropDownOptions]="{ container: 'dx-select-box' }"
                 [readOnly]="!isEditMode()"
                 (onValueChanged)="onCountryChange($event)"

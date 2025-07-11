@@ -7,11 +7,12 @@ import {
   OnInit,
   inject,
   viewChild,
-  signal
+  signal,
+  computed
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
-import { Company, ExportGridExcelCell, HttpError } from '@app/shared/models';
+import { ExportGridExcelCell, HttpError } from '@app/shared/models';
 import { CompanyContractType } from '@app/shared/models/companies/company.enum';
 import { TransformHelper } from '@app/shared/utils/transform-helper';
 import { BgSpinnerComponent } from '@components/bg-spinner/bg-spinner.component';
@@ -30,17 +31,8 @@ import {
   DxoScrollingComponent
 } from 'devextreme-angular/ui/nested';
 import { DataGridCell } from 'devextreme-angular/common/export/excel';
-import { EMPTY, forkJoin, from, Subject } from 'rxjs';
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  finalize,
-  mergeMap,
-  switchMap,
-  tap
-} from 'rxjs/operators';
+import { EMPTY, from, Subject } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, filter, finalize, mergeMap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -76,28 +68,25 @@ export class CompaniesTableComponent implements OnInit {
 
   readonly dataGrid = viewChild.required(DxDataGridComponent);
 
-  isDataLoaded = signal(false);
-  companies = signal<Company[]>([]);
-  temporaryCompanies = signal<Company[]>([]);
   approveRequestsSet = signal(new Set<string>());
   declineRequestsSet = signal(new Set<string>());
+
+  temporaryCompanies = this.companiesService.getTemporaryCompanies();
+  companies = this.companiesService.getCompanies();
+  isDataLoaded = computed(() => !(this.temporaryCompanies.isLoading() || this.companies.isLoading()));
 
   readonly indicatorSrc = tableIndicatorSrc;
 
   private searchSubj = new Subject<string>();
-  private reloadCompaniesSubj = new Subject<void>();
 
   ngOnInit(): void {
     this.handleSearch();
-    this.handleReloadTableData();
-    this.loadData();
   }
 
   onShowColumnChooser(): void {
     this.dataGridHelperService.showColumnChooser(this.dataGrid());
   }
 
-  // todo add decorator
   onDecline(id: string): void {
     if (this.declineRequestsSet().has(id)) {
       return;
@@ -133,7 +122,6 @@ export class CompaniesTableComponent implements OnInit {
       });
   }
 
-  // todo add decorator
   onApprove(id: string): void {
     if (this.approveRequestsSet().has(id)) {
       return;
@@ -161,9 +149,14 @@ export class CompaniesTableComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        this.reloadCompaniesSubj.next();
         this.toastService.showSuccess('The company has been Approved successfully.');
+        const approvedCompany = this.temporaryCompanies.value().find(item => item.id === id);
+
+        if (!approvedCompany) {
+          return;
+        }
         this.temporaryCompanies.update(temporaryCompanies => temporaryCompanies.filter(item => item.id !== id));
+        this.companies.update(companies => [approvedCompany, ...companies]);
       });
   }
 
@@ -196,47 +189,12 @@ export class CompaniesTableComponent implements OnInit {
     this.searchSubj.next((event.target as HTMLInputElement).value);
   }
 
-  private handleReloadTableData() {
-    this.reloadCompaniesSubj
-      .asObservable()
-      .pipe(
-        tap(() => this.dataGrid().instance.beginCustomLoading('')),
-        switchMap(() => this.companiesService.getCompanies()),
-        catchError((error: HttpError) => {
-          this.dataGrid().instance.endCustomLoading();
-          this.toastService.showHttpError(error);
-          return EMPTY;
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(companies => {
-        this.dataGrid().instance.endCustomLoading();
-        this.companies.set(companies);
-      });
-  }
-
   private handleSearch(): void {
     this.searchSubj
       .asObservable()
       .pipe(distinctUntilChanged(), debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe(val => {
         this.dataGrid().instance.searchByText(val);
-      });
-  }
-
-  private loadData() {
-    forkJoin([this.companiesService.getCompanies(), this.companiesService.getTemporaryCompanies()])
-      .pipe(
-        catchError((error: HttpError) => {
-          this.toastService.showHttpError(error);
-          return EMPTY;
-        }),
-        finalize(() => this.isDataLoaded.set(true)),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(([companies, temporaryCompanies]) => {
-        this.temporaryCompanies.set(temporaryCompanies);
-        this.companies.set(companies);
       });
   }
 }

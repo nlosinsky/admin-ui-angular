@@ -1,23 +1,21 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  OnInit,
   inject,
   viewChildren,
   viewChild,
-  signal
+  signal,
+  computed,
+  effect
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Company, CompanyMember } from '@app/shared/models';
-import { TransactionsCount, TransactionsSeries } from '@app/shared/models/transactions';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TransactionsSearchParamsValue, TransactionsSeries } from '@app/shared/models/transactions';
 import { FormHelper } from '@app/shared/utils/form-helper';
 import { ObjectUtil } from '@app/shared/utils/object-util';
 import { GeneralToolbarComponent } from '@components/general-toolbar/general-toolbar.component';
 import { ErrorMessagePipe } from '@pipes/error-message/error-message.pipe';
 import { TransactionsTableService } from '@views/transactions/transactions-table.service';
-import { isValid } from 'date-fns';
 import {
   DxButtonComponent,
   DxChartComponent,
@@ -37,9 +35,8 @@ import {
   DxoTitleComponent,
   DxoTooltipComponent
 } from 'devextreme-angular/ui/nested';
-import { of } from 'rxjs';
-import { finalize, switchMap } from 'rxjs/operators';
 import { TimeInterval } from 'devextreme/common/charts';
+import { isValid } from 'date-fns';
 
 type TransactionsForm = {
   startDate: FormControl<Date>;
@@ -74,31 +71,40 @@ type TransactionsForm = {
     DxButtonComponent
   ]
 })
-export class TransactionsTableComponent implements OnInit {
-  private fb = inject(NonNullableFormBuilder);
-  private destroyRef = inject(DestroyRef);
+export class TransactionsTableComponent {
   private transactionsTableService = inject(TransactionsTableService);
 
   readonly validators = viewChildren(DxValidatorComponent);
   readonly chart = viewChild.required(DxChartComponent);
 
-  dataSource = signal<TransactionsCount[]>([]);
-  isSubmitting = signal(false);
-  companies = signal<Company[]>([]);
-  companyMembers = signal<CompanyMember[]>([{ fullName: 'All', id: '' } as CompanyMember]);
+  searchParams = signal<TransactionsSearchParamsValue | null>(null);
 
-  selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
-  form!: FormGroup<TransactionsForm>;
-  maxDate = new Date();
-  tickInterval!: TimeInterval;
-  aggregationInterval: TimeInterval = 'day';
+  readonly dataSource = this.transactionsTableService.getTransactionsCount(this.searchParams);
 
+  readonly maxDate = new Date();
   readonly series = ObjectUtil.enumToKeyValueArray(TransactionsSeries);
 
-  ngOnInit(): void {
-    this.loadCompanies();
-    this.initForm();
-    this.handleCountryChange();
+  selectedSeriesValue: TransactionsSeries = TransactionsSeries.Daily;
+  tickInterval: TimeInterval = 'day';
+  aggregationInterval: TimeInterval = 'day';
+  form: FormGroup<TransactionsForm> = this.transactionsTableService.createForm();
+
+  companyId = toSignal(this.form.controls.companyId.valueChanges, { initialValue: '' });
+
+  private companyMembers = this.transactionsTableService.getMembers(this.companyId);
+  companyMembersExtended = computed(() => [{ fullName: 'All', id: '' }, ...this.companyMembers.value()]);
+
+  private companies = this.transactionsTableService.getCompanies();
+  companiesExtended = computed(() => [{ name: 'All', id: '' }, ...this.companies.value()]);
+
+  constructor() {
+    effect(() => {
+      if (!this.companyId()) {
+        this.companyMembers.set([]);
+      }
+
+      this.form.get('userId')?.setValue('');
+    });
   }
 
   customizeTooltip = (info: { valueText: string; argument: Date }) => {
@@ -123,35 +129,19 @@ export class TransactionsTableComponent implements OnInit {
   onChartExport = (format = 'png') => this.transactionsTableService.onChartExport(this.chart(), format);
 
   onSearch() {
-    if (this.isSubmitting()) {
-      return;
-    }
-
     if (this.form.invalid) {
       FormHelper.triggerFormValidation(this.form, this.validators());
       return;
     }
 
     const formValue = this.form.value;
-    const payload = this.transactionsTableService.getSearchPayload(formValue);
+    const payload = this.transactionsTableService.getSearchParams(formValue);
 
     if (!isValid(new Date(payload.startDate)) || !isValid(new Date(payload.endDate))) {
       return;
     }
 
-    this.isSubmitting.set(true);
-
-    this.transactionsTableService
-      .getTransactionsCount(payload)
-      .pipe(
-        finalize(() => {
-          this.isSubmitting.set(false);
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(items => {
-        this.dataSource.set(items);
-      });
+    this.searchParams.set(payload);
   }
 
   get maxStartDate() {
@@ -162,42 +152,5 @@ export class TransactionsTableComponent implements OnInit {
     }
 
     return new Date();
-  }
-
-  private loadCompanies() {
-    this.transactionsTableService
-      .getCompanies()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(companies => {
-        this.companies.set(companies);
-      });
-  }
-
-  private initForm() {
-    this.form = this.fb.group({
-      startDate: [new Date(), Validators.required],
-      endDate: [new Date(), Validators.required],
-      companyId: [''],
-      userId: ['']
-    });
-  }
-
-  private handleCountryChange() {
-    this.form
-      .get('companyId')
-      ?.valueChanges.pipe(
-        switchMap((companyId: string) => {
-          this.form.get('userId')?.setValue('');
-
-          if (!companyId) {
-            return of([]);
-          }
-          return this.transactionsTableService.getMembers(companyId);
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(members => {
-        this.companyMembers.set(members);
-      });
   }
 }

@@ -1,7 +1,7 @@
+import { HttpResourceRef } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { DocumentsStat } from '@app/shared/models';
 import { DocumentsApiService } from '@services/api/documents-api.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class DocumentsService {
   private documentsApiService = inject(DocumentsApiService);
 
-  getDocumentsStats(): Observable<DocumentsStat[]> {
+  getDocumentsStats(): HttpResourceRef<DocumentsStat[]> {
     return this.documentsApiService.getDocumentsStats();
   }
 }

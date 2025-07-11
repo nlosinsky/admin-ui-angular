@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { tableIndicatorSrc } from '@app/shared/constants';
@@ -27,7 +26,7 @@ import {
   DxoPagingComponent,
   DxoScrollingComponent
 } from 'devextreme-angular/ui/nested';
-import { EMPTY, from, zip } from 'rxjs';
+import { EMPTY, from } from 'rxjs';
 import { catchError, filter, finalize, mergeMap } from 'rxjs/operators';
 
 @Component({
@@ -52,7 +51,7 @@ import { catchError, filter, finalize, mergeMap } from 'rxjs/operators';
     BgSpinnerComponent
   ]
 })
-export class CompanyUsersComponent implements OnInit, CommonCustomerComponentActions {
+export class CompanyUsersComponent implements CommonCustomerComponentActions {
   private companyStateService = inject(CompanyStateService);
   private companiesService = inject(CompaniesService);
   private route = inject(ActivatedRoute);
@@ -62,17 +61,14 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
   private router = inject(Router);
 
   companyId = this.companyStateService.currentCompanyId;
-  isDataLoaded = signal(false);
-  pendingMembers = signal<CompanyMember[]>([]);
-  members = signal<CompanyMember[]>([]);
   approveRequestsSet = signal<Set<string>>(new Set<string>());
   declineRequestsSet = signal<Set<string>>(new Set<string>());
 
-  readonly indicatorSrc = tableIndicatorSrc;
+  pendingMembers = this.companiesService.getPendingMembers(this.companyId);
+  members = this.companiesService.getMembers(this.companyId);
+  isDataLoaded = computed(() => !(this.pendingMembers.isLoading() || this.members.isLoading()));
 
-  ngOnInit(): void {
-    this.loadData();
-  }
+  readonly indicatorSrc = tableIndicatorSrc;
 
   navigateBack = () => this.router.navigate(['/companies']);
 
@@ -87,7 +83,6 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
     });
   };
 
-  // todo add decorator
   onDecline(memberId: string): void {
     if (this.declineRequestsSet().has(memberId)) {
       return;
@@ -118,12 +113,11 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        this.pendingMembers.update(pendingMembers => pendingMembers.filter(item => item.id !== memberId));
+        this.pendingMembers.reload();
         this.toastService.showSuccess('User has been successfully Declined.');
       });
   }
 
-  // todo add decorator
   onApprove(memberId: string): void {
     const companyId = this.companyId();
 
@@ -143,11 +137,6 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
     this.companiesService
       .approvePendingMember(memberId)
       .pipe(
-        mergeMap(() => this.companiesService.getMembers(companyId)),
-        catchError((error: HttpErrorResponse) => {
-          this.toastService.showHttpError(error);
-          return EMPTY;
-        }),
         finalize(() => {
           this.approveRequestsSet.update(set => {
             const newSet = new Set(set);
@@ -157,32 +146,10 @@ export class CompanyUsersComponent implements OnInit, CommonCustomerComponentAct
         }),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe(members => {
-        this.members.set(members);
-        this.pendingMembers.update(pendingMembers => pendingMembers.filter(item => item.id !== memberId));
+      .subscribe(() => {
+        this.members.reload();
+        this.pendingMembers.reload();
         this.toastService.showSuccess('User has been successfully Approved.');
-      });
-  }
-
-  private loadData() {
-    const companyId = this.companyId();
-
-    if (!companyId) {
-      return;
-    }
-
-    zip(this.companiesService.getPendingMembers(companyId), this.companiesService.getMembers(companyId))
-      .pipe(
-        catchError((error: HttpError) => {
-          this.toastService.showHttpError(error);
-          return EMPTY;
-        }),
-        finalize(() => this.isDataLoaded.set(true)),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(([pendingMembers, members]) => {
-        this.pendingMembers.set(pendingMembers);
-        this.members.set(members);
       });
   }
 }

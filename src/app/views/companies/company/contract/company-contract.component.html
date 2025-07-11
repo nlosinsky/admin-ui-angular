@@ -21,8 +21,8 @@
   </dx-drop-down-button>
 </ng-template>
 
-@if (isDataLoaded() && currentCompany()) {
-  @if (currentCompany()) {
+@if (!currentCompany.isLoading()) {
+  @if (currentCompany.value()) {
     <form [formGroup]="form" novalidate>
       <div class="content-section" formGroupName="contract">
         <h5 class="section-title">Contract Details</h5>
