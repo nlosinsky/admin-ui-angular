@@ -83,7 +83,6 @@ export class CompanyUsersComponent implements CommonCustomerComponentActions {
     });
   };
 
-  // todo add decorator
   onDecline(memberId: string): void {
     if (this.declineRequestsSet().has(memberId)) {
       return;
@@ -119,7 +118,6 @@ export class CompanyUsersComponent implements CommonCustomerComponentActions {
       });
   }
 
-  // todo add decorator
   onApprove(memberId: string): void {
     const companyId = this.companyId();
 

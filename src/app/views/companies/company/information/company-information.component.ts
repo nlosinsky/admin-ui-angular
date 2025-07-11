@@ -105,12 +105,12 @@ export class CompanyInformationComponent implements Submittable, TabWithActions,
   constructor() {
     effect(() => {
       if (!this.form) {
-        this.setFormData(this.currentCompany());
+        this.setFormData(this.currentCompany.value());
       }
     });
 
     effect(() => {
-      const currentCompany = this.currentCompany();
+      const currentCompany = this.currentCompany.value();
       this.populateLists(untracked(() => this.getCompanyDTO(currentCompany)));
     });
   }
@@ -179,11 +179,11 @@ export class CompanyInformationComponent implements Submittable, TabWithActions,
   }
 
   hasChangedData(): boolean {
-    return !ObjectUtil.isDeepEquals(this.getPreparedData(), this.getCompanyDTO(this.currentCompany()));
+    return !ObjectUtil.isDeepEquals(this.getPreparedData(), this.getCompanyDTO(this.currentCompany.value()));
   }
 
   restoreForm(): void {
-    this.form.reset(this.getCompanyDTO(this.currentCompany()));
+    this.form.reset(this.getCompanyDTO(this.currentCompany.value()));
   }
 
   setFormData(data: Company | null): void {

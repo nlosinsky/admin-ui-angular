@@ -80,7 +80,6 @@ export class CompanyContractComponent implements Submittable, TabWithActions, Co
   currentCompanyId = this.companyStateService.currentCompanyId;
 
   isEditMode = signal(false);
-  isDataLoaded = signal(false);
   isSubmitting = signal(false);
   isDisabled = computed(() => this.isSubmitting() || !this.isEditMode());
 
@@ -91,11 +90,9 @@ export class CompanyContractComponent implements Submittable, TabWithActions, Co
   readonly companyContractList: string[] = ObjectUtil.enumToArray(CompanyContractEnum);
 
   constructor() {
-    // todo refactor
     effect(() => {
-      if (this.currentCompany() && !this.isDataLoaded()) {
-        this.isDataLoaded.set(true);
-        this.setFormData(this.currentCompany());
+      if (!this.form) {
+        this.setFormData(this.currentCompany.value());
         this.verifyTransactionFeeConstraints();
       }
     });
@@ -165,11 +162,11 @@ export class CompanyContractComponent implements Submittable, TabWithActions, Co
   }
 
   private get isFeaturesChanged(): boolean {
-    return !ObjectUtil.isDeepEquals(this.currentCompany()?.features, this.features);
+    return !ObjectUtil.isDeepEquals(this.currentCompany.value()?.features, this.features);
   }
 
   private get isContractChanged(): boolean {
-    return !ObjectUtil.isDeepEquals(this.currentCompany()?.contract, this.contract);
+    return !ObjectUtil.isDeepEquals(this.currentCompany.value()?.contract, this.contract);
   }
 
   get features(): CompanyFeatures | null {
@@ -230,7 +227,7 @@ export class CompanyContractComponent implements Submittable, TabWithActions, Co
   }
 
   restoreForm(): void {
-    const { features, contract } = this.currentCompany() || {};
+    const { features, contract } = this.currentCompany.value() || {};
     this.form.reset({ features, contract });
   }
 }

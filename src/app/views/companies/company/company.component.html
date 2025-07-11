@@ -1,4 +1,4 @@
-@if (currentCompany(); as company) {
+@if (currentCompany.value(); as company) {
   <section class="heading-section">
     <app-details-toolbar [title]="company.name" [logo]="company.logoUrl" (back)="onReturnBack()">
       @if ('actionsTpl' in activeComponent) {

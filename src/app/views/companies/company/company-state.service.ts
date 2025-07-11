@@ -12,7 +12,7 @@ export class CompanyStateService {
   currentCompanyId = signal('');
 
   private _currentCompany = this.companiesService.getCompany(this.currentCompanyId);
-  currentCompany = this._currentCompany.value.asReadonly();
+  currentCompany = this._currentCompany.asReadonly();
 
   setCompanyId(id: string) {
     this.currentCompanyId.set(id);

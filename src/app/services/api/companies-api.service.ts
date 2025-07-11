@@ -41,13 +41,12 @@ export class CompaniesApiService {
 
   getCompany(companyId: Signal<string | null>): HttpResourceRef<Company | null> {
     return httpResource(
-      // @ts-ignore
       () => {
         return companyId() ? `${this.basePath}/companies/${companyId()}` : undefined;
       },
       {
         defaultValue: null,
-        parse: (value: unknown) => new Company(value)
+        parse: (value: unknown) => (value ? new Company(value) : null)
       }
     );
   }
